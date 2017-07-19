@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="4dp"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:paddingTop="16dp"
+            android:textColor="#a3a3a3"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            tools:text="【段子】红包" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/divider_shadow" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:padding="4dp"
+            android:textColor="#2b2b2b"
+            android:textSize="15sp"
+            android:lineSpacingMultiplier="1.1"
+            tools:text="自从有了红包以后，抢红包已经完全摧毁了我的价值观。以前地上掉一毛钱我连看都不看，现在超过1元我就觉得是一笔巨款，超过5元我就窒息了，超过10元眼眶就湿了。。。这年头每1分钱都来之不易啊。。。" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

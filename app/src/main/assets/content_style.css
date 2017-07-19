@@ -1,0 +1,50 @@
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+  background: #fff;
+  padding-top: 0;
+  margin: 10px;
+}
+a {
+    color: #698ebf;
+    text-decoration: none;
+}
+
+a:focus {
+  outline: thin dotted;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+br,
+hr {
+    visibility: hidden;
+}
+
+h1 {
+  font-size: 2em;
+  margin: .67em 0;
+}
+
+h2 {
+    display: block;
+    font-size: 1.5em;
+    line-height: 1.4em;
+    color: #222;
+    font-weight: bold;
+    margin: 5px 0;
+    border-bottom: 5px solid #f6f6f6;
+}
+
+ins {
+   width:0px !important;
+   height:0px !important;
+}
+
+

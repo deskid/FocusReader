@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FocusReader</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_content">Focus\nReader</string>
+    <string name="settings">setting</string>
+</resources>
