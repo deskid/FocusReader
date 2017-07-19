@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_web_view.*
 import org.jetbrains.anko.find
 import javax.inject.Inject
 
+
+
 class WebViewActivity : AppCompatActivity(), ToolbarManager {
 
     @Inject
@@ -29,9 +31,15 @@ class WebViewActivity : AppCompatActivity(), ToolbarManager {
         }
 
         fun start(context: Context, url: String, img: String) {
+
+
             val starter = Intent(context, WebViewActivity::class.java)
             starter.putExtra("pageUrl", url)
             starter.putExtra("pageImage", img)
+
+//            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, sharedElements)
+//            ActivityCompat.startActivityForResult(context, starter, -1, options.toBundle())
+
             context.startActivity(starter)
         }
 

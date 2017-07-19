@@ -14,8 +14,7 @@
         <com.github.deskid.focusreader.widget.SafeWebView
             android:id="@+id/webview_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:isScrollContainer="false" />
+            android:layout_height="match_parent" />
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -29,7 +28,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll">
 
             <com.github.deskid.focusreader.widget.WebImageView
                 android:id="@+id/toolbar_img"
