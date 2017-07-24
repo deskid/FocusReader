@@ -32,7 +32,7 @@ public class ArticleEntity {
     }
 
     public static ArticleEntity zenImageWrap(ZenImage zenImage) {
-        return new ArticleEntity(0, 1, zenImage.getTitle(), zenImage.getAuthor(), zenImage.getPubDate(), zenImage.getDescription(), zenImage.getImgurl(), "");
+        return new ArticleEntity(0, 1, zenImage.getTitle(), zenImage.getAuthor(), zenImage.getPubDate(), zenImage.getDescription(), zenImage.getImgurl(), zenImage.getUrl());
     }
 
     public static ArticleEntity tuguaWrap(TuGua tuGua) {

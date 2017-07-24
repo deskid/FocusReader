@@ -43,6 +43,9 @@ class SafeWebView : WebView {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
                 progressBar.progress = newProgress
+                if (newProgress == 100) {
+                    progressBar.dismiss()
+                }
             }
         })
 

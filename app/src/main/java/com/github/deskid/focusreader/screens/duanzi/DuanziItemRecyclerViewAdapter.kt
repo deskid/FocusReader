@@ -1,5 +1,6 @@
 package com.github.deskid.focusreader.screens.duanzi
 
+import android.os.Build
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.text.Html
@@ -51,8 +52,13 @@ class DuanziItemRecyclerViewAdapter(private var mValues: MutableList<Duanzi>) : 
     }
 
     override fun onBindViewHolder(holder: DuanziItemRecyclerViewAdapter.ViewHolder, position: Int) {
-        holder.mTitleView.text = mValues[position].title
-        holder.mContentView.text = Html.fromHtml(mValues[position].description)
+        holder.mTitleView.text = mValues[position].title.replace(Regex("【.+?】"), "")
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.mContentView.text = Html.fromHtml(mValues[position].description,0)
+        }else{
+            holder.mContentView.text = Html.fromHtml(mValues[position].description)
+        }
 
     }
 

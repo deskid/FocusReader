@@ -9,17 +9,15 @@ class ScrollableRecyclerView(context: Context?, attrs: AttributeSet?) : Recycler
 
     var loadMoreListener: () -> Unit = {}
 
+    var isLoading: Boolean = false
+
     override fun onScrollStateChanged(state: Int) {
         super.onScrollStateChanged(state)
-        if (!ViewCompat.canScrollVertically(this, 1)) {
+        if (!isLoading && !ViewCompat.canScrollVertically(this, 1)) {
             loadMoreListener()
-        }
-    }
-
-    override fun onScrolled(dx: Int, dy: Int) {
-        super.onScrolled(dx, dy)
-        if (!ViewCompat.canScrollVertically(this, 1)) {
-            loadMoreListener()
+            isLoading = true
+        } else {
+            isLoading = false
         }
     }
 }

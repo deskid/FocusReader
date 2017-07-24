@@ -29,7 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.WebViewActivity"/>
+        <activity android:name=".screens.tugua.WebViewActivity"/>
+        <activity android:name=".screens.yitu.ZenImageDetailAct" />
     </application>
 
 </manifest>

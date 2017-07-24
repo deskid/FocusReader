@@ -7,18 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.activity.WebViewActivity
 import com.github.deskid.focusreader.api.data.ZenImage
-import com.github.deskid.focusreader.utils.ResUtils
-import com.github.deskid.focusreader.utils.setWidth
 import com.github.deskid.focusreader.widget.WebImageView
 
-class ZenItemRecyclerViewAdapter(private val mValues: MutableList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {
+class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {
 
-    fun addData(data: List<ZenImage>) {
-        val index = mValues.size
-        mValues.addAll(data)
-        notifyItemRangeChanged(index, mValues.size)
+    fun addData(data: List<ZenImage>, reverse: Boolean = false) {
+        if (reverse) {
+            for (image in data) {
+                mValues.add(0, image)
+            }
+            notifyItemRangeChanged(0, data.size)
+        } else {
+            val index = mValues.size
+            mValues.addAll(data)
+            notifyItemRangeChanged(index, mValues.size)
+        }
+
     }
 
     fun swipeData(data: List<ZenImage>) {
@@ -49,17 +54,17 @@ class ZenItemRecyclerViewAdapter(private val mValues: MutableList<ZenImage>) : R
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_zenitem, parent, false)
+                .inflate(R.layout.fragment_zenimage_list_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.mTitleView.text = mValues[position].title
-        holder.mWebImageView.setImageUrl(mValues[position].imgurl)
-        holder.mWebImageView.setWidth(ResUtils.screenWidth())
+        val imgurl = mValues[position].imgurl.replace("square", "medium")
+        holder.mWebImageView.setImageUrl(imgurl)
         holder.itemView.setOnClickListener {
-            WebViewActivity.start(holder.itemView.context, mValues[position].description, mValues[position].imgurl)
+            ZenImageDetailAct.start(holder.itemView.context, position, mValues)
         }
 
     }

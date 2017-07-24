@@ -6,16 +6,16 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.github.deskid.focusreader.db.entity.WebContentEntity;
+import com.github.deskid.focusreader.db.entity.YituEntity;
 
 import java.util.List;
 
 @Dao
-public abstract class WebContentDao {
+public abstract class YituDao {
 
-    @Query("select * from tuguas where url = :url")
-    public abstract LiveData<List<WebContentEntity>> findContentByUrl(String url);
+    @Query("select * from yitus where url = :url")
+    public abstract LiveData<List<YituEntity>> findContentByUrl(String url);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void insert(WebContentEntity entity);
+    public abstract void insert(YituEntity entity);
 }

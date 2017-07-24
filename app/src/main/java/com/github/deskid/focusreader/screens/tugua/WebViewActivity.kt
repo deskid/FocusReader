@@ -1,5 +1,9 @@
-package com.github.deskid.focusreader.activity
+package com.github.deskid.focusreader.screens.tugua
 
+import android.arch.lifecycle.LifecycleRegistry
+import android.arch.lifecycle.LifecycleRegistryOwner
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,12 +18,19 @@ import kotlinx.android.synthetic.main.activity_web_view.*
 import org.jetbrains.anko.find
 import javax.inject.Inject
 
+class WebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegistryOwner {
+    internal var mLifecycleRegistry = LifecycleRegistry(this)
 
-
-class WebViewActivity : AppCompatActivity(), ToolbarManager {
+    override fun getLifecycle(): LifecycleRegistry {
+        return mLifecycleRegistry
+    }
 
     @Inject
-    lateinit var webViewModel: WebViewModel
+    lateinit var factory: WebViewModel.WebViewModelFactory
+
+    val webViewModel: WebViewModel by lazy {
+        ViewModelProviders.of(this, factory).get(WebViewModel::class.java)
+    }
 
     override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
 
@@ -31,15 +42,9 @@ class WebViewActivity : AppCompatActivity(), ToolbarManager {
         }
 
         fun start(context: Context, url: String, img: String) {
-
-
             val starter = Intent(context, WebViewActivity::class.java)
             starter.putExtra("pageUrl", url)
             starter.putExtra("pageImage", img)
-
-//            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(context, sharedElements)
-//            ActivityCompat.startActivityForResult(context, starter, -1, options.toBundle())
-
             context.startActivity(starter)
         }
 
@@ -59,10 +64,8 @@ class WebViewActivity : AppCompatActivity(), ToolbarManager {
         val pageImage = intent.getStringExtra("pageImage")
 
         if (!TextUtils.isEmpty(pageUrl)) {
-            webViewModel.getContent(pageUrl).subscribe({
+            webViewModel.getContent(pageUrl).observe(this, Observer {
                 webview_container.loadDataWithBaseURL("file:///android_asset/", it, "text/html", "UTF-8", null)
-            }, {
-                it.printStackTrace()
             })
         }
         if (!TextUtils.isEmpty(pageImage)) {

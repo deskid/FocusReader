@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.utils.ResUtils
+import com.github.deskid.focusreader.utils.dp2Px
 import com.github.deskid.focusreader.widget.ScrollableRecyclerView
 
 abstract class ContentListFragment : LifecycleFragment() {
@@ -27,7 +27,7 @@ abstract class ContentListFragment : LifecycleFragment() {
         view.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
                 super.getItemOffsets(outRect, view, parent, state)
-                outRect?.set(0, 0, 0, ResUtils.dp2Px(10))
+                outRect?.set(0, 0, 0, context.dp2Px(10))
             }
         })
 

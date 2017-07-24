@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.activity.WebViewActivity
 import com.github.deskid.focusreader.api.data.TuGua
-import com.github.deskid.focusreader.utils.ResUtils
+import com.github.deskid.focusreader.utils.screenWidth
+
 import com.github.deskid.focusreader.utils.setWidth
 import com.github.deskid.focusreader.widget.WebImageView
 
@@ -53,10 +53,11 @@ class TuGuaItemRecyclerViewAdapter(private val mValues: MutableList<TuGua>) : Re
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val width = holder.itemView.context.screenWidth
 
-        holder.mTitleView.text = mValues[position].title
+        holder.mTitleView.text = mValues[position].title.replace(Regex("【.+?】"), "")
         holder.mWebImageView.setImageUrl(mValues[position].imgurl)
-        holder.mWebImageView.setWidth(ResUtils.screenWidth())
+        holder.mWebImageView.setWidth(width)
         holder.itemView.setOnClickListener {
             WebViewActivity.start(holder.itemView.context, mValues[position].description, mValues[position].imgurl)
         }

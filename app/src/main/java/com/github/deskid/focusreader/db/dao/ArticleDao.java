@@ -16,6 +16,9 @@ public abstract class ArticleDao {
     @Query("select * from articles where type = :type  order by id asc limit 30 offset (:offset-1)*30")
     public abstract LiveData<List<ArticleEntity>> findArticleByType(int type, int offset);
 
+    @Query("select * from articles where type = :type  and url = :url limit 1")
+    public abstract LiveData<ArticleEntity> findArticleByUrl(int type, String url);
+
     public void insertAll(List<ArticleEntity> list) {
         for (ArticleEntity entity : list) {
             insert(entity);
@@ -23,6 +26,6 @@ public abstract class ArticleDao {
     }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    abstract void insert(ArticleEntity entity);
+    public abstract void insert(ArticleEntity entity);
 
 }

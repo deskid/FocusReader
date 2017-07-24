@@ -96,6 +96,7 @@ public class ApiModule {
     Gson provideGson() {
         return new GsonBuilder()
                 .disableHtmlEscaping()
+                .setLenient()
                 .setPrettyPrinting()
                 .create();
     }
