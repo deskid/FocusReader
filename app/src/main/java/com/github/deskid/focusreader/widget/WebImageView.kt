@@ -39,12 +39,12 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
                         .priority(Priority.HIGH)
 
                 if (onLoaded == null) {
-                    Glide.with(context)
+                    Glide.with(this)
                             .load(url)
                             .apply(option)
                             .into(this)
                 } else {
-                    Glide.with(context)
+                    Glide.with(this)
                             .load(url)
                             .apply(option)
                             .listener(

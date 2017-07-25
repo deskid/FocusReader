@@ -10,25 +10,34 @@
     app:cardCornerRadius="0dp"
     app:cardElevation="4dp">
 
-    <com.github.deskid.focusreader.widget.WebImageView
-        android:id="@+id/web_imageview"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        tools:layout_height="200dp" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:background="@color/text_light_fg_overlay"
-        android:lines="1"
-        android:paddingBottom="16dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="16dp"
-        android:textColor="@color/text_white" />
+        <com.github.deskid.focusreader.widget.WebImageView
+            android:id="@+id/web_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            tools:layout_height="200dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:background="@color/text_light_fg_overlay"
+            android:lines="1"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_white"
+            tools:background="@color/color1"
+            tools:text="ssssssss" />
+    </FrameLayout>
 
 </android.support.v7.widget.CardView>

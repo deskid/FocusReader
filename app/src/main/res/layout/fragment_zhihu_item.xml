@@ -21,8 +21,6 @@
             android:id="@+id/web_imageview"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:elevation="4dp"
-            android:outlineProvider="bounds"
             android:scaleType="centerCrop" />
 
         <TextView

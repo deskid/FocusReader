@@ -18,7 +18,10 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/text_title"
             android:textSize="18sp"
             tools:text="【段子】红包" />
@@ -27,11 +30,13 @@
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
             android:lineSpacingMultiplier="1.5"
-            android:padding="4dp"
             android:textColor="@color/text_main"
-            android:textSize="15sp"
+            android:textSize="16sp"
             tools:text="自从有了红包以后，抢红包已经完全摧毁了我的价值观。以前地上掉一毛钱我连看都不看，现在超过1元我就觉得是一笔巨款，超过5元我就窒息了，超过10元眼眶就湿了。。。这年头每1分钱都来之不易啊。。。" />
     </LinearLayout>
 </android.support.v7.widget.CardView>

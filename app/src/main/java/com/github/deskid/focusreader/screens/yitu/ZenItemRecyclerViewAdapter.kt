@@ -59,7 +59,6 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         holder.mTitleView.text = mValues[position].title
         val imgurl = mValues[position].imgurl.replace("square", "medium")
         holder.mWebImageView.setImageUrl(imgurl)
