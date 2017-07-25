@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:background="@color/text_dark_fg_overlay"
+        android:background="@color/text_light_fg_overlay"
         android:lines="1"
         android:paddingBottom="16dp"
         android:paddingLeft="8dp"

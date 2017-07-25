@@ -9,6 +9,8 @@ import com.github.deskid.focusreader.screens.tugua.WebViewActivity;
 import com.github.deskid.focusreader.screens.yitu.ZenImageDetailAct;
 import com.github.deskid.focusreader.screens.yitu.ZenImageDetailFragment;
 import com.github.deskid.focusreader.screens.yitu.ZenImageFragment;
+import com.github.deskid.focusreader.screens.zhihudaily.ZhihuFragment;
+import com.github.deskid.focusreader.screens.zhihudaily.ZhihuWebViewActivity;
 
 import dagger.Component;
 
@@ -21,6 +23,8 @@ public interface AppComponent {
 
     void inject(WebViewActivity activity);
 
+    void inject(ZhihuWebViewActivity activity);
+
     void inject(ZenImageDetailAct activity);
 
     void inject(TuGuaFragment fragment);
@@ -31,6 +35,8 @@ public interface AppComponent {
 
     void inject(PentiFragment fragment);
 
-    void inject(ZenImageDetailFragment activity);
+    void inject(ZenImageDetailFragment fragment);
+
+    void inject(ZhihuFragment fragment);
 
 }

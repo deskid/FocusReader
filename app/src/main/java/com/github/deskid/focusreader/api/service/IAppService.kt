@@ -3,13 +3,9 @@ package com.github.deskid.focusreader.api.service
 import android.arch.lifecycle.LiveData
 import com.github.deskid.focusreader.api.ApiResponse
 import com.github.deskid.focusreader.api.Resource
-import com.github.deskid.focusreader.api.data.Duanzi
-import com.github.deskid.focusreader.api.data.TuGua
-import com.github.deskid.focusreader.api.data.ZenImage
+import com.github.deskid.focusreader.api.data.*
 import okhttp3.ResponseBody
-import retrofit2.http.GET
-import retrofit2.http.Query
-import retrofit2.http.Url
+import retrofit2.http.*
 
 interface IAppService {
     @GET("http://appb.dapenti.com/index.php?s=/Home/api/loading_pic")
@@ -23,6 +19,16 @@ interface IAppService {
 
     @GET("http://appb.dapenti.com/index.php?s=/Home/api/duanzi")
     fun getJoke(@Query("p") pageNum: Int = 1, @Query("limit") limitNum: Int = 10): LiveData<ApiResponse<Resource<List<Duanzi>>>>
+
+    //avoid 304
+    @Headers("If-Modified-Since: Tue, 12 May 2015 00:00:00 GMT")
+    @GET("https://news-at.zhihu.com/api/4/news/latest")
+    fun getZhihuLatest(): LiveData<ApiResponse<Zhihu>>
+
+    //avoid 304
+    @Headers("If-Modified-Since: Tue, 12 May 2015 00:00:00 GMT")
+    @GET("https://news-at.zhihu.com/api/4/news/{id}")
+    fun getZhihuDetail(@Path("id") id: String): LiveData<ApiResponse<ZhihuDetail>>
 
     @GET
     fun get(@Url url:String): LiveData<ApiResponse<ResponseBody>>

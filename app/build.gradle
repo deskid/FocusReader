@@ -26,7 +26,7 @@ android {
 
 ext {
     support_version = '25.4.0'
-    arch_version = '1.0.0-alpha4'
+    arch_version = '1.0.0-alpha5'
 }
 
 
@@ -68,11 +68,16 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.0.8'
 
     //dagger
-    implementation "com.google.dagger:dagger:2.9"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    implementation "com.google.dagger:dagger:2.11"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
 
     //picasso
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    //implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //glide
+    implementation 'com.github.florent37:glidepalette:2.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.0.0-RC1'
+    //annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
 
     //anko extension
     implementation "org.jetbrains.anko:anko-common:0.9.1"

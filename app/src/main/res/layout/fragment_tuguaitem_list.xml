@@ -6,7 +6,6 @@
 
     <com.github.deskid.focusreader.widget.ScrollableRecyclerView
         android:id="@+id/list"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@color/colorAccentDark" />
+        android:layout_height="match_parent" />
 </android.support.v4.widget.SwipeRefreshLayout>

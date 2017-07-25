@@ -8,7 +8,7 @@ import android.util.SparseArray
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.screens.PentiFragment
 import com.github.deskid.focusreader.screens.duanzi.DuanziFragment
-import com.github.deskid.focusreader.screens.yitu.ZenImageFragment
+import com.github.deskid.focusreader.screens.zhihudaily.ZhihuFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.navigation_home -> {
                 if (screens[0] == null) {
-                    screens.put(0, ZenImageFragment.newInstance())
+                    screens.put(0, ZhihuFragment.newInstance())
                 }
                 fragment = screens[0]
             }

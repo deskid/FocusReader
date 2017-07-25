@@ -4,7 +4,6 @@ import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.graphics.Palette
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
 import kotlinx.android.synthetic.main.fragment_zenimage_detail.*
-
 import javax.inject.Inject
 
 class ZenImageDetailFragment : LifecycleFragment() {
@@ -42,18 +40,13 @@ class ZenImageDetailFragment : LifecycleFragment() {
             })
         }
         if (!TextUtils.isEmpty(pageImage)) {
-            image.setImageUrl(pageImage.replace("medium","large")) {
-                Palette.from(it).generate {
-
-                    val textSwatch = it.darkMutedSwatch
-                    textSwatch?.let { swatch ->
-                        if (isAdded) {
-                            description.setBackgroundColor(swatch.rgb)
-                            description.setTextColor(swatch.bodyTextColor)
-                        }
-
+            image.setImageUrl(pageImage.replace("medium", "large")) {
+                val textSwatch = it?.darkMutedSwatch
+                textSwatch?.let { swatch ->
+                    if (isAdded) {
+                        description.setBackgroundColor(swatch.rgb)
+                        description.setTextColor(swatch.bodyTextColor)
                     }
-
                 }
             }
         }

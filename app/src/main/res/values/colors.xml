@@ -13,5 +13,6 @@
     <color name="text_main">#5B7080</color>
     <color name="text_title">#454E55</color>
     <color name="text_dark_fg_overlay">#66000000</color>
+    <color name="text_light_fg_overlay">#66ffffff</color>
 
 </resources>

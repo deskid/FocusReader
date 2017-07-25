@@ -1,14 +1,16 @@
 package com.github.deskid.focusreader.widget
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.net.Uri
+import android.support.v7.graphics.Palette
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
+import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.request.RequestOptions
 import com.github.deskid.focusreader.R
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
+import com.github.florent37.glidepalette.BitmapPalette
+import com.github.florent37.glidepalette.GlidePalette
 
 class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : AppCompatImageView(context, attrs) {
 
@@ -25,27 +27,33 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
         super.setImageDrawable(drawable)
     }
 
-    fun setImageUrl(url: String?, onLoaded: ((bitmap: Bitmap) -> Unit)? = null) {
+    fun setImageUrl(url: String?, onLoaded: ((palette: Palette?) -> Unit)? = null) {
         if (url.isNullOrEmpty()) {
             mImageUrl = null
-            Picasso.with(context).cancelRequest(this)
             setImageBitmap(null)
         } else {
             mImageUrl = url
             if (isAttachedToWindow) {
-                Picasso.with(context).load(Uri.parse(url)).placeholder(R.color.colorAccent).into(object : Target {
-                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                        setImageDrawable(placeHolderDrawable)
-                    }
+                val option = RequestOptions()
+                        .placeholder(R.color.text_light_fg_overlay)
+                        .priority(Priority.HIGH)
 
-                    override fun onBitmapFailed(errorDrawable: Drawable?) {
-                    }
-
-                    override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom?) {
-                        setImageBitmap(bitmap)
-                        onLoaded?.invoke(bitmap)
-                    }
-                })
+                if (onLoaded == null) {
+                    Glide.with(context)
+                            .load(url)
+                            .apply(option)
+                            .into(this)
+                } else {
+                    Glide.with(context)
+                            .load(url)
+                            .apply(option)
+                            .listener(
+                                    GlidePalette
+                                            .with(url)
+                                            .use(BitmapPalette.Profile.MUTED_DARK)
+                                            .intoCallBack(onLoaded))
+                            .into(this)
+                }
             }
         }
     }
@@ -61,7 +69,6 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     override fun onDetachedFromWindow() {
-        Picasso.with(context).cancelRequest(this)
         super.onDetachedFromWindow()
     }
 }
