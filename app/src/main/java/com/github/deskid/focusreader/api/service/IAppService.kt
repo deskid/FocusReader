@@ -32,4 +32,7 @@ interface IAppService {
 
     @GET
     fun get(@Url url:String): LiveData<ApiResponse<ResponseBody>>
+
+    @GET("https://interface.meiriyiwen.com/article/{type}")
+    fun getArticle(@Path("type") type: String): LiveData<ApiResponse<Article>>
 }

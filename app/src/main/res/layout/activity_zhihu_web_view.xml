@@ -28,7 +28,8 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -42,13 +43,12 @@
                     android:minHeight="250dp"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed" />
+                    app:layout_collapseParallaxMultiplier="0.7" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/divider_shadow" />
-
 
                 <TextView
                     android:id="@+id/toolbar_title"
@@ -58,8 +58,6 @@
                     android:layout_margin="16dp"
                     android:textColor="@color/text_white"
                     android:textSize="18sp" />
-
-
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar
@@ -67,12 +65,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:layout_scrollFlags="scroll|enterAlways"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|exitUntilCollapsed"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-
 </android.support.design.widget.CoordinatorLayout>

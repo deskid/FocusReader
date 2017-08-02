@@ -35,7 +35,7 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
             mImageUrl = url
             if (isAttachedToWindow) {
                 val option = RequestOptions()
-                        .placeholder(R.color.text_light_fg_overlay)
+                        .placeholder(R.color.colorGray)
                         .priority(Priority.HIGH)
 
                 if (onLoaded == null) {

@@ -9,9 +9,8 @@ import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.TuGua
 import com.github.deskid.focusreader.utils.screenWidth
-
-import com.github.deskid.focusreader.utils.setWidth
 import com.github.deskid.focusreader.widget.WebImageView
+import com.github.deskid.focusreader.widget.setWidth
 
 class TuGuaItemRecyclerViewAdapter(private val mValues: MutableList<TuGua>) : RecyclerView.Adapter<TuGuaItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -69,7 +68,7 @@ class TuGuaItemRecyclerViewAdapter(private val mValues: MutableList<TuGua>) : Re
     }
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val mTitleView: TextView = mView.findViewById(R.id.title) as TextView
-        val mWebImageView: WebImageView = mView.findViewById(R.id.web_imageview) as WebImageView
+        val mTitleView: TextView = mView.findViewById(R.id.title)
+        val mWebImageView: WebImageView = mView.findViewById(R.id.web_imageview)
     }
 }

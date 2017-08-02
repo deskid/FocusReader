@@ -21,7 +21,7 @@
 ### todo
 
 * [ ] 1. 设计theme 、icon
-* [ ] 2. fix分页bug
+* [x] 2. fix分页bug
 * [x] 3. 优化 webview 加载速度慢
 * [x] 4. 意图图文正则解析到list item
 * [x] 5. 增加知乎日报
@@ -30,4 +30,7 @@
 * [ ] 7. 分享
 * [ ] 8. 夜间主题、缓存设置
 * [ ] 9. 页面跳转动画
+* [ ] 10. 优化滑动冲突
+* [ ] 11. 自动隐藏 BottomNavigationView
+* [ ] 12. WebView progressbar 改为加载线条
 

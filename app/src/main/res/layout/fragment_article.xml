@@ -16,12 +16,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_weight="1"
             android:background="?attr/colorPrimary"
             android:minHeight="0dp"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="喷嚏图卦">
+            app:title="每日一文">
 
         </android.support.v7.widget.Toolbar>
 
@@ -34,6 +33,7 @@
             app:tabIndicatorColor="@color/text_white" />
 
     </android.support.design.widget.AppBarLayout>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

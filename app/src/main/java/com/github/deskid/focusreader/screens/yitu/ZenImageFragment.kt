@@ -8,7 +8,7 @@ import android.view.View
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.screens.ContentListFragment
-import com.github.deskid.focusreader.utils.refreshing
+import com.github.deskid.focusreader.widget.refreshing
 import javax.inject.Inject
 
 class ZenImageFragment : ContentListFragment() {
@@ -47,11 +47,7 @@ class ZenImageFragment : ContentListFragment() {
             swiper.refreshing = false
             currentPage = 1
             it?.let {
-                if (it.size < 30) {
-                    adapter.addData(it, true)
-                } else {
-                    adapter.swipeData(it)
-                }
+                adapter.swipeData(it)
             }
         })
     }

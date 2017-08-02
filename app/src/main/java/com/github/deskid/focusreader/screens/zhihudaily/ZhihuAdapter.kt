@@ -55,8 +55,8 @@ class ZhihuAdapter(private val mValues: ArrayList<Story>) : RecyclerView.Adapter
     }
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val mTitleView: TextView = mView.findViewById(R.id.title) as TextView
-        val mWebImageView: WebImageView = mView.findViewById(R.id.web_imageview) as WebImageView
+        val mTitleView: TextView = mView.findViewById(R.id.title)
+        val mWebImageView: WebImageView = mView.findViewById(R.id.web_imageview)
     }
 
 }

@@ -2,8 +2,9 @@ package com.github.deskid.focusreader.app.injector;
 
 import com.github.deskid.focusreader.activity.SplashActivity;
 import com.github.deskid.focusreader.api.Api;
-import com.github.deskid.focusreader.screens.PentiFragment;
+import com.github.deskid.focusreader.screens.articledaily.ArticleDetailFragment;
 import com.github.deskid.focusreader.screens.duanzi.DuanziFragment;
+import com.github.deskid.focusreader.screens.penti.PentiFragment;
 import com.github.deskid.focusreader.screens.tugua.TuGuaFragment;
 import com.github.deskid.focusreader.screens.tugua.WebViewActivity;
 import com.github.deskid.focusreader.screens.yitu.ZenImageDetailAct;
@@ -39,4 +40,5 @@ public interface AppComponent {
 
     void inject(ZhihuFragment fragment);
 
+    void inject(ArticleDetailFragment fragment);
 }

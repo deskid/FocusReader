@@ -12,7 +12,6 @@ import com.github.deskid.focusreader.db.entity.ArticleEntity
 import com.github.deskid.focusreader.db.entity.YituEntity
 import com.github.deskid.focusreader.utils.async
 import com.github.deskid.focusreader.utils.map
-import com.github.deskid.focusreader.utils.switchMap
 import io.reactivex.Completable
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
@@ -48,27 +47,28 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
 
                 return@map response.data?.data
             }
-        }.switchMap {
-            val finalResult = MediatorLiveData<List<ZenImage>>()
-            val list = ArrayList<ZenImage>()
-            it?.forEach { zenImage ->
-                finalResult.addSource(
-                        appDatabase.articleDao().findArticleByUrl(1, zenImage.url).map {
-                            return@map it != null
-                        }) {
-                    it?.let { exist ->
-                        if (!exist) {
-                            list.add(zenImage)
-                        }
-                    }
-                }
-            }
 
-            finalResult.value = list
-            return@switchMap finalResult
+//        }.switchMap {
+//            val finalResult = MediatorLiveData<List<ZenImage>>()
+//            val list = ArrayList<ZenImage>()
+//            it?.forEach { zenImage ->
+//                finalResult.addSource(
+//                        appDatabase.articleDao().findArticleByUrl(1, zenImage.url).map {
+//                            return@map it != null
+//                        }) {
+//                    it?.let { exist ->
+//                        if (!exist) {
+//                            list.add(zenImage)
+//                        }
+//                    }
+//                }
+//            }
+//
+//            finalResult.value = list
+//            return@switchMap finalResult
         }
 
-        if (forceRefresh) {
+//        if (forceRefresh) {
             result.addSource(netWorkSource) {
                 if (it != null && !it.isEmpty()) {
                     result.value = it
@@ -79,22 +79,22 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
                     }
                 }
             }
-        } else {
-            result.removeSource(netWorkSource)
-            result.addSource(dbSource) {
-                if (it == null || it.isEmpty()) {
-                    result.removeSource(dbSource)
-                    result.addSource(netWorkSource) {
-                        if (it != null && !it.isEmpty()) {
-                            result.value = it
-                        } else {
-                            result.value = emptyList()
-                        }
-                    }
-                }
-                result.value = it
-            }
-        }
+//        } else {
+//            result.removeSource(netWorkSource)
+//            result.addSource(dbSource) {
+//                if (it == null || it.isEmpty()) {
+//                    result.removeSource(dbSource)
+//                    result.addSource(netWorkSource) {
+//                        if (it != null && !it.isEmpty()) {
+//                            result.value = it
+//                        } else {
+//                            result.value = emptyList()
+//                        }
+//                    }
+//                }
+//                result.value = it
+//            }
+//        }
 
         return result
     }

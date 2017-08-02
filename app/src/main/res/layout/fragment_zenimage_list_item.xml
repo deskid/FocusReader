@@ -18,6 +18,7 @@
             android:id="@+id/web_imageview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="250dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             tools:layout_height="200dp" />
@@ -27,16 +28,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:background="@color/text_light_fg_overlay"
+            android:background="@color/text_dark_fg_overlay"
             android:lines="1"
             android:paddingBottom="16dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="16dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:textSize="14sp"
             android:textColor="@color/text_white"
-            tools:background="@color/color1"
             tools:text="ssssssss" />
     </FrameLayout>
 

@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens
+package com.github.deskid.focusreader.screens.penti
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

@@ -12,18 +12,10 @@ import com.github.deskid.focusreader.widget.WebImageView
 
 class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {
 
-    fun addData(data: List<ZenImage>, reverse: Boolean = false) {
-        if (reverse) {
-            for (image in data) {
-                mValues.add(0, image)
-            }
-            notifyItemRangeChanged(0, data.size)
-        } else {
-            val index = mValues.size
-            mValues.addAll(data)
-            notifyItemRangeChanged(index, mValues.size)
-        }
-
+    fun addData(data: List<ZenImage>) {
+        val set = LinkedHashSet<ZenImage>(mValues)
+        set.addAll(data)
+        swipeData(ArrayList<ZenImage>(set))
     }
 
     fun swipeData(data: List<ZenImage>) {
@@ -73,7 +65,7 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
     }
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val mTitleView: TextView = mView.findViewById(R.id.title) as TextView
-        val mWebImageView: WebImageView = mView.findViewById(R.id.web_imageview) as WebImageView
+        val mTitleView: TextView = mView.findViewById(R.id.title)
+        val mWebImageView: WebImageView = mView.findViewById(R.id.web_imageview)
     }
 }

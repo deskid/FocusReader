@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.utils
+package com.github.deskid.focusreader.widget
 
 import android.support.v4.widget.SwipeRefreshLayout
 

@@ -67,8 +67,8 @@ class DuanziItemRecyclerViewAdapter(private var mValues: MutableList<Duanzi>) : 
     }
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val mTitleView: TextView = mView.findViewById(R.id.title) as TextView
-        val mContentView: TextView = mView.findViewById(R.id.content) as TextView
+        val mTitleView: TextView = mView.findViewById(R.id.title)
+        val mContentView: TextView = mView.findViewById(R.id.content)
 
     }
 }

@@ -23,8 +23,8 @@ abstract class ContentListFragment : LifecycleFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val content = inflater.inflate(getLayoutId(), container, false)
-        swiper = content.findViewById(R.id.swiper) as SwipeRefreshLayout
-        view = swiper.findViewById(R.id.list) as ScrollableRecyclerView
+        swiper = content.findViewById(R.id.swiper)
+        view = swiper.findViewById(R.id.list)
         view.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
                 super.getItemOffsets(outRect, view, parent, state)

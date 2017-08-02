@@ -8,11 +8,14 @@
     <color name="colorAccent">#2B8B77</color>
     <color name="colorAccentLight">#258056</color>
     <color name="colorAccentDark">#1A553F</color>
+
+    <color name="colorGray">#737984</color>
     <color name="text_white">#fff</color>
     <color name="text_sub">#56748B</color>
     <color name="text_main">#5B7080</color>
     <color name="text_title">#454E55</color>
     <color name="text_dark_fg_overlay">#66000000</color>
     <color name="text_light_fg_overlay">#36ffffff</color>
+    <color name="text_article_bg_dark">#323F50</color>
 
 </resources>

@@ -7,7 +7,7 @@ import android.view.View
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.screens.ContentListFragment
-import com.github.deskid.focusreader.utils.refreshing
+import com.github.deskid.focusreader.widget.refreshing
 import javax.inject.Inject
 
 class ZhihuFragment : ContentListFragment() {

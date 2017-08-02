@@ -4,8 +4,8 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.utils.slideEnter
-import com.github.deskid.focusreader.utils.slideExit
+import com.github.deskid.focusreader.widget.slideEnter
+import com.github.deskid.focusreader.widget.slideExit
 
 interface ToolbarManager {
     val toolbar: Toolbar
