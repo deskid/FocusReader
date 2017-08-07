@@ -26,6 +26,7 @@ class SplashActivity : AppCompatActivity(), LifecycleRegistryOwner {
 
     override fun getLifecycle(): LifecycleRegistry {
         return lifecycleRegistry
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
