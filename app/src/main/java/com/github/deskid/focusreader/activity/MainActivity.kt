@@ -1,5 +1,6 @@
 package com.github.deskid.focusreader.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -35,5 +36,12 @@ class MainActivity : AppCompatActivity() {
         bottom_navigation.currentItem = 1
         bottom_navigation.titleState = AHBottomNavigation.TitleState.ALWAYS_HIDE
         bottom_navigation.accentColor = getColorCompat(R.color.colorPrimary)
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.addCategory(Intent.CATEGORY_HOME)
+        startActivity(intent)
     }
 }

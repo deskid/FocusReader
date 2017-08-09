@@ -5,12 +5,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.ZenImage
 import com.github.deskid.focusreader.widget.WebImageView
 
 class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {
+
+    private var mListener: ((position: Int, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit)? = null
 
     fun addData(data: List<ZenImage>) {
         val set = LinkedHashSet<ZenImage>(mValues)
@@ -44,6 +47,10 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
 
     }
 
+    fun setOnClickListener(block: (position: Int, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit) {
+        mListener = block
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_zenimage_list_item, parent, false)
@@ -52,10 +59,18 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mTitleView.text = mValues[position].title
+        holder.mWebImageView.transitionName = mValues[position].imgurl
         val imgurl = mValues[position].imgurl.replace("square", "medium")
-        holder.mWebImageView.setImageUrl(imgurl)
+        holder.mWebImageView.setImageUrl(imgurl) {
+            val textSwatch = it?.darkMutedSwatch
+            textSwatch?.let { swatch ->
+                holder.mTitleView.setBackgroundColor(swatch.rgb)
+                holder.mTitleView.setTextColor(swatch.bodyTextColor)
+            }
+        }
+        holder.mTitleView.visibility = View.VISIBLE
         holder.itemView.setOnClickListener {
-            ZenImageDetailAct.start(holder.itemView.context, position, mValues)
+            mListener?.invoke(position, holder.mWebImageView, mValues)
         }
 
     }

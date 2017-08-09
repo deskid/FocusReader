@@ -14,11 +14,11 @@ class ZhihuAdapter(private val mValues: ArrayList<Story>) : RecyclerView.Adapter
     override fun getItemCount(): Int = mValues.size
 
     override fun onBindViewHolder(holder: ZhihuAdapter.ViewHolder, position: Int) {
-        holder.mTitleView.text = mValues[position].title
-        val imgurl = mValues[position].images[0]
+        holder.mTitleView.text = mValues[holder.adapterPosition].title
+        val imgurl = mValues[holder.adapterPosition].images[0]
         holder.mWebImageView.setImageUrl(imgurl)
         holder.itemView.setOnClickListener {
-            ZhihuWebViewActivity.start(holder.itemView.context, mValues[position].id.toString())
+            ZhihuWebViewActivity.start(holder.itemView.context, mValues[holder.adapterPosition].id.toString())
         }
     }
 

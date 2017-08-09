@@ -6,9 +6,8 @@ import com.github.deskid.focusreader.api.data.Duanzi
 import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.db.AppDatabase
 import com.github.deskid.focusreader.db.entity.ArticleEntity
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
-
+import com.github.deskid.focusreader.utils.transaction
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class DuanziViewModel @Inject
@@ -30,9 +29,11 @@ constructor(appService: IAppService, appDatabase: AppDatabase) : ViewModel() {
                     result.value = it
                 }
             } else if (it.code in 200..300) {
-                Completable.fromAction {
-                    mAppDatabase.articleDao().insertAll(articleEntityWrap(it.data?.data))
-                }.subscribeOn(Schedulers.io()).subscribe()
+                doAsync {
+                    mAppDatabase.transaction {
+                        mAppDatabase.articleDao().insertAll(articleEntityWrap(it.data?.data))
+                    }
+                }
                 result.value = it.data
             }
         }

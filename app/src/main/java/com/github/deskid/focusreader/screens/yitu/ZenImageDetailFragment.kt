@@ -39,13 +39,16 @@ class ZenImageDetailFragment : LifecycleFragment() {
                 description.text = it?.content
             })
         }
+
         if (!TextUtils.isEmpty(pageImage)) {
-            image.setImageUrl(pageImage.replace("medium", "large")) {
+            image.transitionName = pageImage
+            image.setImageUrl(pageImage.replace("square", "large")) {
                 val textSwatch = it?.darkMutedSwatch
                 textSwatch?.let { swatch ->
                     if (isAdded) {
                         description.setBackgroundColor(swatch.rgb)
                         description.setTextColor(swatch.bodyTextColor)
+                        activity.startPostponedEnterTransition()
                     }
                 }
             }

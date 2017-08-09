@@ -7,9 +7,9 @@ import android.arch.lifecycle.ViewModelProvider
 import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.db.AppDatabase
 import com.github.deskid.focusreader.db.entity.WebContentEntity
-import com.github.deskid.focusreader.utils.async
 import com.github.deskid.focusreader.utils.map
-import io.reactivex.Completable
+import com.github.deskid.focusreader.utils.transaction
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class WebViewModel @Inject
@@ -32,9 +32,11 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
             if (it.code in 200..300) {
                 val content = header + (it.data?.string() ?: "")
 
-                Completable.fromAction {
-                    appDatabase.webContentDao().insert(WebContentEntity(0, 0, content, url))
-                }.async()
+                doAsync {
+                    appDatabase.transaction {
+                        appDatabase.webContentDao().insert(WebContentEntity(0, 0, content, url))
+                    }
+                }
                 return@map content
             } else {
                 return@map ""

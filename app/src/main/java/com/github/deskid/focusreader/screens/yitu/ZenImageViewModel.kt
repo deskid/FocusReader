@@ -10,9 +10,9 @@ import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.db.AppDatabase
 import com.github.deskid.focusreader.db.entity.ArticleEntity
 import com.github.deskid.focusreader.db.entity.YituEntity
-import com.github.deskid.focusreader.utils.async
 import com.github.deskid.focusreader.utils.map
-import io.reactivex.Completable
+import com.github.deskid.focusreader.utils.transaction
+import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class ZenImageViewModel @Inject
 constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewModel() {
 
-    fun load(page: Int = 1, forceRefresh: Boolean = false): LiveData<List<ZenImage>> {
+    fun load(page: Int = 1): LiveData<List<ZenImage>> {
         val result = MediatorLiveData<List<ZenImage>>()
 
         val dbSource: LiveData<List<ZenImage>> = appDatabase.articleDao().findArticleByType(1, page).map {
@@ -37,64 +37,30 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
             } else {
                 response.data?.data?.forEach {
                     zenImage ->
-                    zenImage.imgurl = zenImage.imgurl.replace("square", "medium")
+//                    zenImage.imgurl = zenImage.imgurl.replace("square", "large")
                     zenImage.url = zenImage.description.replace("dapenti.com", "www.dapenti.com")
                 }
 
-                Completable.fromAction {
-                    appDatabase.articleDao().insertAll(articlesEntityWrap(response.data?.data))
-                }.async()
+                doAsync {
+                    appDatabase.transaction {
+                        appDatabase.articleDao().insertAll(articlesEntityWrap(response.data?.data))
+                    }
+                }
 
                 return@map response.data?.data
             }
-
-//        }.switchMap {
-//            val finalResult = MediatorLiveData<List<ZenImage>>()
-//            val list = ArrayList<ZenImage>()
-//            it?.forEach { zenImage ->
-//                finalResult.addSource(
-//                        appDatabase.articleDao().findArticleByUrl(1, zenImage.url).map {
-//                            return@map it != null
-//                        }) {
-//                    it?.let { exist ->
-//                        if (!exist) {
-//                            list.add(zenImage)
-//                        }
-//                    }
-//                }
-//            }
-//
-//            finalResult.value = list
-//            return@switchMap finalResult
         }
 
-//        if (forceRefresh) {
-            result.addSource(netWorkSource) {
-                if (it != null && !it.isEmpty()) {
+        result.addSource(netWorkSource) {
+            if (it != null && !it.isEmpty()) {
+                result.value = it
+            } else {
+                result.removeSource(netWorkSource)
+                result.addSource(dbSource) {
                     result.value = it
-                } else {
-                    result.removeSource(netWorkSource)
-                    result.addSource(dbSource) {
-                        result.value = it
-                    }
                 }
             }
-//        } else {
-//            result.removeSource(netWorkSource)
-//            result.addSource(dbSource) {
-//                if (it == null || it.isEmpty()) {
-//                    result.removeSource(dbSource)
-//                    result.addSource(netWorkSource) {
-//                        if (it != null && !it.isEmpty()) {
-//                            result.value = it
-//                        } else {
-//                            result.value = emptyList()
-//                        }
-//                    }
-//                }
-//                result.value = it
-//            }
-//        }
+        }
 
         return result
     }
@@ -117,9 +83,11 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
             it.data?.let {
                 val content = match(it.string())
                 val yituEntity = YituEntity(0, content, url)
-                Completable.fromAction {
-                    appDatabase.yituDao().insert(yituEntity)
-                }.async()
+                doAsync {
+                    appDatabase.transaction {
+                        appDatabase.yituDao().insert(yituEntity)
+                    }
+                }
 
                 return@map Resource.success(yituEntity)
             }

@@ -6,8 +6,8 @@ import com.github.deskid.focusreader.api.data.TuGua
 import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.db.AppDatabase
 import com.github.deskid.focusreader.db.entity.ArticleEntity
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
+import com.github.deskid.focusreader.utils.transaction
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class TuGuaViewModel @Inject
@@ -32,9 +32,11 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
                     data = data?.filter { !it.title.contentEquals("AD") }
                 }
 
-                Completable.fromAction {
-                    appDatabase.articleDao().insertAll(articleEntityWrap(value?.data))
-                }.subscribeOn(Schedulers.io()).subscribe()
+                doAsync {
+                    appDatabase.transaction {
+                        appDatabase.articleDao().insertAll(articleEntityWrap(value?.data))
+                    }
+                }
                 result.value = value
             }
         }

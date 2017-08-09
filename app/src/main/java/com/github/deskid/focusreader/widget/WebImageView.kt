@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.request.RequestOptions
-import com.github.deskid.focusreader.R
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 
@@ -35,7 +34,7 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
             mImageUrl = url
             if (isAttachedToWindow) {
                 val option = RequestOptions()
-                        .placeholder(R.color.colorGray)
+                        .dontAnimate()
                         .priority(Priority.HIGH)
 
                 if (onLoaded == null) {
