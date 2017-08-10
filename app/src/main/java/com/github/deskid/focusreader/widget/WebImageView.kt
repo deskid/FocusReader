@@ -7,7 +7,11 @@ import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.github.florent37.glidepalette.BitmapPalette
 import com.github.florent37.glidepalette.GlidePalette
 
@@ -26,7 +30,7 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
         super.setImageDrawable(drawable)
     }
 
-    fun setImageUrl(url: String?, onLoaded: ((palette: Palette?) -> Unit)? = null) {
+    fun setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?) -> Unit)? = null, onImageLoaded: (() -> Unit)? = null) {
         if (url.isNullOrEmpty()) {
             mImageUrl = null
             setImageBitmap(null)
@@ -37,10 +41,23 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
                         .dontAnimate()
                         .priority(Priority.HIGH)
 
-                if (onLoaded == null) {
+                val requestListener = object : RequestListener<Drawable> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        onImageLoaded?.invoke()
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        onImageLoaded?.invoke()
+                        return false
+                    }
+                }
+
+                if (onPaletteLoaded == null) {
                     Glide.with(this)
                             .load(url)
                             .apply(option)
+                            .listener(requestListener)
                             .into(this)
                 } else {
                     Glide.with(this)
@@ -50,7 +67,8 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
                                     GlidePalette
                                             .with(url)
                                             .use(BitmapPalette.Profile.MUTED_DARK)
-                                            .intoCallBack(onLoaded))
+                                            .setGlideListener(requestListener)
+                                            .intoCallBack(onPaletteLoaded))
                             .into(this)
                 }
             }

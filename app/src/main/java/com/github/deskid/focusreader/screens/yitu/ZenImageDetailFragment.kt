@@ -42,15 +42,24 @@ class ZenImageDetailFragment : LifecycleFragment() {
 
         if (!TextUtils.isEmpty(pageImage)) {
             image.transitionName = pageImage
-            image.setImageUrl(pageImage.replace("square", "large")) {
+            image.setImageUrl(pageImage.replace("square", "large"), {
                 val textSwatch = it?.darkMutedSwatch
                 textSwatch?.let { swatch ->
                     if (isAdded) {
                         description.setBackgroundColor(swatch.rgb)
                         description.setTextColor(swatch.bodyTextColor)
-                        activity.startPostponedEnterTransition()
                     }
                 }
+            }) {
+
+
+                image.viewTreeObserver.addOnPreDrawListener {
+                    image.viewTreeObserver.removeOnPreDrawListener(this)
+                    activity.startPostponedEnterTransition()
+                    return@addOnPreDrawListener true
+                }
+
+
             }
         }
     }
