@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
 import kotlinx.android.synthetic.main.fragment_zenimage_detail.*
@@ -51,15 +52,13 @@ class ZenImageDetailFragment : LifecycleFragment() {
                     }
                 }
             }) {
-
-
-                image.viewTreeObserver.addOnPreDrawListener {
-                    image.viewTreeObserver.removeOnPreDrawListener(this)
-                    activity.startPostponedEnterTransition()
-                    return@addOnPreDrawListener true
-                }
-
-
+                image.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
+                    override fun onPreDraw(): Boolean {
+                        image.viewTreeObserver.removeOnPreDrawListener(this)
+                        activity.startPostponedEnterTransition()
+                        return true
+                    }
+                })
             }
         }
     }
