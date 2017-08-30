@@ -45,14 +45,20 @@ class ZenImageDetailFragment : LifecycleFragment() {
             image.transitionName = pageUrl
             description.transitionName = pageUrl
             image.setImageUrl(pageImage.replace("square", "medium"), {
-                val textSwatch = it?.darkMutedSwatch
+                val textSwatch = it?.mutedSwatch
                 textSwatch?.let { swatch ->
                     if (isAdded) {
                         description.setBackgroundColor(swatch.rgb)
                         description.setTextColor(swatch.bodyTextColor)
                     }
                 }
-            }) {
+                val imageSwatch = it?.darkMutedSwatch
+                imageSwatch?.let { swatch ->
+                    if (isAdded) {
+                        container.setBackgroundColor(swatch.rgb)
+                    }
+                }
+            }) { drawable ->
                 image.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                     override fun onPreDraw(): Boolean {
                         image.viewTreeObserver.removeOnPreDrawListener(this)
@@ -60,6 +66,10 @@ class ZenImageDetailFragment : LifecycleFragment() {
                         return true
                     }
                 })
+                image.setOnClickListener {
+                    var dialog = ZenImagePhotoViewDlg(context, drawable)
+                    dialog.show()
+                }
             }
         }
     }

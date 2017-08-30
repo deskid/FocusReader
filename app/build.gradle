@@ -32,7 +32,7 @@ android {
 
 ext {
     support_version = '26.0.1'
-    arch_version = '1.0.0-alpha7'
+    arch_version = '1.0.0-alpha9'
 }
 
 
@@ -54,6 +54,8 @@ dependencies {
     compile "com.android.support:palette-v7:$support_version"
 
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+
 
     implementation "android.arch.persistence.room:runtime:$arch_version"
     annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
@@ -93,7 +95,11 @@ dependencies {
 
     //ahbottomnavigation
     implementation 'com.aurelhubert:ahbottomnavigation:2.0.6'
+
+    //PhotoView
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
 }
+
 
 
 

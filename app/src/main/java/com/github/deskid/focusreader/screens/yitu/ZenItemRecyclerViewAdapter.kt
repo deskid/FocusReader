@@ -65,7 +65,7 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
 
         val imgurl = mValues[position].imgurl.replace("square", "medium")
         holder.mWebImageView.setImageUrl(imgurl, {
-            val textSwatch = it?.darkMutedSwatch
+            val textSwatch = it?.mutedSwatch
             textSwatch?.let { swatch ->
                 holder.mTitleView.setBackgroundColor(swatch.rgb)
                 holder.mTitleView.setTextColor(swatch.bodyTextColor)

@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DataSource
@@ -31,8 +30,7 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
         super.setImageDrawable(drawable)
     }
 
-    fun setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?) -> Unit)? = null, onImageLoaded: (() -> Unit)? = null) {
-        Log.d("TAG", "onPaletteLoaded=" + onPaletteLoaded + "onImageLoaded=" + onImageLoaded)
+    fun setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?) -> Unit)? = null, onImageLoaded: ((resource: Drawable?) -> Unit)? = null) {
         if (url.isNullOrEmpty()) {
             mImageUrl = null
             setImageBitmap(null)
@@ -45,12 +43,12 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
             val requestListener = object : RequestListener<Drawable> {
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                    onImageLoaded?.invoke()
+                    onImageLoaded?.invoke(null)
                     return false
                 }
 
                 override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    onImageLoaded?.invoke()
+                    onImageLoaded?.invoke(resource)
                     return false
                 }
             }

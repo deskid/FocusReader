@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.github.deskid.focusreader.widget.WebImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/description"
-        android:scaleType="centerCrop" />
-
-    <TextView
-        android:id="@+id/description"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:elevation="4dp"
-        android:gravity="center_vertical"
-        android:lineSpacingMultiplier="1.5"
-        android:padding="16dp"
-        android:textSize="14sp"
-        tools:background="@color/colorAccent"
-        tools:text="ssssssssss" />
+        android:layout_centerInParent="true">
 
+        <com.github.deskid.focusreader.widget.WebImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image"
+            android:elevation="24dp"
+            android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.5"
+            android:padding="16dp"
+            android:textSize="14sp"
+            tools:background="@color/colorAccent"
+            tools:text="ssssssssss" />
+
+    </RelativeLayout>
 </RelativeLayout>
