@@ -27,33 +27,14 @@ class ZenImageFragment : ContentListFragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        activity.window.allowEnterTransitionOverlap = false
-//        activity.window.allowReturnTransitionOverlap = false
-
-//        val reentertransitionSet = TransitionSet().apply {
-//            addTransition(ChangeImageTransform())
-//            addTransition(ChangeBounds())
-//            addTransition(Fade(Fade.IN))
-//        }
-//
-//        val exittransitionSet = TransitionSet().apply {
-//            addTransition(ChangeImageTransform())
-//            addTransition(ChangeBounds())
-//            addTransition(Fade(Fade.OUT))
-//        }
-
-        //极少数情况下需要设置 exit 和 reenter transition
-//        activity.window.sharedElementExitTransition = exittransitionSet
-//        activity.window.sharedElementReenterTransition = reentertransitionSet
-
         super.onCreate(savedInstanceState)
         (context.applicationContext as App).appComponent.inject(this)
     }
 
     override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
         adapter = ZenItemRecyclerViewAdapter(ArrayList())
-        adapter.setOnClickListener { position, imageView, images ->
-            ZenImageDetailAct.start(activity, position, imageView, images)
+        adapter.setOnClickListener { position, titleView,imageView, images ->
+            ZenImageDetailAct.start(activity, position,titleView, imageView, images)
         }
         view.adapter = adapter
     }
@@ -65,16 +46,6 @@ class ZenImageFragment : ContentListFragment() {
 
         val selectedItem = data.getIntExtra("SELECTED_POSITION", 0)
         view.scrollToPosition(selectedItem)
-//        activity.postponeEnterTransition()
-//        view.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-//            override fun onPreDraw(): Boolean {
-//                view.viewTreeObserver.removeOnPreDrawListener(this)
-//                view.requestLayout()
-//                activity.startPostponedEnterTransition()
-//                return true
-//            }
-//        })
-
     }
 
     companion object {

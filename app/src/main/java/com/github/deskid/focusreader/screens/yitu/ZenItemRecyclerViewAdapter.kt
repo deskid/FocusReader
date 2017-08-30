@@ -13,7 +13,7 @@ import com.github.deskid.focusreader.widget.WebImageView
 
 class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {
 
-    private var mListener: ((position: Int, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit)? = null
+    private var mListener: ((position: Int, textView: TextView, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit)? = null
 
     fun addData(data: List<ZenImage>) {
         val set = LinkedHashSet<ZenImage>(mValues)
@@ -47,7 +47,7 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
 
     }
 
-    fun setOnClickListener(block: (position: Int, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit) {
+    fun setOnClickListener(block: (position: Int, textView: TextView, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit) {
         mListener = block
     }
 
@@ -59,7 +59,10 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mTitleView.text = mValues[position].title
-        holder.mWebImageView.transitionName = mValues[position].imgurl
+
+        holder.mTitleView.transitionName = mValues[position].url
+        holder.mWebImageView.transitionName = mValues[position].url
+
         val imgurl = mValues[position].imgurl.replace("square", "medium")
         holder.mWebImageView.setImageUrl(imgurl, {
             val textSwatch = it?.darkMutedSwatch
@@ -67,12 +70,12 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
                 holder.mTitleView.setBackgroundColor(swatch.rgb)
                 holder.mTitleView.setTextColor(swatch.bodyTextColor)
             }
-        }) {
+        }, {
             holder.mTitleView.visibility = View.VISIBLE
-        }
+        })
 
         holder.itemView.setOnClickListener {
-            mListener?.invoke(position, holder.mWebImageView, mValues)
+            mListener?.invoke(position, holder.mTitleView, holder.mWebImageView, mValues)
         }
 
     }

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DataSource
@@ -31,61 +32,47 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
     }
 
     fun setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?) -> Unit)? = null, onImageLoaded: (() -> Unit)? = null) {
+        Log.d("TAG", "onPaletteLoaded=" + onPaletteLoaded + "onImageLoaded=" + onImageLoaded)
         if (url.isNullOrEmpty()) {
             mImageUrl = null
             setImageBitmap(null)
         } else {
             mImageUrl = url
-            if (isAttachedToWindow) {
-                val option = RequestOptions()
-                        .dontAnimate()
-                        .priority(Priority.HIGH)
 
-                val requestListener = object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        onImageLoaded?.invoke()
-                        return false
-                    }
+            val option = RequestOptions()
+                    .dontAnimate()
+                    .priority(Priority.HIGH)
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        onImageLoaded?.invoke()
-                        return false
-                    }
+            val requestListener = object : RequestListener<Drawable> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    onImageLoaded?.invoke()
+                    return false
                 }
 
-                if (onPaletteLoaded == null) {
-                    Glide.with(this)
-                            .load(url)
-                            .apply(option)
-                            .listener(requestListener)
-                            .into(this)
-                } else {
-                    Glide.with(this)
-                            .load(url)
-                            .apply(option)
-                            .listener(
-                                    GlidePalette
-                                            .with(url)
-                                            .use(BitmapPalette.Profile.MUTED_DARK)
-                                            .setGlideListener(requestListener)
-                                            .intoCallBack(onPaletteLoaded))
-                            .into(this)
+                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    onImageLoaded?.invoke()
+                    return false
                 }
             }
+
+            if (onPaletteLoaded == null) {
+                Glide.with(this)
+                        .load(url)
+                        .apply(option)
+                        .listener(requestListener)
+                        .into(this)
+            } else {
+                Glide.with(this)
+                        .load(url)
+                        .apply(option)
+                        .listener(
+                                GlidePalette
+                                        .with(url)
+                                        .use(BitmapPalette.Profile.MUTED_DARK)
+                                        .setGlideListener(requestListener)
+                                        .intoCallBack(onPaletteLoaded))
+                        .into(this)
+            }
         }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        if (!mImageUrl.isNullOrEmpty()) {
-            setImageUrl(mImageUrl!!)
-        } else if (mResource != -1) {
-            setImageResource(mResource)
-        }
-
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
     }
 }

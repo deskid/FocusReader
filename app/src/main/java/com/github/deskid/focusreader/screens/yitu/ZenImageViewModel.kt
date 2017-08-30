@@ -38,7 +38,7 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
                 response.data?.data?.forEach {
                     zenImage ->
 //                    zenImage.imgurl = zenImage.imgurl.replace("square", "large")
-                    zenImage.url = zenImage.description.replace("dapenti.com", "www.dapenti.com")
+                    zenImage.url = zenImage.description
                 }
 
                 doAsync {

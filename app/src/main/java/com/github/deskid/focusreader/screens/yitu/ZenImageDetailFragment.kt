@@ -42,8 +42,9 @@ class ZenImageDetailFragment : LifecycleFragment() {
         }
 
         if (!TextUtils.isEmpty(pageImage)) {
-            image.transitionName = pageImage
-            image.setImageUrl(pageImage.replace("square", "large"), {
+            image.transitionName = pageUrl
+            description.transitionName = pageUrl
+            image.setImageUrl(pageImage.replace("square", "medium"), {
                 val textSwatch = it?.darkMutedSwatch
                 textSwatch?.let { swatch ->
                     if (isAdded) {
