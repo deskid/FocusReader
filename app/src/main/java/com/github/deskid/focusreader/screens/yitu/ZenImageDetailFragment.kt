@@ -18,7 +18,7 @@ class ZenImageDetailFragment : LifecycleFragment() {
     @Inject
     lateinit var factory: ZenImageViewModel.ZenImageFactory
 
-    val viewModel: ZenImageViewModel by lazy {
+    private val viewModel: ZenImageViewModel by lazy {
         ViewModelProviders.of(this, factory).get(ZenImageViewModel::class.java)
     }
 
@@ -36,14 +36,14 @@ class ZenImageDetailFragment : LifecycleFragment() {
         val pageImage = arguments.getString("IMG")
 
         if (!TextUtils.isEmpty(pageUrl)) {
-            viewModel.loadYituDetail(pageUrl).observe(this, Observer {
+            viewModel.loadZenImageDetail(pageUrl).observe(this, Observer {
                 description.text = it?.content
             })
         }
 
         if (!TextUtils.isEmpty(pageImage)) {
-            image.transitionName = pageUrl
-            description.transitionName = pageUrl
+            image.transitionName = pageUrl + "image"
+            description.transitionName = pageUrl + "title"
             image.setImageUrl(pageImage.replace("square", "medium"), {
                 val textSwatch = it?.mutedSwatch
                 textSwatch?.let { swatch ->

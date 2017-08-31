@@ -65,7 +65,7 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
         return result
     }
 
-    fun loadYituDetail(url: String): LiveData<YituEntity> {
+    fun loadZenImageDetail(url: String): LiveData<YituEntity> {
         val result = MediatorLiveData<YituEntity>()
         val dbSource = appDatabase.yituDao().findContentByUrl(url).map {
             if (it == null || it.isEmpty()) {
@@ -108,7 +108,7 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
         return result
     }
 
-    fun match(string: String?): String {
+    private fun match(string: String?): String {
         var result = string ?: ""
         result = result.replace(Regex("<title>.+?</title>"), "")
         result = Jsoup.clean(result, Whitelist.none())
@@ -124,15 +124,11 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
         }
     }
 
-    fun articlesEntityWrap(zenImages: List<ZenImage>?): List<ArticleEntity> {
+    private fun articlesEntityWrap(zenImages: List<ZenImage>?): List<ArticleEntity> {
         return zenImages?.map { ArticleEntity.zenImageWrap(it) } ?: emptyList()
     }
 
-    fun articleEntityWrap(zenImage: ZenImage): ArticleEntity {
-        return ArticleEntity.zenImageWrap(zenImage)
-    }
-
-    fun zenImageWrap(articles: List<ArticleEntity>?): List<ZenImage> {
+    private fun zenImageWrap(articles: List<ArticleEntity>?): List<ZenImage> {
         return articles?.map { ZenImage(it) } ?: emptyList()
     }
 

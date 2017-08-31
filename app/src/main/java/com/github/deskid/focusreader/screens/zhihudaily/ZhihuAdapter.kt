@@ -1,5 +1,6 @@
 package com.github.deskid.focusreader.screens.zhihudaily
 
+import android.app.Activity
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,15 +11,19 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Story
 import com.github.deskid.focusreader.widget.WebImageView
 
-class ZhihuAdapter(private val mValues: ArrayList<Story>) : RecyclerView.Adapter<ZhihuAdapter.ViewHolder>() {
+class ZhihuAdapter(private val activity: Activity, private val mValues: ArrayList<Story>) : RecyclerView.Adapter<ZhihuAdapter.ViewHolder>() {
     override fun getItemCount(): Int = mValues.size
 
     override fun onBindViewHolder(holder: ZhihuAdapter.ViewHolder, position: Int) {
+        holder.mTitleView.transitionName = mValues[holder.adapterPosition].id.toString() + "title"
+        holder.mWebImageView.transitionName = mValues[holder.adapterPosition].id.toString() + "image"
+
         holder.mTitleView.text = mValues[holder.adapterPosition].title
         val imgurl = mValues[holder.adapterPosition].images[0]
+
         holder.mWebImageView.setImageUrl(imgurl)
         holder.itemView.setOnClickListener {
-            ZhihuWebViewActivity.start(holder.itemView.context, mValues[holder.adapterPosition].id.toString())
+            ZhihuWebViewActivity.start(activity, mValues[holder.adapterPosition].id.toString(), holder.mTitleView, holder.mWebImageView)
         }
     }
 
@@ -28,8 +33,14 @@ class ZhihuAdapter(private val mValues: ArrayList<Story>) : RecyclerView.Adapter
         return ViewHolder(view)
     }
 
-    fun swipeData(data: List<Story>) {
+    fun addData(data: List<Story>) {
+        val set = LinkedHashSet<Story>(mValues)
+        set.addAll(data)
+        swipeData(ArrayList(set))
+    }
 
+    fun swipeData(data: MutableList<Story>) {
+        val data = data.filter { !it.title.contentEquals("这里是广告") }
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return mValues[oldItemPosition].id == data[newItemPosition].id

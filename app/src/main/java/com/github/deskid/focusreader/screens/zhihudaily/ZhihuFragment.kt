@@ -12,12 +12,14 @@ import javax.inject.Inject
 
 class ZhihuFragment : ContentListFragment() {
 
-    lateinit var adapter: ZhihuAdapter
+    private lateinit var adapter: ZhihuAdapter
+
+    private lateinit var date: String
 
     @Inject
     lateinit var factory: ZhihuViewModel.ZhihuFactory
 
-    val viewModel: ZhihuViewModel by lazy {
+    private val viewModel: ZhihuViewModel by lazy {
         ViewModelProviders.of(this, factory).get(ZhihuViewModel::class.java)
     }
 
@@ -29,7 +31,7 @@ class ZhihuFragment : ContentListFragment() {
     }
 
     override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
-        adapter = ZhihuAdapter(ArrayList())
+        adapter = ZhihuAdapter(activity, ArrayList())
         view.adapter = adapter
     }
 
@@ -39,6 +41,7 @@ class ZhihuFragment : ContentListFragment() {
             swiper.refreshing = false
             it?.let {
                 adapter.swipeData(it.stories)
+                date = it.date
             }
         })
     }
@@ -50,6 +53,11 @@ class ZhihuFragment : ContentListFragment() {
     }
 
     override fun loadMore() {
-        //do nothing
+        viewModel.loadMore(date).observe(this, Observer {
+            it?.let {
+                adapter.addData(it.stories)
+                date = it.date
+            }
+        })
     }
 }

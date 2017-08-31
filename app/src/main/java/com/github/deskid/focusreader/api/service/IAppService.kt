@@ -27,6 +27,11 @@ interface IAppService {
 
     //avoid 304
     @Headers("If-Modified-Since: Tue, 12 May 2015 00:00:00 GMT")
+    @GET("https://news-at.zhihu.com/api/4/news/before/{date}")
+    fun getZhihuHistory(@Path("date") date: String): LiveData<ApiResponse<Zhihu>>
+
+    //avoid 304
+    @Headers("If-Modified-Since: Tue, 12 May 2015 00:00:00 GMT")
     @GET("https://news-at.zhihu.com/api/4/news/{id}")
     fun getZhihuDetail(@Path("id") id: String): LiveData<ApiResponse<ZhihuDetail>>
 

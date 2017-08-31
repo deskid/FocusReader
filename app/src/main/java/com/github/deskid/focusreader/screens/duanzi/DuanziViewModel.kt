@@ -13,8 +13,8 @@ import javax.inject.Inject
 class DuanziViewModel @Inject
 constructor(appService: IAppService, appDatabase: AppDatabase) : ViewModel() {
 
-    val mAppService: IAppService = appService
-    val mAppDatabase: AppDatabase = appDatabase
+    private val mAppService: IAppService = appService
+    private val mAppDatabase: AppDatabase = appDatabase
 
     fun load(page: Int = 1): LiveData<Resource<List<Duanzi>>> {
         val result = MediatorLiveData<Resource<List<Duanzi>>>()
@@ -48,11 +48,11 @@ constructor(appService: IAppService, appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
-    fun articleEntityWrap(duanzis: List<Duanzi>?): List<ArticleEntity> {
+    private fun articleEntityWrap(duanzis: List<Duanzi>?): List<ArticleEntity> {
         return duanzis?.map { ArticleEntity.duanziWrap(it) } ?: emptyList()
     }
 
-    fun duanziWrap(articles: List<ArticleEntity>?): List<Duanzi> {
+    private fun duanziWrap(articles: List<ArticleEntity>?): List<Duanzi> {
         return articles?.map { Duanzi(it) } ?: emptyList()
     }
 

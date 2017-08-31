@@ -32,6 +32,24 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
         return result
     }
 
+    fun loadMore(date: String): LiveData<Zhihu> {
+        var result = MediatorLiveData<Zhihu>()
+
+        var networkSource = appService.getZhihuHistory(date).map {
+            if (it.code in 200..300) {
+                return@map it.data
+            } else {
+                return@map null
+            }
+        }
+
+        result.addSource(networkSource) {
+            result.value = it
+        }
+
+        return result
+    }
+
     class ZhihuFactory @Inject
     constructor(private val appService: IAppService, val appDatabase: AppDatabase) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
