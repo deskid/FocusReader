@@ -22,7 +22,7 @@ class ZenImageFragment : ContentListFragment() {
     @Inject
     lateinit var factory: ZenImageViewModel.ZenImageFactory
 
-    val viewModel: ZenImageViewModel by lazy {
+    private val viewModel: ZenImageViewModel by lazy {
         ViewModelProviders.of(this, factory).get(ZenImageViewModel::class.java)
     }
 

@@ -11,7 +11,7 @@ import com.github.deskid.focusreader.utils.map
 import javax.inject.Inject
 
 class ArticleDetailViewModel @Inject
-constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewModel() {
+constructor(private val appService: IAppService,private val appDatabase: AppDatabase) : ViewModel() {
 
     fun load(type: String): LiveData<Article> {
         val result = MediatorLiveData<Article>()

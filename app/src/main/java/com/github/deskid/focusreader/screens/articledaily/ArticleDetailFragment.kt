@@ -19,7 +19,7 @@ class ArticleDetailFragment : LifecycleFragment() {
     @Inject
     lateinit var factory: ArticleDetailViewModel.Factory
 
-    val viewModel: ArticleDetailViewModel by lazy {
+    private val viewModel: ArticleDetailViewModel by lazy {
         ViewModelProviders.of(this, factory).get(ArticleDetailViewModel::class.java)
     }
 

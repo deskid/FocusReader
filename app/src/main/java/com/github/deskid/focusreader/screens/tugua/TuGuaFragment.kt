@@ -22,7 +22,7 @@ class TuGuaFragment : ContentListFragment() {
     @Inject
     lateinit var factory: TuGuaViewModel.TuGuaFactory
 
-    val viewModel: TuGuaViewModel by lazy {
+    private val viewModel: TuGuaViewModel by lazy {
         ViewModelProviders.of(this, factory).get(TuGuaViewModel::class.java)
     }
 

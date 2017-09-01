@@ -7,9 +7,9 @@ import com.github.deskid.focusreader.screens.articledaily.ArticleDetailFragment
 
 class ArticlePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
-        when (position) {
-            0 -> return ArticleDetailFragment.newInstance("day")
-            1 -> return ArticleDetailFragment.newInstance("random")
+        return when (position) {
+            0 -> ArticleDetailFragment.newInstance("day")
+            1 -> ArticleDetailFragment.newInstance("random")
             else -> throw IllegalArgumentException("illegal index {$position}")
         }
     }
@@ -17,9 +17,9 @@ class ArticlePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int = 2
 
     override fun getPageTitle(position: Int): CharSequence {
-        when (position) {
-            0 -> return "今日"
-            1 -> return "随机"
+        return when (position) {
+            0 -> "今日"
+            1 -> "随机"
             else -> throw IllegalArgumentException("illegal index {$position}")
         }
     }

@@ -31,8 +31,7 @@ class ArticleFragment : Fragment() {
 
     companion object {
         fun newInstance(): ArticleFragment {
-            val fragment = ArticleFragment()
-            return fragment
+            return ArticleFragment()
         }
     }
 

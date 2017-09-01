@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity(), LifecycleRegistryOwner {
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 
-    val splashViewModel: SplashViewModel by lazy {
+    private val splashViewModel: SplashViewModel by lazy {
         ViewModelProviders.of(this, factory).get(SplashViewModel::class.java)
     }
 

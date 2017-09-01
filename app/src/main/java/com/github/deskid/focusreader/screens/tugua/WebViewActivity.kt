@@ -19,7 +19,7 @@ import org.jetbrains.anko.find
 import javax.inject.Inject
 
 class WebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegistryOwner {
-    internal var mLifecycleRegistry = LifecycleRegistry(this)
+    private var mLifecycleRegistry = LifecycleRegistry(this)
 
     override fun getLifecycle(): LifecycleRegistry {
         return mLifecycleRegistry
@@ -28,7 +28,7 @@ class WebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegistryOw
     @Inject
     lateinit var factory: WebViewModel.WebViewModelFactory
 
-    val webViewModel: WebViewModel by lazy {
+    private val webViewModel: WebViewModel by lazy {
         ViewModelProviders.of(this, factory).get(WebViewModel::class.java)
     }
 

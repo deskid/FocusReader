@@ -19,13 +19,13 @@ class DuanziFragment : ContentListFragment() {
     @Inject
     lateinit var factory: DuanziViewModel.JokeFactory
 
-    var currentPage: Int = 1
+    private var currentPage: Int = 1
 
-    val viewModel: DuanziViewModel by lazy {
+    private val viewModel: DuanziViewModel by lazy {
         ViewModelProviders.of(this, factory).get(DuanziViewModel::class.java)
     }
 
-    lateinit var adapter: DuanziItemRecyclerViewAdapter
+    private lateinit var adapter: DuanziItemRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class DuanziFragment : ContentListFragment() {
         swiper.refreshing = true
         viewModel.load(currentPage + 1).observe(this, Observer {
             swiper.refreshing = false
-            if (it != null && it.data != null) {
+            if (it?.data != null) {
                 currentPage++
                 adapter.addData(it.data ?: emptyList())
             }

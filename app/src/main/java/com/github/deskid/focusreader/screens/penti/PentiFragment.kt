@@ -30,8 +30,7 @@ class PentiFragment : Fragment() {
 
     companion object {
         fun newInstance(): PentiFragment {
-            val fragment = PentiFragment()
-            return fragment
+            return PentiFragment()
         }
     }
 

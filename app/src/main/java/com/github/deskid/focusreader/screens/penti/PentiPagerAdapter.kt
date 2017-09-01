@@ -9,10 +9,10 @@ import com.github.deskid.focusreader.screens.yitu.ZenImageFragment
 
 class PentiPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
-        when (position) {
-            0 -> return ZenImageFragment.newInstance()
-            1 -> return TuGuaFragment.newInstance()
-            2 -> return DuanziFragment.newInstance()
+        return when (position) {
+            0 -> ZenImageFragment.newInstance()
+            1 -> TuGuaFragment.newInstance()
+            2 -> DuanziFragment.newInstance()
             else -> throw IllegalArgumentException("illegal index {$position}")
         }
     }
@@ -20,10 +20,10 @@ class PentiPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence {
-        when (position) {
-            0 -> return "意图"
-            1 -> return "图卦"
-            2 -> return "段子"
+        return when (position) {
+            0 -> "意图"
+            1 -> "图卦"
+            2 -> "段子"
             else -> throw IllegalArgumentException("illegal index {$position}")
         }
     }

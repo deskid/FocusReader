@@ -11,7 +11,7 @@ import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class TuGuaViewModel @Inject
-constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewModel() {
+constructor(private val appService: IAppService, private val appDatabase: AppDatabase) : ViewModel() {
 
     fun load(page: Int = 1): LiveData<Resource<List<TuGua>>> {
         val result = MediatorLiveData<Resource<List<TuGua>>>()
@@ -51,11 +51,11 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
         }
     }
 
-    fun articleEntityWrap(tuguas: List<TuGua>?): List<ArticleEntity> {
+    private fun articleEntityWrap(tuguas: List<TuGua>?): List<ArticleEntity> {
         return tuguas?.map { ArticleEntity.tuguaWrap(it) } ?: emptyList()
     }
 
-    fun tuguaWrap(articles: List<ArticleEntity>?): List<TuGua> {
+    private fun tuguaWrap(articles: List<ArticleEntity>?): List<TuGua> {
         return articles?.map { TuGua(it) } ?: emptyList()
     }
 

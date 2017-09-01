@@ -11,7 +11,7 @@ import com.github.deskid.focusreader.utils.map
 import javax.inject.Inject
 
 class ZhihuViewModel @Inject
-constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewModel() {
+constructor(private val appService: IAppService,private val appDatabase: AppDatabase) : ViewModel() {
 
     //todo add db cache logic
     fun load(): LiveData<Zhihu> {

@@ -22,7 +22,7 @@ import org.jetbrains.anko.find
 import javax.inject.Inject
 
 class ZhihuWebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegistryOwner {
-    internal var mLifecycleRegistry = LifecycleRegistry(this)
+    private var mLifecycleRegistry = LifecycleRegistry(this)
 
     override fun getLifecycle(): LifecycleRegistry {
         return mLifecycleRegistry

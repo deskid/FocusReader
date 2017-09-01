@@ -13,8 +13,8 @@ import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class WebViewModel @Inject
-constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewModel() {
-    val header = """<link rel="stylesheet" type="text/css" href="content_style.css"/>"""
+constructor(private val appService: IAppService, private val appDatabase: AppDatabase) : ViewModel() {
+    private val header = """<link rel="stylesheet" type="text/css" href="content_style.css"/>"""
 
     fun getContent(url: String): LiveData<String> {
 

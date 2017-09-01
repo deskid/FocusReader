@@ -18,7 +18,7 @@ import org.jsoup.safety.Whitelist
 import javax.inject.Inject
 
 class ZenImageViewModel @Inject
-constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewModel() {
+constructor(private val appService: IAppService, private val appDatabase: AppDatabase) : ViewModel() {
 
     fun load(page: Int = 1): LiveData<List<ZenImage>> {
         val result = MediatorLiveData<List<ZenImage>>()
@@ -81,7 +81,7 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
             }
 
             it.data?.let {
-                val content = match(it.string())
+                val content = clean(it.string())
                 val yituEntity = YituEntity(0, content, url)
                 doAsync {
                     appDatabase.transaction {
@@ -108,7 +108,7 @@ constructor(val appService: IAppService, val appDatabase: AppDatabase) : ViewMod
         return result
     }
 
-    private fun match(string: String?): String {
+    private fun clean(string: String?): String {
         var result = string ?: ""
         result = result.replace(Regex("<title>.+?</title>"), "")
         result = Jsoup.clean(result, Whitelist.none())
