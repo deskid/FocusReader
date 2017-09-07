@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.ZenImage
 import com.github.deskid.focusreader.widget.WebImageView
+import com.github.deskid.focusreader.widget.show
 
 class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -71,7 +72,7 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
                 holder.mTitleView.setTextColor(swatch.bodyTextColor)
             }
         }, {
-            holder.mTitleView.visibility = View.VISIBLE
+            holder.mTitleView.show()
         })
 
         holder.itemView.setOnClickListener {
