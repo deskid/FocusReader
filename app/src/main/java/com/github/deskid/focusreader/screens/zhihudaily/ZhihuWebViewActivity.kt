@@ -17,6 +17,7 @@ import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.kotlinplay.ui.ToolbarManager
+import com.r0adkll.slidr.Slidr
 import kotlinx.android.synthetic.main.activity_zhihu_web_view.*
 import org.jetbrains.anko.find
 import javax.inject.Inject
@@ -90,7 +91,7 @@ class ZhihuWebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegis
 
         webview_container.isVerticalScrollBarEnabled = false
         webview_container.isHorizontalScrollBarEnabled = false
-
+        Slidr.attach(this)
     }
 
     override fun onPause() {

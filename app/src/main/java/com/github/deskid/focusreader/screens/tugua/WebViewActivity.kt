@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.kotlinplay.ui.ToolbarManager
+import com.r0adkll.slidr.Slidr
 import kotlinx.android.synthetic.main.activity_web_view.*
 import org.jetbrains.anko.find
 import javax.inject.Inject
@@ -74,6 +75,7 @@ class WebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegistryOw
 
         webview_container.isVerticalScrollBarEnabled = false
         webview_container.isHorizontalScrollBarEnabled = false
+        Slidr.attach(this)
 
     }
 
