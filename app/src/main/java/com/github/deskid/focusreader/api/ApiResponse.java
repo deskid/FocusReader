@@ -10,7 +10,7 @@ import retrofit2.Response;
 public class ApiResponse<T> {
     @Nullable
     public String errorMessage;
-    @Nullable
+
     public int code;
     @Nullable
     public T data;

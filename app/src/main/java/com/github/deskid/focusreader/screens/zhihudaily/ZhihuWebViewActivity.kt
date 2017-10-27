@@ -1,13 +1,10 @@
 package com.github.deskid.focusreader.screens.zhihudaily
 
 import android.app.Activity
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.ViewGroup
@@ -15,20 +12,16 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import com.github.deskid.focusreader.R
+import com.github.deskid.focusreader.activity.BaseActivity
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.utils.lazyFast
-import com.github.deskid.kotlinplay.ui.ToolbarManager
+import com.github.deskid.focusreader.widget.ToolbarManager
 import com.r0adkll.slidr.Slidr
 import kotlinx.android.synthetic.main.activity_zhihu_web_view.*
 import org.jetbrains.anko.find
 import javax.inject.Inject
 
-class ZhihuWebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegistryOwner {
-    private var mLifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry {
-        return mLifecycleRegistry
-    }
+class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
 
     @Inject
     lateinit var factory: WebViewModel.WebViewModelFactory

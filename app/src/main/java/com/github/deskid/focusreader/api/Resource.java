@@ -1,17 +1,15 @@
 package com.github.deskid.focusreader.api;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class Resource<T> {
-    @Nullable
     public int error;
     @Nullable
     public String msg;
     @Nullable
     public T data;
 
-    public Resource(@NonNull int error, @Nullable T data, @Nullable String message) {
+    public Resource(int error, @Nullable T data, @Nullable String message) {
         this.error = error;
         this.data = data;
         this.msg = message;

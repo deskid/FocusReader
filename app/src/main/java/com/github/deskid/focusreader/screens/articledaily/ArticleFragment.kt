@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.screens.penti.ArticlePagerAdapter
 import kotlinx.android.synthetic.main.fragment_penti.*
 
 class ArticleFragment : Fragment() {

@@ -93,6 +93,4 @@ class SafeWebView : WebView {
             }
         }
     }
-
-    private val AD_KEYWORDS = arrayOf("google", "show_ads", "ad", "taobao", "alibaba", "tmall", "tianmao", "jd", "jingdong", "mougujie", "weidian", "360buy", "baidu")
 }

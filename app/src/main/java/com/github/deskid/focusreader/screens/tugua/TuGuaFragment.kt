@@ -57,7 +57,7 @@ class TuGuaFragment : ContentListFragment() {
         swiper.refreshing = true
         viewModel.load(currentPage + 1).observe(this, Observer {
             swiper.refreshing = false
-            if (it != null && it.data != null) {
+            if (it?.data != null) {
                 currentPage++
                 adapter.addData(it.data ?: emptyList())
             }

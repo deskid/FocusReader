@@ -1,11 +1,8 @@
 package com.github.deskid.focusreader.activity
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
@@ -14,20 +11,13 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity(), LifecycleRegistryOwner {
+class SplashActivity : BaseActivity() {
 
     @Inject
     lateinit var factory: SplashViewModel.Factory
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
     private val splashViewModel: SplashViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(SplashViewModel::class.java)
-    }
-
-    override fun getLifecycle(): LifecycleRegistry {
-        return lifecycleRegistry
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

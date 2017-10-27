@@ -1,9 +1,8 @@
-package com.github.deskid.focusreader.screens.penti
+package com.github.deskid.focusreader.screens.articledaily
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.github.deskid.focusreader.screens.articledaily.ArticleDetailFragment
 
 class ArticlePagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {

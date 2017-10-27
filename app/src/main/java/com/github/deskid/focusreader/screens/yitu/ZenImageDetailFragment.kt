@@ -1,9 +1,9 @@
 package com.github.deskid.focusreader.screens.yitu
 
-import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ import com.github.deskid.focusreader.utils.lazyFast
 import kotlinx.android.synthetic.main.fragment_zenimage_detail.*
 import javax.inject.Inject
 
-class ZenImageDetailFragment : LifecycleFragment() {
+class ZenImageDetailFragment : Fragment() {
     @Inject
     lateinit var factory: ZenImageViewModel.ZenImageFactory
 

@@ -26,10 +26,6 @@ class WebImageView @JvmOverloads constructor(context: Context, attrs: AttributeS
         mImageUrl = null
     }
 
-    override fun setImageDrawable(drawable: Drawable?) {
-        super.setImageDrawable(drawable)
-    }
-
     fun setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?) -> Unit)? = null, onImageLoaded: ((resource: Drawable?) -> Unit)? = null) {
         if (url.isNullOrEmpty()) {
             mImageUrl = null

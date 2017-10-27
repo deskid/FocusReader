@@ -1,8 +1,9 @@
 package com.github.deskid.focusreader.screens
 
-import android.arch.lifecycle.LifecycleFragment
+
 import android.graphics.Rect
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,7 +14,7 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.dp2Px
 import com.github.deskid.focusreader.widget.ScrollableRecyclerView
 
-abstract class ContentListFragment : LifecycleFragment() {
+abstract class ContentListFragment : Fragment() {
 
     abstract fun getLayoutId(): Int
 
