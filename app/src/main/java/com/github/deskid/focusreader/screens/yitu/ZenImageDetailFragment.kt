@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.utils.lazyFast
 import kotlinx.android.synthetic.main.fragment_zenimage_detail.*
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class ZenImageDetailFragment : LifecycleFragment() {
     @Inject
     lateinit var factory: ZenImageViewModel.ZenImageFactory
 
-    private val viewModel: ZenImageViewModel by lazy {
+    private val viewModel: ZenImageViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(ZenImageViewModel::class.java)
     }
 

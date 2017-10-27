@@ -7,6 +7,7 @@ import android.view.View
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.screens.ContentListFragment
+import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class ZhihuFragment : ContentListFragment() {
     @Inject
     lateinit var factory: ZhihuViewModel.ZhihuFactory
 
-    private val viewModel: ZhihuViewModel by lazy {
+    private val viewModel: ZhihuViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(ZhihuViewModel::class.java)
     }
 

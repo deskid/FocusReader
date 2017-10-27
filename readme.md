@@ -32,5 +32,5 @@
 * [x] 9. 页面跳转动画
 * [ ] 10. 优化滑动冲突
 * [ ] 11. 自动隐藏 BottomNavigationView (wont fix)
-* [ ] 12. WebView progressbar 改为加载线条
+* [x] 12. WebView progressbar 改为加载线条 (改为自定义progressdialog了)
 

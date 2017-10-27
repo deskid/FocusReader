@@ -8,6 +8,7 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Duanzi
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.screens.ContentListFragment
+import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class DuanziFragment : ContentListFragment() {
 
     private var currentPage: Int = 1
 
-    private val viewModel: DuanziViewModel by lazy {
+    private val viewModel: DuanziViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(DuanziViewModel::class.java)
     }
 

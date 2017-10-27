@@ -13,6 +13,7 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.kotlinplay.ui.ToolbarManager
 import com.r0adkll.slidr.Slidr
 import kotlinx.android.synthetic.main.activity_web_view.*
@@ -29,11 +30,11 @@ class WebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegistryOw
     @Inject
     lateinit var factory: WebViewModel.WebViewModelFactory
 
-    private val webViewModel: WebViewModel by lazy {
+    private val webViewModel: WebViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(WebViewModel::class.java)
     }
 
-    override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
+    override val toolbar by lazyFast { find<Toolbar>(R.id.toolbar) }
 
     companion object {
         fun start(context: Context, url: String) {

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.utils.lazyFast
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class SplashActivity : AppCompatActivity(), LifecycleRegistryOwner {
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 
-    private val splashViewModel: SplashViewModel by lazy {
+    private val splashViewModel: SplashViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(SplashViewModel::class.java)
     }
 

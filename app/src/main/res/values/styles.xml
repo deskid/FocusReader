@@ -34,4 +34,13 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="ProgressbarStyle" parent="@android:style/Theme.Material.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+
 </resources>

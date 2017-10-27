@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
 import kotlinx.android.synthetic.main.fragment_article_detail.*
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class ArticleDetailFragment : LifecycleFragment() {
     @Inject
     lateinit var factory: ArticleDetailViewModel.Factory
 
-    private val viewModel: ArticleDetailViewModel by lazy {
+    private val viewModel: ArticleDetailViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(ArticleDetailViewModel::class.java)
     }
 

@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.kotlinplay.ui.ToolbarManager
 import com.r0adkll.slidr.Slidr
 import kotlinx.android.synthetic.main.activity_zhihu_web_view.*
@@ -32,11 +33,11 @@ class ZhihuWebViewActivity : AppCompatActivity(), ToolbarManager, LifecycleRegis
     @Inject
     lateinit var factory: WebViewModel.WebViewModelFactory
 
-    private val webViewModel: WebViewModel by lazy {
+    private val webViewModel: WebViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(WebViewModel::class.java)
     }
 
-    override val toolbar by lazy { find<Toolbar>(R.id.toolbar) }
+    override val toolbar by lazyFast { find<Toolbar>(R.id.toolbar) }
 
     companion object {
         fun start(activity: Activity, id: String, textView: TextView, imageView: ImageView) {
