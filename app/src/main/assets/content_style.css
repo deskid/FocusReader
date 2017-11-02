@@ -2,15 +2,20 @@ html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
 }
+
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
-  background: #fff;
+  background: #FFFFFF;
   padding-top: 0;
   margin: 10px;
+  line-height: 30px;
+  text-align: left;
+  font-size: 17px !important;
 }
+
 a {
-    color: #698ebf;
-    text-decoration: none;
+  color: #698EBF;
+  text-decoration: none;
 }
 
 a:focus {
@@ -22,9 +27,13 @@ a:hover {
   outline: 0;
 }
 
-br,
+br {
+  content: "A" !important;
+}
+
 hr {
-    visibility: hidden;
+  visibility: hidden;
+  margin: 0 !important;
 }
 
 h1 {
@@ -33,18 +42,36 @@ h1 {
 }
 
 h2 {
-    display: block;
-    font-size: 1.5em;
-    line-height: 1.4em;
-    color: #222;
-    font-weight: bold;
-    margin: 5px 0;
-    border-bottom: 5px solid #f6f6f6;
+  display: block;
+  font-size: 1.3em;
+  line-height: 1.3em;
+  color: #222222;
+  margin: 5px 0;
+  border-bottom: 5px solid #F6F6F6;
 }
 
 ins {
-   width:0px !important;
-   height:0px !important;
+  width: 0px !important;
+  height: 0px !important;
+}
+
+p:first-of-type,p:nth-of-type(2),p:nth-of-type(3),p:nth-of-type(4){
+  display: none;
 }
 
 
+p:last-of-type, p:nth-last-of-type(2), p:nth-last-of-type(3){
+  display: none;
+}
+
+#SOHUCS{
+  display: none;
+}
+
+a[href*="taobao.com"]{
+  display: none;
+}
+
+b{
+  display: none;
+}

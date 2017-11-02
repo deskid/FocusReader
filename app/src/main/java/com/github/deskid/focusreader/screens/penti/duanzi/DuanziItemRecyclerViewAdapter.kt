@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.duanzi
+package com.github.deskid.focusreader.screens.penti.duanzi
 
 import android.os.Build
 import android.support.v7.util.DiffUtil

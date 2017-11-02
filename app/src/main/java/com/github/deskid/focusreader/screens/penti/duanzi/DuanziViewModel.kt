@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.duanzi
+package com.github.deskid.focusreader.screens.penti.duanzi
 
 import android.arch.lifecycle.*
 import com.github.deskid.focusreader.api.Resource

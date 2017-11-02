@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import com.github.deskid.focusreader.screens.articledaily.ArticleFragment
 import com.github.deskid.focusreader.screens.penti.PentiFragment
+import com.github.deskid.focusreader.screens.readhub.ReadhubFragment
 import com.github.deskid.focusreader.screens.zhihudaily.ZhihuFragment
 
 class MainPagerAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager) {
@@ -15,6 +16,7 @@ class MainPagerAdapter(supportFragmentManager: FragmentManager) : FragmentStateP
         registeredFragments.put(0, ZhihuFragment.newInstance())
         registeredFragments.put(1, PentiFragment.newInstance())
         registeredFragments.put(2, ArticleFragment.newInstance())
+        registeredFragments.put(3, ReadhubFragment.newInstance())
     }
 
     override fun getItem(position: Int): Fragment = registeredFragments[position]

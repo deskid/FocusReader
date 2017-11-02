@@ -9,8 +9,6 @@ import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.ImageView
-import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
 import com.github.deskid.focusreader.app.App
@@ -33,13 +31,9 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
     override val toolbar by lazyFast { find<Toolbar>(R.id.toolbar) }
 
     companion object {
-        fun start(activity: Activity, id: String, textView: TextView, imageView: ImageView) {
+        fun start(activity: Activity, id: String) {
             val starter = Intent(activity, ZhihuWebViewActivity::class.java)
             starter.putExtra("ID", id)
-//            val imagePair = Pair.create(imageView as View, imageView.transitionName)
-//            val textPair = Pair.create(textView as View, textView.transitionName)
-//            val options = ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
-//            activity.startActivity(starter, options)
 
             //transition with webView is too laggy，so I give up transition here
             activity.startActivity(starter)

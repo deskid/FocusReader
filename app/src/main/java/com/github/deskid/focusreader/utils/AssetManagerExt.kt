@@ -8,3 +8,7 @@ fun AssetManager.fileToString(subdirectory: String, filename: String): String {
         it.readBytes().toString(Charset.defaultCharset())
     }
 }
+
+fun AssetManager.fileToString(filename: String): String {
+    return fileToString("", filename)
+}

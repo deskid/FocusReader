@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.tugua
+package com.github.deskid.focusreader.screens.penti.tugua
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData

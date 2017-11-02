@@ -31,6 +31,8 @@
 * [ ] 8. 夜间主题、缓存设置
 * [x] 9. 页面跳转动画
 * [ ] 10. 优化滑动冲突
-* [ ] 11. 自动隐藏 BottomNavigationView (wont fix)
-* [x] 12. WebView progressbar 改为加载线条 (改为自定义progressdialog了)
+* [ ] 11. 自动隐藏 BottomNavigationView (wont fix，要改最上层的页面结构..) 
+* [x] 12. WebView progressbar 改为自定义progressdialog了
+* [x] 13. auto load more实现没有状态控制，修复重复加载的问题
+* [ ] 14. use Chrome Custom Tabs ，预加载展开的页面
 

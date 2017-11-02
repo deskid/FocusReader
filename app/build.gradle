@@ -51,6 +51,7 @@ dependencies {
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:support-vector-drawable:$support_version"
     compile "com.android.support:palette-v7:$support_version"
+    compile "com.android.support:customtabs:$support_version"
 
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
@@ -100,6 +101,9 @@ dependencies {
     
     //Slidr
     compile 'com.r0adkll:slidableactivity:2.0.5'
+
+    //log Utils
+    compile 'com.github.deskid:logutils:1.0.3'
 }
 
 

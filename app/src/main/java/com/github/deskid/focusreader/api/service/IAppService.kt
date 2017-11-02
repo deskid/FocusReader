@@ -41,4 +41,13 @@ interface IAppService {
     @Headers("User-Agent: Mozilla/5.0 (Linux; Android 7.1.1; MI 6 Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.116 Mobile Safari/537.36 Meiriyiwen-App-Client/1.0")
     @GET("https://interface.meiriyiwen.com/article/{type}")
     fun getArticle(@Path("type") type: String): LiveData<ApiResponse<Article>>
+
+    @GET("https://api.readhub.me/topic/")
+    fun getReadhubTopics(@Query("lastCursor") lastCursor: Long? = null, @Query("pageSize") pageSize: Int = 10): LiveData<ApiResponse<Topics>>
+
+    @GET("https://api.readhub.me/technews/")
+    fun getReadhubTechnews(@Query("lastCursor") lastCursor: Long? = null, @Query("pageSize") pageSize: Int = 10): LiveData<ApiResponse<Technews>>
+
+    @GET("https://api.readhub.me/news/")
+    fun getReadhubNews(@Query("lastCursor") lastCursor: Long? = null, @Query("pageSize") pageSize: Int = 10): LiveData<ApiResponse<News>>
 }

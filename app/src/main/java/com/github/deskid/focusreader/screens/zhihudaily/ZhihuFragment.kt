@@ -36,10 +36,11 @@ class ZhihuFragment : ContentListFragment() {
         view.adapter = adapter
     }
 
-    override fun load(page: Int) {
+    override fun load(onLoaded: () -> Unit) {
         swiper.refreshing = true
         viewModel.load().observe(this, Observer {
             swiper.refreshing = false
+            onLoaded()
             it?.let {
                 adapter.swipeData(it.stories)
                 date = it.date
@@ -53,8 +54,11 @@ class ZhihuFragment : ContentListFragment() {
         }
     }
 
-    override fun loadMore() {
+    override fun loadMore(onLoaded: () -> Unit) {
+        swiper.refreshing = true
         viewModel.loadMore(date).observe(this, Observer {
+            swiper.refreshing = false
+            onLoaded()
             it?.let {
                 adapter.addData(it.stories)
                 date = it.date

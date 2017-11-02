@@ -1,66 +1,68 @@
-package com.github.deskid.focusreader.screens.tugua
+package com.github.deskid.focusreader.screens.penti.duanzi
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.api.data.TuGua
+import com.github.deskid.focusreader.api.data.Duanzi
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
 import javax.inject.Inject
 
-class TuGuaFragment : ContentListFragment() {
-
+class DuanziFragment : ContentListFragment() {
     override fun getLayoutId(): Int {
-        return R.layout.fragment_tuguaitem_list
+        return R.layout.fragment_jokeitem_list
     }
-
-    var currentPage: Int = 1
 
     @Inject
-    lateinit var factory: TuGuaViewModel.TuGuaFactory
+    lateinit var factory: DuanziViewModel.JokeFactory
 
-    private val viewModel: TuGuaViewModel by lazyFast {
-        ViewModelProviders.of(this, factory).get(TuGuaViewModel::class.java)
+    private var currentPage: Int = 1
+
+    private val viewModel: DuanziViewModel by lazyFast {
+        ViewModelProviders.of(this, factory).get(DuanziViewModel::class.java)
     }
+
+    private lateinit var adapter: DuanziItemRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (context.applicationContext as App).appComponent.inject(this)
     }
 
-    lateinit var adapter: TuGuaItemRecyclerViewAdapter
-
     override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
-        adapter = TuGuaItemRecyclerViewAdapter(emptyList<TuGua>().toMutableList())
+        adapter = DuanziItemRecyclerViewAdapter(emptyList<Duanzi>().toMutableList())
         view.adapter = adapter
     }
 
     companion object {
-        fun newInstance(): TuGuaFragment {
-            return TuGuaFragment()
+        fun newInstance(): DuanziFragment {
+            return DuanziFragment()
         }
     }
 
-    override fun load(page: Int) {
+    override fun load(onLoaded: () -> Unit) {
         swiper.refreshing = true
-        viewModel.load(page).observe(this, Observer {
+        viewModel.load(1).observe(this, Observer {
             swiper.refreshing = false
+            onLoaded()
             adapter.swipeData(it?.data ?: emptyList())
         })
     }
 
-    override fun loadMore() {
+    override fun loadMore(onLoaded: () -> Unit) {
         swiper.refreshing = true
         viewModel.load(currentPage + 1).observe(this, Observer {
             swiper.refreshing = false
+            onLoaded()
             if (it?.data != null) {
                 currentPage++
                 adapter.addData(it.data ?: emptyList())
             }
         })
     }
+
 }

@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.yitu
+package com.github.deskid.focusreader.screens.penti.yitu
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -55,10 +55,11 @@ class ZenImageFragment : ContentListFragment() {
         }
     }
 
-    override fun load(page: Int) {
+    override fun load(onLoaded: () -> Unit) {
         swiper.refreshing = true
-        viewModel.load(page).observe(this, Observer {
+        viewModel.load().observe(this, Observer {
             swiper.refreshing = false
+            onLoaded()
             currentPage = 1
             it?.let {
                 adapter.swipeData(it)
@@ -66,8 +67,11 @@ class ZenImageFragment : ContentListFragment() {
         })
     }
 
-    override fun loadMore() {
+    override fun loadMore(onLoaded: () -> Unit) {
+        swiper.refreshing = true
         viewModel.load(currentPage + 1).observe(this, Observer {
+            swiper.refreshing = false
+            onLoaded()
             if (it != null && !(it.isEmpty())) {
                 currentPage++
                 adapter.addData(it)

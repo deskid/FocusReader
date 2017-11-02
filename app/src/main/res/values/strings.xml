@@ -6,4 +6,7 @@
 
     <string name="dummy_content">Focus\nReader</string>
     <string name="settings">setting</string>
+    <string name="readhub_title"><![CDATA[<font color="#20A0FF">READ</font><font color="#D3DCE6">HUB</font>]]></string>
+    <string name="show_all_content">全文</string>
+    <string name="hide_content">收起</string>
 </resources>

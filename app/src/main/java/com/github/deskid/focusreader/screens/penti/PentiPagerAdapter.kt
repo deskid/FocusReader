@@ -3,9 +3,9 @@ package com.github.deskid.focusreader.screens.penti
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.github.deskid.focusreader.screens.duanzi.DuanziFragment
-import com.github.deskid.focusreader.screens.tugua.TuGuaFragment
-import com.github.deskid.focusreader.screens.yitu.ZenImageFragment
+import com.github.deskid.focusreader.screens.penti.duanzi.DuanziFragment
+import com.github.deskid.focusreader.screens.penti.tugua.TuGuaFragment
+import com.github.deskid.focusreader.screens.penti.yitu.ZenImageFragment
 
 class PentiPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {

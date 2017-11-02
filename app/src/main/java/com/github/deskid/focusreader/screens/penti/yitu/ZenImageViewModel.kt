@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.yitu
+package com.github.deskid.focusreader.screens.penti.yitu
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData

@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.yitu
+package com.github.deskid.focusreader.screens.penti.yitu
 
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView

@@ -12,13 +12,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
-    val screens: SparseArray<Fragment> = SparseArray(3)
+    val screens: SparseArray<Fragment> = SparseArray(4)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        view_pager.offscreenPageLimit = 3
+        view_pager.offscreenPageLimit = 4
         val adapter = MainPagerAdapter(supportFragmentManager)
         view_pager.adapter = adapter
 

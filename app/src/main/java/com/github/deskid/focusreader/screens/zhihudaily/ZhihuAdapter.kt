@@ -15,15 +15,12 @@ class ZhihuAdapter(private val activity: Activity, private val mValues: ArrayLis
     override fun getItemCount(): Int = mValues.size
 
     override fun onBindViewHolder(holder: ZhihuAdapter.ViewHolder, position: Int) {
-        holder.mTitleView.transitionName = mValues[holder.adapterPosition].id.toString() + "title"
-        holder.mWebImageView.transitionName = mValues[holder.adapterPosition].id.toString() + "image"
-
         holder.mTitleView.text = mValues[holder.adapterPosition].title
         val imgurl = mValues[holder.adapterPosition].images[0]
 
         holder.mWebImageView.setImageUrl(imgurl)
         holder.itemView.setOnClickListener {
-            ZhihuWebViewActivity.start(activity, mValues[holder.adapterPosition].id.toString(), holder.mTitleView, holder.mWebImageView)
+            ZhihuWebViewActivity.start(activity, mValues[holder.adapterPosition].id.toString())
         }
     }
 
