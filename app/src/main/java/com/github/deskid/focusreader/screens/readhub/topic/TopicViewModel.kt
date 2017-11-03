@@ -32,7 +32,7 @@ constructor(private val appService: IAppService, private val appDatabase: AppDat
         return result
     }
 
-    fun loadMore(lastCursor: Long): LiveData<Topics> {
+    fun loadMore(lastCursor: Long?): LiveData<Topics> {
         var result = MediatorLiveData<Topics>()
 
         var networkSource = appService.getReadhubTopics(lastCursor).map {

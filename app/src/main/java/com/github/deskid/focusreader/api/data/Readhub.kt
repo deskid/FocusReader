@@ -50,7 +50,7 @@ data class Source(val name: String,
 
 data class NelData(val result: ArrayList<EntityTopic>)
 
-data class Extra(val instantView: InstantView)
+data class Extra(val instantView: Boolean)
 
 data class InstantView(val url: String,
                        val title: String,

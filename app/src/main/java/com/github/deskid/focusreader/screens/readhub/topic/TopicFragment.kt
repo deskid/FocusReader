@@ -21,7 +21,7 @@ class TopicFragment : ContentListFragment() {
     @Inject
     lateinit var factory: TopicViewModel.Factory
 
-    private var lastCursor: Long = 1
+    private var lastCursor: Long? = null
 
     private val viewModel: TopicViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(TopicViewModel::class.java)
@@ -54,8 +54,6 @@ class TopicFragment : ContentListFragment() {
                 adapter.swipeData(it.data)
                 val count = it.data.size
                 lastCursor = it.data[count - 1].order
-            } else {
-                lastCursor = -1
             }
 
         })

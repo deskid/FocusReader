@@ -2,13 +2,10 @@ package com.github.deskid.focusreader.widget
 
 import android.content.Context
 import android.graphics.Color
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.TextPaint
-import android.text.TextUtils
-import android.text.method.LinkMovementMethod
+import android.text.*
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.TextView
@@ -18,8 +15,27 @@ import com.github.logutils.LogUtils
 
 class ReadMoreTextView : TextView {
 
+    companion object {
+        private val DEFAULT_TRIM_LINES = 2
+        private val ELLIPSIZE = "..."
+        private val DEFAULT_ENABLE_COLLAPSED_TEXT = true
+        private val LINE_END = System.lineSeparator()
+    }
+
+    private var trimLines: Int
+
+    private var collapsedText: String
+    private var expandedText: String
+    private var trimTextColor: Int
+    private var enableCollapsedText = true
+
+    private var readMore: Boolean
+    private var lineEndIndex = 0
+    private lateinit var bufferType: BufferType
+    private lateinit var originalText: CharSequence
+
     @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
-        trimLines = DEFAULT_TRIM_LINES
+
         val a = context.obtainStyledAttributes(attrs, R.styleable.ReadMoreTextView)
         trimLines = a.getInt(R.styleable.ReadMoreTextView_trimLines, DEFAULT_TRIM_LINES)
         collapsedText = context.getString(a.getResourceId(R.styleable.ReadMoreTextView_trimCollapsedText, R.string.show_all_content))
@@ -28,78 +44,116 @@ class ReadMoreTextView : TextView {
         enableCollapsedText = a.getBoolean(R.styleable.ReadMoreTextView_enableCollapsedText, DEFAULT_ENABLE_COLLAPSED_TEXT)
         a.recycle()
 
-        ellipsize = TextUtils.TruncateAt.END
+        readMore = true
+
         viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
             override fun onPreDraw(): Boolean {
                 viewTreeObserver.removeOnPreDrawListener(this)
-
-                lineEndIndex = when (trimLines) {
-                    0 -> layout?.getLineEnd(0) ?: 0
-                    in 1..lineCount -> layout?.getLineEnd(trimLines - 1) ?: 0
-                    else -> layout?.getLineEnd(lineCount - 1) ?: 0
-                }
-
-                setTrimedText()
+                getLineEndIndex()
+                setTextInternal()
                 return true
             }
         })
 
-    }
+        setOnTouchListener { v, event ->
+            val buffer = Spannable.Factory.getInstance().newSpannable((v as TextView).text)
+            val action = event.action
 
-    private val DEFAULT_TRIM_LINES = 6
-    private val DEFAULT_ENABLE_COLLAPSED_TEXT = true
-    private val ELLIPSIZE = "..."
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN) {
+                var x = event.x.toInt()
+                var y = event.y.toInt()
 
-    private val LINE_END = System.lineSeparator()
+                x -= v.totalPaddingLeft
+                y -= v.totalPaddingTop
 
-    private var readMore = true
+                x += v.scrollX
+                y += v.scrollY
 
-    private var trimLines: Int
-    private var collapsedText = ""
-    private var expandedText = ""
-    private var trimTextColor = 0
-    private var enableCollapsedText = true
+                val layout = v.layout
+                val line = layout.getLineForVertical(y)
+                val off = layout.getOffsetForHorizontal(line, x.toFloat())
 
-    private var lineEndIndex = 0
-    private var bufferType: BufferType? = BufferType.NORMAL
-    private var originalText: CharSequence? = ""
+                val links = buffer.getSpans(off, off, ClickableSpan::class.java)
 
-    override fun setText(text: CharSequence?, type: BufferType?) {
-        originalText = text
-        bufferType = type
-        setTrimedText()
-        movementMethod = LinkMovementMethod.getInstance()
+                if (links.isNotEmpty()) {
+                    if (action == MotionEvent.ACTION_UP) {
+                        links[0].onClick(v)
+                    } else if (action == MotionEvent.ACTION_DOWN) {
+                        Selection.setSelection(buffer,
+                                buffer.getSpanStart(links[0]),
+                                buffer.getSpanEnd(links[0]))
+                    }
+                    return@setOnTouchListener true
+                } else run { Selection.removeSelection(buffer) }
+            }
+            return@setOnTouchListener false
+        }
+
         highlightColor = Color.TRANSPARENT
     }
 
-    private fun setTrimedText() {
-        if (lineEndIndex > 0) {
-            val s: SpannableStringBuilder
-            if (readMore) {
-
-                var trimEndIndex = lineEndIndex - (ELLIPSIZE.length)
-                if (originalText?.length ?: 0 < trimEndIndex) {
-                    return
-                }
-                s = SpannableStringBuilder(originalText, 0, trimEndIndex)
-                        .append(ELLIPSIZE)
-                        .append(LINE_END)
-                        .append(collapsedText)
-
-                s.setSpan(ToggleSpan(), s.length - collapsedText.length, s.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                super.setText(s, bufferType)
-            } else {
-                if (enableCollapsedText) {
-                    s = SpannableStringBuilder(originalText, 0, originalText?.length ?: 0)
-                            .append(LINE_END)
-                            .append(expandedText)
-
-                    s.setSpan(ToggleSpan(), s.length - expandedText.length, s.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    super.setText(s, bufferType)
-                } else {
-                    super.setText(originalText, bufferType)
-                }
+    private fun getLineEndIndex() {
+        layout?.let {
+            if (lineCount < trimLines) {
+                //no need to collapsed, show text as normal
+                lineEndIndex = 0
+                readMore = false
+                return
             }
+
+            val lastLineIndex = maxOf(minOf(trimLines, lineCount) - 1, 0)
+            lineEndIndex = it.getLineVisibleEnd(lastLineIndex) - 1
+            LogUtils.d("lineEndIndex : $lineEndIndex, lastLineIndex : $lastLineIndex; lineCount : $lineCount")
+        }
+    }
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        originalText = text ?: ""
+        bufferType = type ?: BufferType.NORMAL
+        setTextInternal()
+
+    }
+
+    private fun setTextInternal() {
+        LogUtils.d("lineEndIndex : $lineEndIndex, readMore : $readMore, originalText : $originalText")
+        if (lineEndIndex > 0 && originalText.isNotEmpty()) {
+            if (readMore) {
+                updateCollapsedText()
+            } else {
+                updateExpandedText()
+            }
+        } else {
+            super.setText(originalText, bufferType)
+        }
+    }
+
+    private fun updateCollapsedText() {
+        var endIndex = lineEndIndex
+
+        //find enough space to layout ELLIPSIZE
+        val ellipsizeWidth = paint.measureText(ELLIPSIZE)
+        var collapsedWidth = paint.measureText(originalText[endIndex].toString())
+        while (collapsedWidth < ellipsizeWidth) {
+            collapsedWidth += paint.measureText(originalText[--endIndex].toString())
+        }
+
+        var s = SpannableStringBuilder(originalText, 0, endIndex)
+                .append(ELLIPSIZE)
+                .append(LINE_END)
+                .append(collapsedText)
+
+        s.setSpan(ToggleSpan(), s.length - collapsedText.length, s.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        super.setText(s, bufferType)
+    }
+
+    private fun updateExpandedText() {
+        if (enableCollapsedText) {
+            var s = SpannableStringBuilder(originalText, 0, originalText.length)
+                    .append(LINE_END)
+                    .append(expandedText)
+
+            s.setSpan(ToggleSpan(), s.length - expandedText.length, s.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            super.setText(s, bufferType)
         } else {
             super.setText(originalText, bufferType)
         }
@@ -108,7 +162,6 @@ class ReadMoreTextView : TextView {
     inner class ToggleSpan : ClickableSpan() {
         override fun onClick(widget: View?) {
             setExpanded(!readMore)
-            requestFocusFromTouch()
         }
 
         override fun updateDrawState(ds: TextPaint) {
@@ -119,8 +172,8 @@ class ReadMoreTextView : TextView {
 
     fun setExpanded(readMore: Boolean) {
         this.readMore = readMore
-        LogUtils.d("setExpanded : " + readMore)
+        //fixme
         tag = readMore
-        setTrimedText()
+        setTextInternal()
     }
 }
