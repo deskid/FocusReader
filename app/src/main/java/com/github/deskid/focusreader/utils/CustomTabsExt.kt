@@ -17,7 +17,8 @@ fun Context.launchUrlWithCustomTabs(uri: Uri) {
 
 //    builder.setStartAnimations(this, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top)
 //    builder.setExitAnimations(this, R.anim.abc_slide_in_top, R.anim.abc_slide_out_bottom)
-    builder.setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.abc_ic_ab_back_material))
+    builder.setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
+    builder.setShowTitle(true)
 
     val customTabsIntent = builder.build()
     var intent = customTabsIntent.intent

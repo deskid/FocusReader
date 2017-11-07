@@ -9,12 +9,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Topic
+import com.github.deskid.focusreader.api.data.TopicWrap
 import com.github.deskid.focusreader.utils.fromNow
+import com.github.deskid.focusreader.utils.launchUrlWithCustomTabs
 import com.github.deskid.focusreader.utils.toDate
 import com.github.deskid.focusreader.utils.withoutSuffix
 import com.github.deskid.focusreader.widget.ReadMoreTextView
 
-class TopicAdapter(private val topics: MutableList<Topic>) : RecyclerView.Adapter<TopicAdapter.ViewHolder>() {
+class TopicAdapter : RecyclerView.Adapter<TopicAdapter.ViewHolder> {
+    private val topics: MutableList<TopicWrap>
+
+    constructor(topics: MutableList<Topic>) : super() {
+        this.topics = topics.map { TopicWrap.wrap(it) }.toMutableList()
+    }
+
     override fun getItemCount(): Int = topics.size
 
     @SuppressLint("SetTextI18n")
@@ -22,8 +30,18 @@ class TopicAdapter(private val topics: MutableList<Topic>) : RecyclerView.Adapte
         val index = holder.adapterPosition
         holder.titleView.text = topics[index].title
         holder.contentView.text = topics[index].summary
-        holder.contentView.setExpanded((holder.contentView.tag as Boolean?) ?: true)
+        holder.contentView.setExpanded(topics[index].readMore)
+        holder.contentView.onReadMoreChanged = {
+            topics[index].readMore = it
+            notifyItemChanged(position)
+        }
         holder.publishDateView.text = "${topics[index].publishDate.withoutSuffix().toDate().fromNow()}前"
+
+        holder.siteView.text = topics[index].newsArray[0].siteName
+        val context = holder.itemView.context
+        holder.itemView.setOnClickListener {
+            context.launchUrlWithCustomTabs(topics[index].newsArray[0].mobileUrl)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicAdapter.ViewHolder {
@@ -35,10 +53,7 @@ class TopicAdapter(private val topics: MutableList<Topic>) : RecyclerView.Adapte
     fun addData(data: List<Topic>) {
 
         val index = topics.size
-        // subList[1,lastIndex+1)
-//        topics.addAll(data.subList(1, data.lastIndex))
-
-        topics.addAll(data)
+        topics.addAll(data.map { TopicWrap.wrap(it) })
         notifyItemRangeChanged(index, topics.size)
     }
 
@@ -57,19 +72,20 @@ class TopicAdapter(private val topics: MutableList<Topic>) : RecyclerView.Adapte
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return topics[oldItemPosition] == data[newItemPosition]
+                return topics[oldItemPosition] == TopicWrap.wrap(data[newItemPosition])
             }
 
         })
         diffResult.dispatchUpdatesTo(this)
         topics.clear()
-        topics.addAll(data)
+        topics.addAll(data.map { TopicWrap.wrap(it) })
     }
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val titleView: TextView = mView.findViewById(R.id.title)
         val publishDateView: TextView = mView.findViewById(R.id.publish_date)
         val contentView: ReadMoreTextView = mView.findViewById(R.id.content)
+        val siteView: TextView = mView.findViewById(R.id.instant_read)
     }
 
 }

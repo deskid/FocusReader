@@ -3,6 +3,7 @@ package com.github.deskid.focusreader.widget
 import android.content.Context
 import android.graphics.Color
 import android.text.*
+import android.text.Layout.BREAK_STRATEGY_HIGH_QUALITY
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -16,7 +17,7 @@ import com.github.logutils.LogUtils
 class ReadMoreTextView : TextView {
 
     companion object {
-        private val DEFAULT_TRIM_LINES = 2
+        private val DEFAULT_TRIM_LINES = 4
         private val ELLIPSIZE = "..."
         private val DEFAULT_ENABLE_COLLAPSED_TEXT = true
         private val LINE_END = System.lineSeparator()
@@ -90,6 +91,7 @@ class ReadMoreTextView : TextView {
         }
 
         highlightColor = Color.TRANSPARENT
+        breakStrategy = BREAK_STRATEGY_HIGH_QUALITY
     }
 
     private fun getLineEndIndex() {
@@ -130,6 +132,10 @@ class ReadMoreTextView : TextView {
     private fun updateCollapsedText() {
         var endIndex = lineEndIndex
 
+        if (endIndex >= originalText.length) {
+            LogUtils.d("endIndex: $endIndex; originalText: $originalText")
+            return
+        }
         //find enough space to layout ELLIPSIZE
         val ellipsizeWidth = paint.measureText(ELLIPSIZE)
         var collapsedWidth = paint.measureText(originalText[endIndex].toString())
@@ -159,9 +165,13 @@ class ReadMoreTextView : TextView {
         }
     }
 
+    var onReadMoreChanged: ((readMore: Boolean) -> Unit)? = null
+
     inner class ToggleSpan : ClickableSpan() {
         override fun onClick(widget: View?) {
-            setExpanded(!readMore)
+            readMore = !readMore
+            setTextInternal()
+            onReadMoreChanged?.invoke(readMore)
         }
 
         override fun updateDrawState(ds: TextPaint) {
@@ -172,8 +182,6 @@ class ReadMoreTextView : TextView {
 
     fun setExpanded(readMore: Boolean) {
         this.readMore = readMore
-        //fixme
-        tag = readMore
         setTextInternal()
     }
 }
