@@ -31,7 +31,7 @@ android {
 
 ext {
     support_version = '26.1.0'
-    arch_version = '1.0.0-rc1'
+    arch_version = '1.0.0'
 }
 
 
