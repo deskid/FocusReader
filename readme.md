@@ -34,5 +34,5 @@
 * [ ] 11. 自动隐藏 BottomNavigationView (wont fix，要改最上层的页面结构..) 
 * [x] 12. WebView progressbar 改为自定义progressdialog了
 * [x] 13. auto load more实现没有状态控制，修复重复加载的问题
-* [ ] 14. use Chrome Custom Tabs ，预加载展开的页面
+* [x] 14. use Chrome Custom Tabs ，预加载展开的页面
 

@@ -22,7 +22,11 @@ class TechnewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerVi
     override fun onBindViewHolder(holder: TechnewsAdapter.ViewHolder, position: Int) {
         val index = holder.adapterPosition
         holder.titleView.text = topics[index].title
-        holder.contentView.text = topics[index].summary
+        if (topics[index].summary.isEmpty()) {
+            holder.contentView.text = "暂无摘要"
+        } else {
+            holder.contentView.text = topics[index].summary
+        }
         holder.contentView.setExpanded((holder.contentView.tag as Boolean?) ?: true)
         holder.publishDateView.text = "${topics[index].publishDate.withoutSuffix().toDate().fromNow()}前"
         holder.siteView.text = topics[index].siteName

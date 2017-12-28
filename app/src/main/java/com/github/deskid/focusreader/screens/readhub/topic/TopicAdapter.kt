@@ -29,7 +29,11 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.ViewHolder> {
     override fun onBindViewHolder(holder: TopicAdapter.ViewHolder, position: Int) {
         val index = holder.adapterPosition
         holder.titleView.text = topics[index].title
-        holder.contentView.text = topics[index].summary
+        if (topics[index].summary.isEmpty()) {
+            holder.contentView.text = "暂无摘要"
+        } else {
+            holder.contentView.text = topics[index].summary
+        }
         holder.contentView.setExpanded(topics[index].readMore)
         holder.contentView.onReadMoreChanged = {
             topics[index].readMore = it
