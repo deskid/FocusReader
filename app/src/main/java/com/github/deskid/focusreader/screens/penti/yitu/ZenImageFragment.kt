@@ -4,10 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.view.View
+import android.widget.Toast
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.api.data.NetworkState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
@@ -27,17 +27,26 @@ class ZenImageFragment : ContentListFragment() {
         ViewModelProviders.of(this, factory).get(ZenImageViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (context.applicationContext as App).appComponent.inject(this)
-    }
-
     override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
         adapter = ZenItemRecyclerViewAdapter(ArrayList())
         adapter.setOnClickListener { position, titleView,imageView, images ->
             ZenImageDetailAct.start(activity, position,titleView, imageView, images)
         }
         view.adapter = adapter
+
+        viewModel.refreshState.observe(this, Observer {
+            when (it) {
+                NetworkState.LOADING -> swiper.refreshing = true
+                NetworkState.LOADED -> swiper.refreshing = false
+                else -> Toast.makeText(context, it?.msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        viewModel.zenImages.observe(this, Observer {
+            it?.let {
+                adapter.addData(it)
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -55,30 +64,12 @@ class ZenImageFragment : ContentListFragment() {
         }
     }
 
-    override fun load(onLoaded: () -> Unit) {
-        swiper.refreshing = true
-        viewModel.load().observe(this, Observer {
-            swiper.refreshing = false
-            onLoaded()
-            currentPage = 1
-            it?.let {
-                adapter.swipeData(it)
-            }
-        })
+    override fun load() {
+        viewModel.load()
     }
 
-    override fun loadMore(onLoaded: () -> Unit) {
-        swiper.refreshing = true
-        viewModel.load(currentPage + 1).observe(this, Observer {
-            swiper.refreshing = false
-            onLoaded()
-            if (it != null && !(it.isEmpty())) {
-                currentPage++
-                adapter.addData(it)
-            } else {
-                Snackbar.make(swiper, "No more data", Snackbar.LENGTH_SHORT).show()
-            }
-        })
+    override fun loadMore() {
+        viewModel.load(++currentPage)
     }
 
     override fun getItemOffset(): Int = 0

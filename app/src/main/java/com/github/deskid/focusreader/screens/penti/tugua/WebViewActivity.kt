@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
-import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.ToolbarManager
 import com.r0adkll.slidr.Slidr
@@ -48,8 +47,6 @@ class WebViewActivity : BaseActivity(), ToolbarManager {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
-
-        (applicationContext as App).appComponent.inject(this)
 
         initToolbar()
         enableHomeAsUp { onBackPressed() }

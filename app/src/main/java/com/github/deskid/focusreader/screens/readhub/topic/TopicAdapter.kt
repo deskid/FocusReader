@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Topic
-import com.github.deskid.focusreader.api.data.TopicWrap
 import com.github.deskid.focusreader.utils.fromNow
 import com.github.deskid.focusreader.utils.launchUrlWithCustomTabs
 import com.github.deskid.focusreader.utils.toDate
@@ -17,10 +16,10 @@ import com.github.deskid.focusreader.utils.withoutSuffix
 import com.github.deskid.focusreader.widget.ReadMoreTextView
 
 class TopicAdapter : RecyclerView.Adapter<TopicAdapter.ViewHolder> {
-    private val topics: MutableList<TopicWrap>
+    private val topics: MutableList<Topic>
 
     constructor(topics: MutableList<Topic>) : super() {
-        this.topics = topics.map { TopicWrap.wrap(it) }.toMutableList()
+        this.topics = topics.toMutableList()
     }
 
     override fun getItemCount(): Int = topics.size
@@ -55,10 +54,9 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.ViewHolder> {
     }
 
     fun addData(data: List<Topic>) {
-
-        val index = topics.size
-        topics.addAll(data.map { TopicWrap.wrap(it) })
-        notifyItemRangeChanged(index, topics.size)
+        val set = LinkedHashSet<Topic>(topics)
+        set.addAll(data)
+        swipeData(ArrayList(set))
     }
 
     fun swipeData(data: List<Topic>) {
@@ -76,13 +74,13 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.ViewHolder> {
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return topics[oldItemPosition] == TopicWrap.wrap(data[newItemPosition])
+                return topics[oldItemPosition] == data[newItemPosition]
             }
 
         })
         diffResult.dispatchUpdatesTo(this)
         topics.clear()
-        topics.addAll(data.map { TopicWrap.wrap(it) })
+        topics.addAll(data)
     }
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {

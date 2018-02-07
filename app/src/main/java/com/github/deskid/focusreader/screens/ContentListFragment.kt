@@ -3,7 +3,6 @@ package com.github.deskid.focusreader.screens
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,14 +13,14 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.dp2Px
 import com.github.deskid.focusreader.utils.getColorCompat
 import com.github.deskid.focusreader.widget.ScrollableRecyclerView
+import dagger.android.support.DaggerFragment
 
-abstract class ContentListFragment : Fragment() {
+abstract class ContentListFragment : DaggerFragment() {
 
     abstract fun getLayoutId(): Int
 
     protected lateinit var view: ScrollableRecyclerView
     protected lateinit var swiper: SwipeRefreshLayout
-    private var isLoading = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -38,18 +37,8 @@ abstract class ContentListFragment : Fragment() {
 
         view.layoutManager = LinearLayoutManager(context)
 
-        view.loadMoreListener = {
-            if (!isLoading) {
-                isLoading = true
-                loadMore()
-            }
-        }
-        swiper.setOnRefreshListener {
-            if (!isLoading) {
-                isLoading = true
-                load()
-            }
-        }
+        view.loadMoreListener = { loadMore() }
+        swiper.setOnRefreshListener { load() }
 
         return content
     }
@@ -59,13 +48,9 @@ abstract class ContentListFragment : Fragment() {
         load()
     }
 
-    abstract fun load(onLoaded: () -> Unit = {
-        isLoading = false
-    })
+    abstract fun load()
 
-    abstract fun loadMore(onLoaded: () -> Unit = {
-        isLoading = false
-    })
+    abstract fun loadMore()
 
 
     protected open fun getItemOffset(): Int = context.dp2Px(10)

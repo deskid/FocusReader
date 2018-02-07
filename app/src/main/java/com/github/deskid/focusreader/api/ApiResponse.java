@@ -40,4 +40,8 @@ public class ApiResponse<T> {
             data = null;
         }
     }
+
+    public boolean isSuccessful() {
+        return code >= 200 && code < 300;
+    }
 }

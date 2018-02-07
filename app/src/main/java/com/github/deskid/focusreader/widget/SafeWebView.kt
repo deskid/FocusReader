@@ -64,22 +64,6 @@ class SafeWebView : WebView {
             }
 
             override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-//                val emptyResponse = WebResourceResponse("text/plain", "UTF-8", null)
-//
-//                AD_KEYWORDS.forEach {
-//                    if (url.contains(it)) {
-//                        return emptyResponse
-//                    }
-//                }
-//
-//                if ((url.endsWith(".js") || url.contains("javascript") || url.contains("script"))) {
-//                    return emptyResponse
-//                }
-//
-//                if (url.contains("baidu.com") || url.contains("baidustatic") || url.contains("weibo.com")) {
-//                    return emptyResponse
-//                }
-
                 return null
             }
 

@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.ZenImage
-import com.github.deskid.focusreader.app.App
 import kotlinx.android.synthetic.main.activity_zenitem_detail.*
 
 class ZenImageDetailAct : AppCompatActivity() {
@@ -20,7 +19,7 @@ class ZenImageDetailAct : AppCompatActivity() {
     private lateinit var images: List<ZenImage>
 
     companion object {
-        val KEY_SELECTED_POSITION = "SELECTED_POSITION"
+        const val KEY_SELECTED_POSITION = "SELECTED_POSITION"
 
         fun start(activity: Activity, initPosition: Int, textView: TextView, imageView: ImageView, images: ArrayList<ZenImage>) {
             val starter = Intent(activity, ZenImageDetailAct::class.java)
@@ -41,7 +40,6 @@ class ZenImageDetailAct : AppCompatActivity() {
         setTransition()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zenitem_detail)
-        (applicationContext as App).appComponent.inject(this)
 
         initPosition = intent.getIntExtra(KEY_SELECTED_POSITION, 0)
         images = intent.getParcelableArrayListExtra("IMAGES")

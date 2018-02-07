@@ -1,50 +1,51 @@
 package com.github.deskid.focusreader.screens.penti.duanzi
 
-import android.arch.lifecycle.*
-import com.github.deskid.focusreader.api.Resource
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import com.github.deskid.focusreader.api.data.Duanzi
+import com.github.deskid.focusreader.api.data.NetworkState
 import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.db.AppDatabase
 import com.github.deskid.focusreader.db.entity.ArticleEntity
-import com.github.deskid.focusreader.utils.transaction
-import org.jetbrains.anko.doAsync
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
 import javax.inject.Inject
 
 class DuanziViewModel @Inject
-constructor(appService: IAppService, appDatabase: AppDatabase) : ViewModel() {
+constructor(private val appService: IAppService, private val appDatabase: AppDatabase) : ViewModel() {
 
-    private val mAppService: IAppService = appService
-    private val mAppDatabase: AppDatabase = appDatabase
+    val refreshState: MutableLiveData<NetworkState> = MutableLiveData()
 
-    fun load(page: Int = 1): LiveData<Resource<List<Duanzi>>> {
-        val result = MediatorLiveData<Resource<List<Duanzi>>>()
-        val dbSource = Transformations.map(mAppDatabase.articleDao().findArticleByType(3, page)) {
-            Resource.success(duanziWrap(it))
-        }
-        val netWorkSource = mAppService.getJoke(page)
-        result.addSource(netWorkSource) {
-            if (it == null || it.code !in 200..300) {
-                result.removeSource(netWorkSource)
-                result.addSource(dbSource) {
-                    result.value = it
-                }
-            } else if (it.code in 200..300) {
-                var list = ArrayList<Duanzi>()
+    val duanziList: MutableLiveData<List<Duanzi>> = MutableLiveData()
 
-                it.data?.data?.forEach {
-                    list.add(Duanzi(it.title, clean(it.description), it.pubDate))
-                }
-                doAsync {
-                    mAppDatabase.transaction {
-                        mAppDatabase.articleDao().insertAll(articleEntityWrap(list))
+    private val disposable: CompositeDisposable = CompositeDisposable()
+
+    fun load(page: Int = 1) {
+        disposable.add(appService.getJoke(page)
+                .map { response ->
+                    when {
+                        response.error > 0 -> {
+                            refreshState.value = NetworkState.error(response.msg)
+                            emptyList()
+                        }
+                        else -> {
+                            response.data?.forEach { duanzi -> duanzi.description = clean(duanzi.description) }
+                            response.data
+                        }
                     }
                 }
-                result.value = Resource.success(list)
-            }
-        }
-        return result
+                .doOnNext { appDatabase.articleDao().insertAll(articlesEntityWrap(it)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe({ refreshState.value = NetworkState.LOADING })
+                .subscribe({
+                    duanziList.value = it
+                    refreshState.value = NetworkState.LOADED
+                }, { refreshState.value = NetworkState.error(it.message) }))
     }
 
     class JokeFactory @Inject
@@ -55,7 +56,7 @@ constructor(appService: IAppService, appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
-    private fun articleEntityWrap(duanzis: List<Duanzi>?): List<ArticleEntity> {
+    private fun articlesEntityWrap(duanzis: List<Duanzi>?): List<ArticleEntity> {
         return duanzis?.map { ArticleEntity.duanziWrap(it) } ?: emptyList()
     }
 

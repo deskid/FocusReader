@@ -44,12 +44,9 @@ class TechnewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerVi
     }
 
     fun addData(data: List<SimpleTopic>) {
-
-        val index = topics.size
-        // subList[1,lastIndex+1)
-//        topics.addAll(data.subList(1, data.lastIndex))
-        topics.addAll(data)
-        notifyItemRangeChanged(index, topics.size)
+        val set = LinkedHashSet<SimpleTopic>(topics)
+        set.addAll(data)
+        swipeData(ArrayList(set))
     }
 
     fun swipeData(data: List<SimpleTopic>) {

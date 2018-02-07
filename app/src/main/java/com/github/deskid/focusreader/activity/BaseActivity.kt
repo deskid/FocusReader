@@ -1,9 +1,9 @@
 package com.github.deskid.focusreader.activity
 
-import android.support.v7.app.AppCompatActivity
 import com.github.deskid.focusreader.utils.warmUpCustomTabs
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : DaggerAppCompatActivity() {
     override fun onStart() {
         super.onStart()
         warmUpCustomTabs()

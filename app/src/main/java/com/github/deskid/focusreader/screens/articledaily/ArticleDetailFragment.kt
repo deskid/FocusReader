@@ -3,20 +3,19 @@ package com.github.deskid.focusreader.screens.articledaily
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.text.Html
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_article_detail.*
 import javax.inject.Inject
 
-class ArticleDetailFragment : Fragment() {
+class ArticleDetailFragment : DaggerFragment() {
     @Inject
     lateinit var factory: ArticleDetailViewModel.Factory
 
@@ -25,11 +24,6 @@ class ArticleDetailFragment : Fragment() {
     }
 
     lateinit var type: String
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (context.applicationContext as App).appComponent.inject(this)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_article_detail, container, false)

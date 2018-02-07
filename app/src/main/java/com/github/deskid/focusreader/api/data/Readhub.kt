@@ -18,27 +18,8 @@ data class Topic(val id: String,
                  val entityTopics: Any,
                  val entityEventTopics: Any,
                  val entityRelatedTopics: ArrayList<EntityTopic>,
-                 val nelData: NelData)
-
-class TopicWrap(val id: String,
-                val newsArray: ArrayList<NewsItem>,
-                val publishDate: String,
-                val summary: String,
-                val title: String,
-                var readMore: Boolean) {
-
-    companion object {
-        fun wrap(topic: Topic): TopicWrap {
-            return TopicWrap(topic.id,
-                    topic.newsArray,
-                    topic.publishDate,
-                    topic.summary,
-                    topic.title,
-                    true)
-        }
-    }
-}
-
+                 val nelData: NelData,
+                 var readMore: Boolean)
 
 data class NewsItem(val id: String,
                     val url: String,

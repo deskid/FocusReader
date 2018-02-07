@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
-import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.ToolbarManager
 import com.r0adkll.slidr.Slidr
@@ -45,8 +44,6 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
         postponeEnterTransition()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zhihu_web_view)
-
-        (applicationContext as App).appComponent.inject(this)
 
         initToolbar()
         enableHomeAsUp { onBackPressed() }

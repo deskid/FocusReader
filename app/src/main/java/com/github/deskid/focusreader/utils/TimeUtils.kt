@@ -1,6 +1,5 @@
 package com.github.deskid.focusreader.utils
 
-import com.github.logutils.LogUtils
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,8 +18,8 @@ fun String.withoutSuffix(): String {
 fun Date.fromNow(): String {
     val now = Date()
     val millis = now.time - time
-    LogUtils.e("now.time ${now.time} : $time")
-    LogUtils.e(millis.toString() + "----")
+    //    LogUtils.e("now.time ${now.time} : $time")
+    //    LogUtils.e(millis.toString() + "----")
     val units = arrayOf("天", "小时", "分钟", "秒")
     val unitsMillis = arrayOf(86400000L, 3600000L, 60000L, 1000L)
     //31147787

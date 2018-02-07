@@ -1,28 +1,20 @@
 package com.github.deskid.focusreader.activity
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
-import com.github.deskid.focusreader.api.Resource
+import com.github.deskid.focusreader.api.PentiResource
 import com.github.deskid.focusreader.api.service.IAppService
+import io.reactivex.Flowable
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class SplashViewModel @Inject
-constructor(appService: IAppService) : ViewModel() {
-
-    val splashImage: LiveData<Resource<String>>
-
-    init {
-        splashImage = Transformations.map(appService.splashImage()) { input -> input.data }
-    }
-
-    class Factory @Inject
-    constructor(private val mAppService: IAppService) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return SplashViewModel(mAppService) as T
+constructor(private val appService: IAppService) : ViewModel() {
+    fun splashImage(): Flowable<PentiResource<String>> {
+        return appService.splashImage().map {
+            if (it.error < 0) {
+                throw IllegalStateException(it.msg)
+            }
+            return@map it
         }
     }
 }

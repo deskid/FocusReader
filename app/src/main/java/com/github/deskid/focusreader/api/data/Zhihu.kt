@@ -3,7 +3,7 @@ package com.github.deskid.focusreader.api.data
 import com.google.gson.annotations.SerializedName
 
 data class Zhihu(val date: String,
-                 val stories: ArrayList<Story>,
+                 var stories: ArrayList<Story>,
                  @SerializedName("top_stories")
                  val topStories: List<TopStory>)
 

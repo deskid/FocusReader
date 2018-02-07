@@ -4,8 +4,9 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.api.data.NetworkState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
@@ -26,26 +27,28 @@ class ZhihuFragment : ContentListFragment() {
 
     override fun getLayoutId(): Int = R.layout.fragment_zhihu_list
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (context.applicationContext as App).appComponent.inject(this)
-    }
-
     override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
         adapter = ZhihuAdapter(activity, ArrayList())
         view.adapter = adapter
-    }
 
-    override fun load(onLoaded: () -> Unit) {
-        swiper.refreshing = true
-        viewModel.load().observe(this, Observer {
-            swiper.refreshing = false
-            onLoaded()
+        viewModel.refreshState.observe(this, Observer {
+            when (it) {
+                NetworkState.LOADING -> swiper.refreshing = true
+                NetworkState.LOADED -> swiper.refreshing = false
+                else -> Toast.makeText(context, it?.msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        viewModel.zhihuList.observe(this, Observer {
             it?.let {
-                adapter.swipeData(it.stories)
+                adapter.addData(it.stories)
                 date = it.date
             }
         })
+    }
+
+    override fun load() {
+        viewModel.load()
     }
 
     companion object {
@@ -54,15 +57,7 @@ class ZhihuFragment : ContentListFragment() {
         }
     }
 
-    override fun loadMore(onLoaded: () -> Unit) {
-        swiper.refreshing = true
-        viewModel.loadMore(date).observe(this, Observer {
-            swiper.refreshing = false
-            onLoaded()
-            it?.let {
-                adapter.addData(it.stories)
-                date = it.date
-            }
-        })
+    override fun loadMore() {
+        viewModel.loadMore(date)
     }
 }

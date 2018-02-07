@@ -12,7 +12,6 @@ import android.view.ViewTreeObserver
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.getColorCompat
-import com.github.logutils.LogUtils
 
 class ReadMoreTextView : TextView {
 
@@ -105,7 +104,7 @@ class ReadMoreTextView : TextView {
 
             val lastLineIndex = maxOf(minOf(trimLines, lineCount) - 1, 0)
             lineEndIndex = it.getLineVisibleEnd(lastLineIndex) - 1
-            LogUtils.d("lineEndIndex : $lineEndIndex, lastLineIndex : $lastLineIndex; lineCount : $lineCount")
+//            LogUtils.d("lineEndIndex : $lineEndIndex, lastLineIndex : $lastLineIndex; lineCount : $lineCount")
         }
     }
 
@@ -117,7 +116,7 @@ class ReadMoreTextView : TextView {
     }
 
     private fun setTextInternal() {
-        LogUtils.d("lineEndIndex : $lineEndIndex, readMore : $readMore, originalText : $originalText")
+//        LogUtils.d("lineEndIndex : $lineEndIndex, readMore : $readMore, originalText : $originalText")
         if (lineEndIndex > 0 && originalText.isNotEmpty()) {
             if (readMore) {
                 updateCollapsedText()
@@ -133,7 +132,7 @@ class ReadMoreTextView : TextView {
         var endIndex = lineEndIndex
 
         if (endIndex >= originalText.length) {
-            LogUtils.d("endIndex: $endIndex; originalText: $originalText")
+//            LogUtils.d("endIndex: $endIndex; originalText: $originalText")
             return
         }
         //find enough space to layout ELLIPSIZE

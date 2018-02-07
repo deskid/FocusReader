@@ -3,29 +3,23 @@ package com.github.deskid.focusreader.screens.penti.yitu
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.utils.lazyFast
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_zenimage_detail.*
 import javax.inject.Inject
 
-class ZenImageDetailFragment : Fragment() {
+class ZenImageDetailFragment : DaggerFragment() {
     @Inject
     lateinit var factory: ZenImageViewModel.ZenImageFactory
 
     private val viewModel: ZenImageViewModel by lazyFast {
         ViewModelProviders.of(this, factory).get(ZenImageViewModel::class.java)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (context.applicationContext as App).appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,10 +31,12 @@ class ZenImageDetailFragment : Fragment() {
         val pageImage = arguments.getString("IMG")
 
         if (!TextUtils.isEmpty(pageUrl)) {
-            viewModel.loadZenImageDetail(pageUrl).observe(this, Observer {
-                description.text = it?.content
-            })
+            viewModel.loadZenImageDetail(pageUrl)
         }
+
+        viewModel.zenImage.observe(this, Observer {
+            description.text = it?.content
+        })
 
         if (!TextUtils.isEmpty(pageImage)) {
             image.transitionName = pageUrl + "image"

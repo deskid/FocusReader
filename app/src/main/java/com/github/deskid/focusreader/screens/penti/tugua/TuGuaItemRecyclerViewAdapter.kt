@@ -15,9 +15,9 @@ import com.github.deskid.focusreader.widget.setWidth
 class TuGuaItemRecyclerViewAdapter(private val mValues: MutableList<TuGua>) : RecyclerView.Adapter<TuGuaItemRecyclerViewAdapter.ViewHolder>() {
 
     fun addData(data: List<TuGua>) {
-        val index = mValues.size
-        mValues.addAll(data)
-        notifyItemRangeChanged(index, mValues.size)
+        val set = LinkedHashSet<TuGua>(mValues)
+        set.addAll(data)
+        swipeData(ArrayList<TuGua>(set))
     }
 
     fun swipeData(data: List<TuGua>) {

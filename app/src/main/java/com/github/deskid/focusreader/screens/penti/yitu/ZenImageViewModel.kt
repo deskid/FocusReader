@@ -1,111 +1,76 @@
 package com.github.deskid.focusreader.screens.penti.yitu
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.github.deskid.focusreader.api.Resource
+import com.github.deskid.focusreader.api.PentiResource
+import com.github.deskid.focusreader.api.data.NetworkState
 import com.github.deskid.focusreader.api.data.ZenImage
 import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.db.AppDatabase
 import com.github.deskid.focusreader.db.entity.ArticleEntity
 import com.github.deskid.focusreader.db.entity.YituEntity
-import com.github.deskid.focusreader.utils.map
-import com.github.deskid.focusreader.utils.transaction
-import org.jetbrains.anko.doAsync
+import com.github.logutils.LogUtils
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
 import javax.inject.Inject
 
 class ZenImageViewModel @Inject
-constructor(private val appService: IAppService, private val appDatabase: AppDatabase) : ViewModel() {
+constructor(private val appService: IAppService,
+            private val appDatabase: AppDatabase) : ViewModel() {
 
-    fun load(page: Int = 1): LiveData<List<ZenImage>> {
-        val result = MediatorLiveData<List<ZenImage>>()
+    val zenImages: MutableLiveData<List<ZenImage>> = MutableLiveData()
 
-        val dbSource: LiveData<List<ZenImage>> = appDatabase.articleDao().findArticleByType(1, page).map {
-            if (it != null && !it.isEmpty()) {
-                return@map zenImageWrap(it)
-            } else {
-                return@map emptyList<ZenImage>()
-            }
-        }
+    val zenImage: MutableLiveData<YituEntity> = MutableLiveData()
 
-        val netWorkSource = appService.getZenImage(page).map { response ->
-            if (response.code !in 200..300) {
-                return@map emptyList<ZenImage>()
-            } else {
-                response.data?.data?.forEach {
-                    zenImage ->
-//                    zenImage.imgurl = zenImage.imgurl.replace("square", "large")
-                    zenImage.url = zenImage.description
-                }
+    val refreshState: MutableLiveData<NetworkState> = MutableLiveData()
 
-                doAsync {
-                    appDatabase.transaction {
-                        appDatabase.articleDao().insertAll(articlesEntityWrap(response.data?.data))
+    private val disposable: CompositeDisposable = CompositeDisposable()
+
+    fun load(page: Int = 1) {
+        disposable.add(appService.getZenImage(page)
+                .map { response ->
+                    when {
+                        response.error > 0 -> emptyList()
+                        else -> {
+                            response.data?.forEach { zenImage -> zenImage.url = zenImage.description }
+                            response.data
+                        }
                     }
                 }
-
-                return@map response.data?.data
-            }
-        }
-
-        result.addSource(netWorkSource) {
-            if (it != null && !it.isEmpty()) {
-                result.value = it
-            } else {
-                result.removeSource(netWorkSource)
-                result.addSource(dbSource) {
-                    result.value = it
-                }
-            }
-        }
-
-        return result
+                .doOnNext { appDatabase.articleDao().insertAll(articlesEntityWrap(it)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe({ refreshState.value = NetworkState.LOADING })
+                .subscribe({
+                    zenImages.value = it
+                    refreshState.value = NetworkState.LOADED
+                }, { refreshState.value = NetworkState.error(it.message) }))
     }
 
-    fun loadZenImageDetail(url: String): LiveData<YituEntity> {
-        val result = MediatorLiveData<YituEntity>()
-        val dbSource = appDatabase.yituDao().findContentByUrl(url).map {
-            if (it == null || it.isEmpty()) {
-                return@map null
-            } else {
-                return@map it[0]
-            }
-
-        }
-        val networkSource = appService.get(url).map {
-            if (it.code !in 200..300 || it.data == null) {
-                return@map Resource.error("network error with {$url}", null)
-            }
-
-            it.data?.let {
-                val content = clean(it.string())
-                val yituEntity = YituEntity(0, content, url)
-                doAsync {
-                    appDatabase.transaction {
-                        appDatabase.yituDao().insert(yituEntity)
+    fun loadZenImageDetail(url: String) {
+        disposable.add(appDatabase.yituDao().findContentByUrl(url)
+                .flatMap {
+                    when {
+                        it.isEmpty() -> appService.getContent(url).map {
+                            val content = clean(it.string())
+                            val yituEntity = YituEntity(0, content, url)
+                            PentiResource.success(yituEntity)
+                        }
+                        else -> Flowable.just(PentiResource.success(it[0]))
                     }
                 }
-
-                return@map Resource.success(yituEntity)
-            }
-        }
-
-        result.addSource(dbSource) {
-            if (it == null) {
-                result.removeSource(dbSource)
-                result.addSource(networkSource) {
-                    if (it?.data != null) {
-                        result.value = it.data
-                    }
+                .doOnNext {
+                    LogUtils.d(Thread.currentThread().name)
+                    appDatabase.yituDao().insert(it.data)
                 }
-            } else {
-                result.value = it
-            }
-        }
-        return result
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { zenImage.value = it.data })
     }
 
     private fun clean(string: String?): String {
@@ -128,8 +93,8 @@ constructor(private val appService: IAppService, private val appDatabase: AppDat
         return zenImages?.map { ArticleEntity.zenImageWrap(it) } ?: emptyList()
     }
 
-    private fun zenImageWrap(articles: List<ArticleEntity>?): List<ZenImage> {
-        return articles?.map { ZenImage(it) } ?: emptyList()
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
-
 }

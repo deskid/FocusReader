@@ -14,9 +14,9 @@ import com.github.deskid.focusreader.api.data.Duanzi
 class DuanziItemRecyclerViewAdapter(private var mValues: MutableList<Duanzi>) : RecyclerView.Adapter<DuanziItemRecyclerViewAdapter.ViewHolder>() {
 
     fun addData(data: List<Duanzi>) {
-        val index = mValues.size
-        mValues.addAll(data)
-        notifyItemRangeChanged(index, mValues.size)
+        val set = LinkedHashSet<Duanzi>(mValues)
+        set.addAll(data)
+        swipeData(ArrayList<Duanzi>(set))
     }
 
     fun swipeData(data: List<Duanzi>) {
