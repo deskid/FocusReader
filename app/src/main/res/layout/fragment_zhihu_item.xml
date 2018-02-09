@@ -17,7 +17,7 @@
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <com.github.deskid.focusreader.widget.WebImageView
+        <com.github.deskid.focusreader.widget.image.WebImageView
             android:id="@+id/web_imageview"
             android:layout_width="100dp"
             android:layout_height="100dp"

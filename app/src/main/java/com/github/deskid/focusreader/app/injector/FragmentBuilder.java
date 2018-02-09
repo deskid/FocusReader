@@ -5,7 +5,7 @@ import com.github.deskid.focusreader.screens.penti.duanzi.DuanziFragment;
 import com.github.deskid.focusreader.screens.penti.tugua.TuGuaFragment;
 import com.github.deskid.focusreader.screens.penti.yitu.ZenImageDetailFragment;
 import com.github.deskid.focusreader.screens.penti.yitu.ZenImageFragment;
-import com.github.deskid.focusreader.screens.readhub.technews.NewsFragment;
+import com.github.deskid.focusreader.screens.readhub.news.NewsFragment;
 import com.github.deskid.focusreader.screens.readhub.technews.TechnewsFragment;
 import com.github.deskid.focusreader.screens.readhub.topic.TopicFragment;
 import com.github.deskid.focusreader.screens.zhihudaily.ZhihuFragment;

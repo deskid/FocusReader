@@ -8,19 +8,20 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.deskid.focusreader.R
+import com.github.deskid.focusreader.api.data.ErrorState
+import com.github.deskid.focusreader.api.data.LoadedState
+import com.github.deskid.focusreader.api.data.LoadingState
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_article_detail.*
-import javax.inject.Inject
 
 class ArticleDetailFragment : DaggerFragment() {
-    @Inject
-    lateinit var factory: ArticleDetailViewModel.Factory
 
     private val viewModel: ArticleDetailViewModel by lazyFast {
-        ViewModelProviders.of(this, factory).get(ArticleDetailViewModel::class.java)
+        ViewModelProviders.of(this).get(ArticleDetailViewModel::class.java)
     }
 
     lateinit var type: String
@@ -29,29 +30,35 @@ class ArticleDetailFragment : DaggerFragment() {
         return inflater.inflate(R.layout.fragment_article_detail, container, false)
     }
 
-    override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
-        type = arguments.getString("TYPE")
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
+        type = arguments?.getString("TYPE") ?: ""
 
         if (!TextUtils.isEmpty(type)) {
             load(type)
+            swiper.setOnRefreshListener {
+                load(type)
+            }
         }
 
-        swiper.setOnRefreshListener {
-            load(type)
-        }
-    }
+        viewModel.refreshState.observe(this, Observer {
+            when (it) {
+                is LoadingState -> swiper.refreshing = true
+                is LoadedState -> swiper.refreshing = false
+                is ErrorState -> Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            }
+        })
 
-    fun load(type: String) {
-        swiper.refreshing = true
-        viewModel.load(type).observe(this, Observer {
-            swiper.refreshing = false
+        viewModel.data.observe(this, Observer {
             it?.let {
                 author.text = it.data.author
                 title.text = it.data.title
                 content.text = Html.fromHtml(it.data.content)
             }
-
         })
+    }
+
+    fun load(type: String) {
+        viewModel.load(type)
     }
 
     companion object {

@@ -4,17 +4,17 @@
     <item
         android:id="@+id/navigation_zhihu"
         android:icon="@drawable/ic_zhihu"
-        android:title="知乎日报" />
+        android:title="@string/zhihu" />
 
     <item
         android:id="@+id/navigation_penti"
         android:icon="@drawable/ic_tugua"
-        android:title="喷嚏图卦" />
+        android:title="@string/penti" />
 
     <item
         android:id="@+id/navigation_articledaily"
         android:icon="@drawable/ic_articledaily"
-        android:title="每日一文" />
+        android:title="@string/article" />
 
     <item
         android:id="@+id/navigation_readhub"

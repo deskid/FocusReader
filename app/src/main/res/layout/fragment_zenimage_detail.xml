@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-        <com.github.deskid.focusreader.widget.WebImageView
+        <com.github.deskid.focusreader.widget.image.WebImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

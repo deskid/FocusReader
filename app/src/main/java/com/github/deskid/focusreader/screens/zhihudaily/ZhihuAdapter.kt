@@ -9,7 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Story
-import com.github.deskid.focusreader.widget.WebImageView
+import com.github.deskid.focusreader.widget.image.WebImageView
+import com.github.deskid.focusreader.widget.image.setImageUrl
 
 class ZhihuAdapter(private val activity: Activity, private val mValues: ArrayList<Story>) : RecyclerView.Adapter<ZhihuAdapter.ViewHolder>() {
     override fun getItemCount(): Int = mValues.size

@@ -63,7 +63,7 @@ class SafeWebView : WebView {
                 progressBar.show()
             }
 
-            override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
+            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest?): WebResourceResponse? {
                 return null
             }
 

@@ -3,6 +3,7 @@ package com.github.deskid.focusreader.activity
 import android.os.Bundle
 import android.view.View
 import com.github.deskid.focusreader.R
+import com.github.deskid.focusreader.widget.image.setImageUrl
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

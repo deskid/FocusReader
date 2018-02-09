@@ -8,22 +8,21 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
+import com.github.deskid.focusreader.api.data.ErrorState
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.ToolbarManager
+import com.github.deskid.focusreader.widget.image.setImageUrl
 import com.r0adkll.slidr.Slidr
 import kotlinx.android.synthetic.main.activity_web_view.*
 import org.jetbrains.anko.find
-import javax.inject.Inject
 
 class WebViewActivity : BaseActivity(), ToolbarManager {
 
-    @Inject
-    lateinit var factory: WebViewModel.WebViewModelFactory
-
-    private val webViewModel: WebViewModel by lazyFast {
-        ViewModelProviders.of(this, factory).get(WebViewModel::class.java)
+    private val webViewModel: TuGuaWebViewModel by lazyFast {
+        ViewModelProviders.of(this).get(TuGuaWebViewModel::class.java)
     }
 
     override val toolbar by lazyFast { find<Toolbar>(R.id.toolbar) }
@@ -56,13 +55,21 @@ class WebViewActivity : BaseActivity(), ToolbarManager {
         val pageImage = intent.getStringExtra("pageImage")
 
         if (!TextUtils.isEmpty(pageUrl)) {
-            webViewModel.getContent(pageUrl).observe(this, Observer {
-                webview_container.loadDataWithBaseURL("file:///android_asset/", it, "text/html", "UTF-8", null)
-            })
+            webViewModel.getContent(pageUrl)
         }
         if (!TextUtils.isEmpty(pageImage)) {
             toolbar_img.setImageUrl(pageImage)
         }
+
+        webViewModel.refreshState.observe(this, Observer {
+            when (it) {
+                is ErrorState -> Toast.makeText(this, it.msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        webViewModel.data.observe(this, Observer {
+            webview_container.loadDataWithBaseURL("file:///android_asset/", it, "text/html", "UTF-8", null)
+        })
 
         webview_container.isVerticalScrollBarEnabled = false
         webview_container.isHorizontalScrollBarEnabled = false

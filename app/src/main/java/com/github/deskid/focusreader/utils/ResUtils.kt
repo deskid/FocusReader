@@ -5,7 +5,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.util.TypedValue
 
-fun Context.dp2Px(dip: Int): Int {
+fun Context?.dp2Px(dip: Int): Int {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip.toFloat(), Resources.getSystem().displayMetrics).toInt()
 }
 
@@ -19,10 +19,10 @@ val Context.screenHeight: Int
 val Context.screenWidth: Int
     get() = Resources.getSystem().displayMetrics.widthPixels
 
-fun Context.getColorCompat(id: Int): Int {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        return getColor(id)
+fun Context?.getColorCompat(id: Int): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        this!!.getColor(id)
     } else {
-        return resources.getColor(id)
+        this!!.resources.getColor(id)
     }
 }

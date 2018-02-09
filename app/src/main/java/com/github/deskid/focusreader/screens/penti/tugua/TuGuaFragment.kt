@@ -6,12 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.api.data.NetworkState
+import com.github.deskid.focusreader.api.data.ErrorState
+import com.github.deskid.focusreader.api.data.LoadedState
+import com.github.deskid.focusreader.api.data.LoadingState
 import com.github.deskid.focusreader.api.data.TuGua
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
-import javax.inject.Inject
 
 class TuGuaFragment : ContentListFragment() {
 
@@ -21,28 +22,25 @@ class TuGuaFragment : ContentListFragment() {
 
     var currentPage: Int = 1
 
-    @Inject
-    lateinit var factory: TuGuaViewModel.TuGuaFactory
-
     private val viewModel: TuGuaViewModel by lazyFast {
-        ViewModelProviders.of(this, factory).get(TuGuaViewModel::class.java)
+        ViewModelProviders.of(this).get(TuGuaViewModel::class.java)
     }
 
     lateinit var adapter: TuGuaItemRecyclerViewAdapter
 
-    override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         adapter = TuGuaItemRecyclerViewAdapter(emptyList<TuGua>().toMutableList())
         view.adapter = adapter
 
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                NetworkState.LOADING -> swiper.refreshing = true
-                NetworkState.LOADED -> swiper.refreshing = false
-                else -> Toast.makeText(context, it?.msg, Toast.LENGTH_SHORT).show()
+                is LoadingState -> swiper.refreshing = true
+                is LoadedState -> swiper.refreshing = false
+                is ErrorState -> Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
-        viewModel.tuguas.observe(this, Observer {
+        viewModel.data.observe(this, Observer {
             it?.let {
                 adapter.addData(it)
             }

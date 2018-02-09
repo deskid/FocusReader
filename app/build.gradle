@@ -4,12 +4,14 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.github.deskid.focusreader"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,7 +32,7 @@ android {
 }
 
 ext {
-    support_version = '26.1.0'
+    support_version = '27.0.2'
     arch_version = '1.0.0'
 }
 
@@ -60,11 +62,11 @@ dependencies {
 //    implementation 'androidx.core:core-ktx:0.1'
 
     implementation "android.arch.persistence.room:runtime:$arch_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
-    implementation "android.arch.lifecycle:runtime:$arch_version"
-    implementation "android.arch.lifecycle:extensions:$arch_version"
+    kapt "android.arch.persistence.room:compiler:$arch_version"
+    implementation "android.arch.lifecycle:runtime:1.1.0"
+    implementation "android.arch.lifecycle:extensions:1.1.0"
     implementation "android.arch.persistence.room:rxjava2:$arch_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
+    kapt "android.arch.lifecycle:compiler:$arch_version"
 
     //retrofit
     implementation "com.google.code.gson:gson:2.8.1"
@@ -79,10 +81,10 @@ dependencies {
 
     //dagger
     implementation "com.google.dagger:dagger:2.11"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
+    kapt "com.google.dagger:dagger-compiler:2.11"
 
     // Dagger Android
-    annotationProcessor "com.google.dagger:dagger-android-processor:2.11"
+    kapt "com.google.dagger:dagger-android-processor:2.11"
     implementation "com.google.dagger:dagger-android-support:2.11"
     //if you are not using support library, include this instead
     //compile "com.google.dagger:dagger-android:2.11"
@@ -93,8 +95,9 @@ dependencies {
 
     //glide
     implementation 'com.github.florent37:glidepalette:2.1.1'
-    implementation 'com.github.bumptech.glide:glide:4.0.0'
-    //annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.6.1"
+    kapt 'com.github.bumptech.glide:compiler:4.6.1'
 
     //anko extension
     implementation "org.jetbrains.anko:anko-common:0.9.1"

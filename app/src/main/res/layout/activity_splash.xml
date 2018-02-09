@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.github.deskid.focusreader.activity.SplashActivity">
 
-    <com.github.deskid.focusreader.widget.WebImageView
+    <com.github.deskid.focusreader.widget.image.WebImageView
         android:id="@+id/web_imageview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

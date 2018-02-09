@@ -1,35 +1,29 @@
 package com.github.deskid.focusreader.screens.penti.duanzi
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import android.app.Application
 import com.github.deskid.focusreader.api.data.Duanzi
-import com.github.deskid.focusreader.api.data.NetworkState
-import com.github.deskid.focusreader.api.service.IAppService
-import com.github.deskid.focusreader.db.AppDatabase
+import com.github.deskid.focusreader.api.data.ErrorState
+import com.github.deskid.focusreader.api.data.LoadedState
+import com.github.deskid.focusreader.api.data.LoadingState
+import com.github.deskid.focusreader.app.App
+import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.ArticleEntity
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
 import org.jsoup.safety.Whitelist
-import javax.inject.Inject
 
-class DuanziViewModel @Inject
-constructor(private val appService: IAppService, private val appDatabase: AppDatabase) : ViewModel() {
-
-    val refreshState: MutableLiveData<NetworkState> = MutableLiveData()
-
-    val duanziList: MutableLiveData<List<Duanzi>> = MutableLiveData()
-
-    private val disposable: CompositeDisposable = CompositeDisposable()
+class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(application) {
+    override fun inject(app: App) {
+        app.appComponent().inject(this)
+    }
 
     fun load(page: Int = 1) {
         disposable.add(appService.getJoke(page)
                 .map { response ->
                     when {
                         response.error > 0 -> {
-                            refreshState.value = NetworkState.error(response.msg)
+                            refreshState.value = ErrorState(response.msg)
                             emptyList()
                         }
                         else -> {
@@ -41,27 +35,15 @@ constructor(private val appService: IAppService, private val appDatabase: AppDat
                 .doOnNext { appDatabase.articleDao().insertAll(articlesEntityWrap(it)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe({ refreshState.value = NetworkState.LOADING })
+                .doOnSubscribe({ refreshState.value = LoadingState() })
                 .subscribe({
-                    duanziList.value = it
-                    refreshState.value = NetworkState.LOADED
-                }, { refreshState.value = NetworkState.error(it.message) }))
-    }
-
-    class JokeFactory @Inject
-    constructor(private val mAppService: IAppService, private val mAppDatabase: AppDatabase) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return DuanziViewModel(mAppService, mAppDatabase) as T
-        }
+                    data.value = it
+                    refreshState.value = LoadedState()
+                }, { refreshState.value = ErrorState(it.message) }))
     }
 
     private fun articlesEntityWrap(duanzis: List<Duanzi>?): List<ArticleEntity> {
         return duanzis?.map { ArticleEntity.duanziWrap(it) } ?: emptyList()
-    }
-
-    private fun duanziWrap(articles: List<ArticleEntity>?): List<Duanzi> {
-        return articles?.map { Duanzi(it) } ?: emptyList()
     }
 
     private fun clean(string: String?): String {

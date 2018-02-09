@@ -9,7 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.ZenImage
-import com.github.deskid.focusreader.widget.WebImageView
+import com.github.deskid.focusreader.widget.image.WebImageView
+import com.github.deskid.focusreader.widget.image.setImageUrl
 import com.github.deskid.focusreader.widget.show
 
 class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {

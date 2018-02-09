@@ -2,8 +2,8 @@ package com.github.deskid.focusreader.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.support.v7.widget.AppCompatTextView
 import android.text.*
-import android.text.Layout.BREAK_STRATEGY_HIGH_QUALITY
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -13,12 +13,12 @@ import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.getColorCompat
 
-class ReadMoreTextView : TextView {
+class ReadMoreTextView : AppCompatTextView {
 
     companion object {
-        private val DEFAULT_TRIM_LINES = 4
-        private val ELLIPSIZE = "..."
-        private val DEFAULT_ENABLE_COLLAPSED_TEXT = true
+        private const val DEFAULT_TRIM_LINES = 4
+        private const val ELLIPSIZE = "..."
+        private const val DEFAULT_ENABLE_COLLAPSED_TEXT = true
         private val LINE_END = System.lineSeparator()
     }
 
@@ -90,7 +90,7 @@ class ReadMoreTextView : TextView {
         }
 
         highlightColor = Color.TRANSPARENT
-        breakStrategy = BREAK_STRATEGY_HIGH_QUALITY
+//        breakStrategy = BREAK_STRATEGY_HIGH_QUALITY
     }
 
     private fun getLineEndIndex() {

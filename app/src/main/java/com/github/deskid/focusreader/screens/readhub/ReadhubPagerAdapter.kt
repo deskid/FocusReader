@@ -3,7 +3,7 @@ package com.github.deskid.focusreader.screens.readhub
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.github.deskid.focusreader.screens.readhub.technews.NewsFragment
+import com.github.deskid.focusreader.screens.readhub.news.NewsFragment
 import com.github.deskid.focusreader.screens.readhub.technews.TechnewsFragment
 import com.github.deskid.focusreader.screens.readhub.topic.TopicFragment
 

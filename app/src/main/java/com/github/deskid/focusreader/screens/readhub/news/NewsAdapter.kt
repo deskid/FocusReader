@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.readhub.technews
+package com.github.deskid.focusreader.screens.readhub.news
 
 import android.annotation.SuppressLint
 import android.support.v7.util.DiffUtil
@@ -19,7 +19,7 @@ class NewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerView.A
     override fun getItemCount(): Int = topics.size
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: NewsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val index = holder.adapterPosition
         holder.titleView.text = topics[index].title
         if (topics[index].summary.isEmpty()) {
@@ -38,7 +38,7 @@ class NewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerView.A
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_readhub_topic_item, parent, false)
         return ViewHolder(view)

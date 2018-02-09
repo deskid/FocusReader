@@ -9,4 +9,7 @@
     <string name="readhub_title"><![CDATA[<font color="#20A0FF">READ</font><font color="#D3DCE6">HUB</font>]]></string>
     <string name="show_all_content">全文</string>
     <string name="hide_content">收起</string>
+    <string name="zhihu">知乎日报</string>
+    <string name="penti">喷嚏图卦</string>
+    <string name="article">每日一文</string>
 </resources>

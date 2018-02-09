@@ -2,7 +2,7 @@ package com.github.deskid.focusreader.screens.penti.yitu
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -11,7 +11,7 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.screenHeight
 import com.github.deskid.focusreader.utils.screenWidth
 
-class ZenImagePhotoViewDlg(context: Context, var drawable: Drawable?) : Dialog(context, R.style.transparentBgDialog) {
+class ZenImagePhotoViewDlg(context: Context?, var bitmap: Bitmap?) : Dialog(context, R.style.transparentBgDialog) {
 
     var photoView: PhotoView
 
@@ -33,6 +33,6 @@ class ZenImagePhotoViewDlg(context: Context, var drawable: Drawable?) : Dialog(c
         window.attributes = wl
 
         photoView.setOnPhotoTapListener { _, _, _ -> dismiss() }
-        photoView.setImageDrawable(drawable)
+        photoView.setImageBitmap(bitmap)
     }
 }

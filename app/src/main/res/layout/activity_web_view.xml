@@ -32,7 +32,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
-            <com.github.deskid.focusreader.widget.WebImageView
+            <com.github.deskid.focusreader.widget.image.WebImageView
                 android:id="@+id/toolbar_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

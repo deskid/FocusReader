@@ -10,31 +10,30 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.lazyFast
+import com.github.deskid.focusreader.widget.image.setImageUrl
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_zenimage_detail.*
-import javax.inject.Inject
 
 class ZenImageDetailFragment : DaggerFragment() {
-    @Inject
-    lateinit var factory: ZenImageViewModel.ZenImageFactory
 
-    private val viewModel: ZenImageViewModel by lazyFast {
-        ViewModelProviders.of(this, factory).get(ZenImageViewModel::class.java)
+    private val viewModel: ZenImageDetailViewModel by lazyFast {
+        ViewModelProviders.of(this).get(ZenImageDetailViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_zenimage_detail, container, false)
     }
 
-    override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
-        val pageUrl: String = arguments.getString("URL")
-        val pageImage = arguments.getString("IMG")
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
+        val pageUrl: String = arguments?.getString("URL") ?: ""
+        val pageImage = arguments?.getString("IMG") ?: ""
+
 
         if (!TextUtils.isEmpty(pageUrl)) {
             viewModel.loadZenImageDetail(pageUrl)
         }
 
-        viewModel.zenImage.observe(this, Observer {
+        viewModel.data.observe(this, Observer {
             description.text = it?.content
         })
 
@@ -55,16 +54,16 @@ class ZenImageDetailFragment : DaggerFragment() {
                         container.setBackgroundColor(swatch.rgb)
                     }
                 }
-            }) { drawable ->
+            }) { bitmap ->
                 image.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
                     override fun onPreDraw(): Boolean {
                         image.viewTreeObserver.removeOnPreDrawListener(this)
-                        activity.startPostponedEnterTransition()
+                        activity?.startPostponedEnterTransition()
                         return true
                     }
                 })
                 image.setOnClickListener {
-                    var dialog = ZenImagePhotoViewDlg(context, drawable)
+                    var dialog = ZenImagePhotoViewDlg(context, bitmap)
                     dialog.show()
                 }
             }

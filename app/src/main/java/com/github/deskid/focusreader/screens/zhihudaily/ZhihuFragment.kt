@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.api.data.NetworkState
+import com.github.deskid.focusreader.api.data.ErrorState
+import com.github.deskid.focusreader.api.data.LoadedState
+import com.github.deskid.focusreader.api.data.LoadingState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
-import javax.inject.Inject
 
 class ZhihuFragment : ContentListFragment() {
 
@@ -18,28 +19,25 @@ class ZhihuFragment : ContentListFragment() {
 
     private lateinit var date: String
 
-    @Inject
-    lateinit var factory: ZhihuViewModel.ZhihuFactory
-
     private val viewModel: ZhihuViewModel by lazyFast {
-        ViewModelProviders.of(this, factory).get(ZhihuViewModel::class.java)
+        ViewModelProviders.of(this).get(ZhihuViewModel::class.java)
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_zhihu_list
 
-    override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
-        adapter = ZhihuAdapter(activity, ArrayList())
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
+        adapter = ZhihuAdapter(activity!!, ArrayList())
         view.adapter = adapter
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                NetworkState.LOADING -> swiper.refreshing = true
-                NetworkState.LOADED -> swiper.refreshing = false
-                else -> Toast.makeText(context, it?.msg, Toast.LENGTH_SHORT).show()
+                is LoadingState -> swiper.refreshing = true
+                is LoadedState -> swiper.refreshing = false
+                is ErrorState -> Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
 
-        viewModel.zhihuList.observe(this, Observer {
+        viewModel.data.observe(this, Observer {
             it?.let {
                 adapter.addData(it.stories)
                 date = it.date

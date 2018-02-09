@@ -60,7 +60,7 @@
                 android:background="@drawable/round_btn_bg"
                 android:gravity="center_vertical"
                 android:padding="4dp"
-                android:text="即时读"
+                tools:text="即时读"
                 android:textColor="@color/colorGray" />
 
             <TextView

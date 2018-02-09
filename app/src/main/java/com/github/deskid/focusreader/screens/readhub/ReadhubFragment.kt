@@ -15,7 +15,7 @@ class ReadhubFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_readhub, container, false)
     }
 
-    override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         setUpViewPager()
         toolbar.title = Html.fromHtml(getString(R.string.readhub_title))
     }

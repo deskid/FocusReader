@@ -7,7 +7,9 @@ import android.view.View
 import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Duanzi
-import com.github.deskid.focusreader.api.data.NetworkState
+import com.github.deskid.focusreader.api.data.ErrorState
+import com.github.deskid.focusreader.api.data.LoadedState
+import com.github.deskid.focusreader.api.data.LoadingState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
@@ -18,29 +20,26 @@ class DuanziFragment : ContentListFragment() {
         return R.layout.fragment_jokeitem_list
     }
 
-    @Inject
-    lateinit var factory: DuanziViewModel.JokeFactory
-
     private var currentPage: Int = 1
 
     private val viewModel: DuanziViewModel by lazyFast {
-        ViewModelProviders.of(this, factory).get(DuanziViewModel::class.java)
+        ViewModelProviders.of(this).get(DuanziViewModel::class.java)
     }
 
     private lateinit var adapter: DuanziItemRecyclerViewAdapter
 
-    override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         adapter = DuanziItemRecyclerViewAdapter(emptyList<Duanzi>().toMutableList())
         view.adapter = adapter
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                NetworkState.LOADING -> swiper.refreshing = true
-                NetworkState.LOADED -> swiper.refreshing = false
-                else -> Toast.makeText(context, it?.msg, Toast.LENGTH_SHORT).show()
+                is LoadingState -> swiper.refreshing = true
+                is LoadedState -> swiper.refreshing = false
+                is ErrorState -> Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
-        viewModel.duanziList.observe(this, Observer {
+        viewModel.data.observe(this, Observer {
             it?.let {
                 adapter.addData(it)
             }

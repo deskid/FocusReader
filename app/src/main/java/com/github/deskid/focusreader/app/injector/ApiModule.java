@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.github.deskid.focusreader.api.Api;
 import com.github.deskid.focusreader.api.service.IAppService;
-import com.github.deskid.focusreader.utils.LiveDataCallAdapterFactory;
 import com.github.logutils.DebugUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -55,7 +54,6 @@ public class ApiModule {
                 .client(okhttpclient)
                 .baseUrl(BASE_URL)
                 .addConverterFactory(gsonConverterFactory)
-                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
@@ -63,24 +61,23 @@ public class ApiModule {
     @AppScope
     @Provides
     OkHttpClient provideHttpClient(HttpLoggingInterceptor logger, Cache cache) {
-        SSLSocketFactory sslSocketFactory = null;
+        SSLSocketFactory sslSocketFactory;
+        X509TrustManager trustManager = new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[]{};
+            }
+        };
         try {
-            final TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                        }
-
-                        @Override
-                        public X509Certificate[] getAcceptedIssuers() {
-                            return new X509Certificate[]{};
-                        }
-                    }
-            };
+            final TrustManager[] trustAllCerts = new TrustManager[]{trustManager};
 
             final SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, trustAllCerts, new SecureRandom());
@@ -100,7 +97,7 @@ public class ApiModule {
                 .cache(cache);
 
         if (DebugUtils.isDebug()) {
-            builder.sslSocketFactory(sslSocketFactory);
+            builder.sslSocketFactory(sslSocketFactory, trustManager);
         }
 
         return builder.build();

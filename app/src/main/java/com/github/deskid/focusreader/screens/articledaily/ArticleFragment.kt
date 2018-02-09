@@ -14,7 +14,7 @@ class ArticleFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_article, container, false)
     }
 
-    override fun onViewCreated(root: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         setUpViewPager()
     }
 
