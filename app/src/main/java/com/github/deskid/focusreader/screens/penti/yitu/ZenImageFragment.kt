@@ -1,9 +1,11 @@
 package com.github.deskid.focusreader.screens.penti.yitu
 
+import android.app.ActivityOptions
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.util.Pair
 import android.view.View
 import android.widget.Toast
 import com.github.deskid.focusreader.R
@@ -27,8 +29,11 @@ class ZenImageFragment : ContentListFragment() {
 
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         adapter = ZenItemRecyclerViewAdapter(ArrayList())
-        adapter.setOnClickListener { position, titleView,imageView, images ->
-            ZenImageDetailAct.start(activity!!, position, titleView, imageView, images)
+        adapter.setOnClickListener { position, images, holder ->
+            // val imagePair = Pair.create(imageView as View, imageView.transitionName)
+            val textPair = Pair.create(holder.mTitleView as View, holder.mTitleView.transitionName)
+            val options = ActivityOptions.makeSceneTransitionAnimation(activity, textPair).toBundle()
+            ZenImageDetailAct.start(activity!!, position, images, options)
         }
         view.adapter = adapter
 
@@ -36,7 +41,10 @@ class ZenImageFragment : ContentListFragment() {
             when (it) {
                 is LoadingState -> swiper.refreshing = true
                 is LoadedState -> swiper.refreshing = false
-                is ErrorState -> Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                is ErrorState -> {
+                    swiper.refreshing = false
+                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                }
             }
         })
 

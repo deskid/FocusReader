@@ -13,7 +13,6 @@ import com.github.deskid.focusreader.api.data.LoadingState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
-import javax.inject.Inject
 
 class DuanziFragment : ContentListFragment() {
     override fun getLayoutId(): Int {

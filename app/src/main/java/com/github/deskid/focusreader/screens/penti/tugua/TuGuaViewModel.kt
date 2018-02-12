@@ -8,6 +8,7 @@ import com.github.deskid.focusreader.api.data.TuGua
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.ArticleEntity
+import com.github.logutils.LogUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -35,7 +36,10 @@ class TuGuaViewModel(application: Application) : BaseViewModel<List<TuGua>>(appl
                 .subscribe({
                     data.value = it
                     refreshState.value = LoadedState()
-                }, { refreshState.value = ErrorState(it.message) }))
+                }, {
+                    LogUtils.logStackTrace(it)
+                    refreshState.value = ErrorState(it.message)
+                }))
     }
 
     private fun articlesEntityWrap(tuguas: List<TuGua>?): List<ArticleEntity> {

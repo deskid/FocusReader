@@ -10,7 +10,7 @@
     <color name="colorAccentDark">#1A553F</color>
 
     <color name="color_background_material_light">#fffafafa</color>
-
+    <color name="color_background_material_gray">#EDEDED</color>
 
     <color name="colorGray">#737984</color>
     <color name="text_white">#fff</color>

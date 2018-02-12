@@ -7,7 +7,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.image.setImageUrl
@@ -55,13 +54,7 @@ class ZenImageDetailFragment : DaggerFragment() {
                     }
                 }
             }) { bitmap ->
-                image.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
-                    override fun onPreDraw(): Boolean {
-                        image.viewTreeObserver.removeOnPreDrawListener(this)
-                        activity?.startPostponedEnterTransition()
-                        return true
-                    }
-                })
+                activity?.startPostponedEnterTransition()
                 image.setOnClickListener {
                     var dialog = ZenImagePhotoViewDlg(context, bitmap)
                     dialog.show()

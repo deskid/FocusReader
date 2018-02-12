@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.ZenImage
@@ -13,9 +12,11 @@ import com.github.deskid.focusreader.widget.image.WebImageView
 import com.github.deskid.focusreader.widget.image.setImageUrl
 import com.github.deskid.focusreader.widget.show
 
+typealias OnItemClicked = (position: Int, images: ArrayList<ZenImage>, holder: ZenItemRecyclerViewAdapter.ViewHolder) -> Unit
+
 class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : RecyclerView.Adapter<ZenItemRecyclerViewAdapter.ViewHolder>() {
 
-    private var mListener: ((position: Int, textView: TextView, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit)? = null
+    private var mListener: OnItemClicked? = null
 
     fun addData(data: List<ZenImage>) {
         val set = LinkedHashSet<ZenImage>(mValues)
@@ -49,7 +50,7 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
 
     }
 
-    fun setOnClickListener(block: (position: Int, textView: TextView, imageView: ImageView, images: ArrayList<ZenImage>) -> Unit) {
+    fun setOnClickListener(block: OnItemClicked) {
         mListener = block
     }
 
@@ -62,8 +63,8 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.mTitleView.text = mValues[position].title
 
-        holder.mTitleView.transitionName = mValues[position].url+"title"
-        holder.mWebImageView.transitionName = mValues[position].url+"image"
+        holder.mTitleView.transitionName = mValues[position].url + "title"
+        holder.mWebImageView.transitionName = mValues[position].url + "image"
 
         val imgurl = mValues[position].imgurl.replace("square", "medium")
         holder.mWebImageView.setImageUrl(imgurl, {
@@ -77,7 +78,7 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
         })
 
         holder.itemView.setOnClickListener {
-            mListener?.invoke(position, holder.mTitleView, holder.mWebImageView, mValues)
+            mListener?.invoke(position, mValues, holder)
         }
 
     }

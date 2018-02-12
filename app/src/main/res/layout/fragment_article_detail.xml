@@ -8,7 +8,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/text_article_bg_dark">
+        android:background="@color/color_background_material_light">
 
 
         <RelativeLayout
@@ -23,7 +23,7 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center"
                 android:padding="16dp"
-                android:textColor="@color/text_white"
+                android:textColor="@color/text_title"
                 android:textSize="21sp"
                 android:textStyle="bold"
                 tools:text="ssssssssss" />
@@ -35,8 +35,8 @@
                 android:layout_below="@+id/title"
                 android:gravity="center"
                 android:padding="4dp"
-                android:textColor="@color/text_white"
-                android:textSize="16sp"
+                android:textColor="@color/text_sub"
+                android:textSize="18sp"
                 android:textStyle="italic"
                 tools:text="ssssssssss" />
 
@@ -48,8 +48,8 @@
                 android:layout_margin="8dp"
                 android:lineSpacingMultiplier="1.5"
                 android:padding="4dp"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
+                android:textColor="@color/text_main"
+                android:textSize="16sp"
                 tools:text="ssssssssssss\nsss" />
 
         </RelativeLayout>

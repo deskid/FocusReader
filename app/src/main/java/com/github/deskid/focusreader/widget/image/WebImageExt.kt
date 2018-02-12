@@ -2,10 +2,13 @@ package com.github.deskid.focusreader.widget.image
 
 import android.graphics.Bitmap
 import android.support.v7.graphics.Palette
+import com.bumptech.glide.GenericTransitionOptions
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.widget.image.glide.GlideApp
+import com.github.logutils.LogUtils
 
 fun WebImageView.setImageUrl(url: String?) {
     if (url.isNullOrEmpty()) {
@@ -18,7 +21,6 @@ fun WebImageView.setImageUrl(url: String?) {
                 .asGif()
                 .load(url)
                 .placeholder(R.drawable.bg_img)
-                .centerCrop()
                 .error(R.drawable.bg_img)
                 .into(this)
     } else {
@@ -26,13 +28,18 @@ fun WebImageView.setImageUrl(url: String?) {
                 .asBitmap()
                 .load(url)
                 .placeholder(R.drawable.bg_img)
-                .centerCrop()
+                .thumbnail(0.5f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(GenericTransitionOptions.with(R.anim.alpha_in))
                 .error(R.drawable.bg_img)
                 .into(this)
     }
 }
 
-fun WebImageView.setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?) -> Unit)? = null, onImageLoaded: ((resource: Bitmap?) -> Unit)? = null) {
+typealias OnPaletteLoaded = (palette: Palette?) -> Unit
+typealias OnImageLoaded = (resource: Bitmap?) -> Unit
+
+fun WebImageView.setImageUrl(url: String?, onPaletteLoaded: OnPaletteLoaded? = null, onImageLoaded: OnImageLoaded? = null) {
     if (url.isNullOrEmpty()) {
         setImageBitmap(null)
         return
@@ -42,7 +49,6 @@ fun WebImageView.setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?)
                 .asGif()
                 .load(url)
                 .placeholder(R.drawable.bg_img)
-                .centerCrop()
                 .error(R.drawable.bg_img)
                 .into(this)
     } else {
@@ -51,15 +57,17 @@ fun WebImageView.setImageUrl(url: String?, onPaletteLoaded: ((palette: Palette?)
                 .load(url)
                 .placeholder(R.drawable.bg_img)
                 .thumbnail(0.5f)
-                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .transition(GenericTransitionOptions.with(R.anim.alpha_in))
                 .error(R.drawable.bg_img)
                 .into(object : BitmapImageViewTarget(this) {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                         super.onResourceReady(resource, transition)
+                        LogUtils.d("onResourceReady")
                         onImageLoaded?.invoke(resource)
                         onPaletteLoaded?.let {
                             resource.let {
-                                Palette.from(it).maximumColorCount(4).generate { palette ->
+                                Palette.from(it).maximumColorCount(10).generate { palette ->
                                     onPaletteLoaded.invoke(palette)
                                 }
                             }

@@ -32,12 +32,14 @@ class TuGuaFragment : ContentListFragment() {
         adapter = TuGuaItemRecyclerViewAdapter(emptyList<TuGua>().toMutableList())
         view.adapter = adapter
 
-
         viewModel.refreshState.observe(this, Observer {
             when (it) {
                 is LoadingState -> swiper.refreshing = true
                 is LoadedState -> swiper.refreshing = false
-                is ErrorState -> Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                is ErrorState -> {
+                    swiper.refreshing = false
+                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                }
             }
         })
         viewModel.data.observe(this, Observer {

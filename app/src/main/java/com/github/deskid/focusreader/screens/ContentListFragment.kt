@@ -1,6 +1,5 @@
 package com.github.deskid.focusreader.screens
 
-
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
@@ -52,6 +51,5 @@ abstract class ContentListFragment : DaggerFragment() {
 
     abstract fun loadMore()
 
-
-    protected open fun getItemOffset(): Int = context.dp2Px(10)
+    protected open fun getItemOffset(): Int = context.dp2Px(8)
 }

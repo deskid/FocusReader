@@ -31,7 +31,6 @@ class TopicFragment : ContentListFragment() {
         adapter = TopicAdapter(emptyList<Topic>().toMutableList())
         view.adapter = adapter
 
-
         viewModel.refreshState.observe(this, Observer {
             when (it) {
                 is LoadingState -> swiper.refreshing = true

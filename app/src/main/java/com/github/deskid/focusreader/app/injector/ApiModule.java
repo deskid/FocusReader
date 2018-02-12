@@ -107,7 +107,7 @@ public class ApiModule {
     @Provides
     HttpLoggingInterceptor provideInterceptor() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         return httpLoggingInterceptor;
     }
 

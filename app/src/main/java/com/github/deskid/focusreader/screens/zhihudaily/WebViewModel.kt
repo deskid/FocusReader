@@ -8,6 +8,7 @@ import com.github.deskid.focusreader.api.data.ZhihuDetail
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.ZhihuEntity
+import com.github.deskid.focusreader.utils.transaction
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -36,7 +37,11 @@ class WebViewModel(application: Application) : BaseViewModel<ZhihuDetail>(applic
                 it.isEmpty() -> appService.getZhihuDetail(id).map {
                     it.body = header + it.body + tail
                     it
-                }.doOnNext { appDatabase.zhihuDao().insert(ZhihuEntity(id, it.title, it.body, it.image)) }
+                }.doOnNext {
+                            appDatabase.transaction {
+                                appDatabase.zhihuDao().insert(ZhihuEntity(id, it.title, it.body, it.image))
+                            }
+                        }
                 else -> Flowable.just(ZhihuDetail(it[0].body, it[0].title, it[0].image))
             }
         }.subscribeOn(Schedulers.io())

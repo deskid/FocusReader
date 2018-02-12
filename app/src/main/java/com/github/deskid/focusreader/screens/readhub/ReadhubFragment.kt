@@ -22,7 +22,6 @@ class ReadhubFragment : Fragment() {
 
     private fun setUpViewPager() {
         pager.adapter = ReadhubPagerAdapter(childFragmentManager)
-        pager.currentItem = 0
         tabLayout.setupWithViewPager(pager)
     }
 

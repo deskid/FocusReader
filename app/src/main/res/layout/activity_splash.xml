@@ -1,7 +1,8 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/text_dark_fg_overlay"
     tools:context="com.github.deskid.focusreader.activity.SplashActivity">
 
     <com.github.deskid.focusreader.widget.image.WebImageView
@@ -21,4 +22,4 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
-</merge>
+</FrameLayout>

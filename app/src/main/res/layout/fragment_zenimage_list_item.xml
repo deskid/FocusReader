@@ -11,7 +11,9 @@
         android:id="@+id/web_imageview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:maxHeight="999dp"
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/title"

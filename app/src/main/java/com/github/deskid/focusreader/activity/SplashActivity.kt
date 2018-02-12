@@ -25,24 +25,32 @@ class SplashActivity : BaseActivity() {
         supportActionBar?.hide()
         fullscreen_content.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LOW_PROFILE or
-                        View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
         val disposable = splashViewModel.splashImage()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ imgUrl ->
-                    web_imageview.setImageUrl(imgUrl.data)
+                .subscribe({
+                    web_imageview.setImageUrl(it, {
+                        val textSwatch = it?.lightVibrantSwatch
+                        textSwatch?.let { swatch ->
+                            fullscreen_content.setTextColor(swatch.bodyTextColor)
+                        }
+                    }, {
+                        web_imageview.postDelayed({
+                            startActivity<MainActivity>()
+                            finish()
+                        }, 2000)
+                    })
                 }, {
                     toast(it.message ?: "something wrong")
                 })
 
         mCompositeDisposable.add(disposable)
-        startActivity<MainActivity>()
-        finish()
     }
 
     override fun onDestroy() {
