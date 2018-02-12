@@ -125,4 +125,12 @@ interface IAppService {
     @GET("https://api.readhub.me/news/")
     fun getReadhubNews(@Query("lastCursor") lastCursor: Long? = null,
                        @Query("pageSize") pageSize: Int = 10): Flowable<News>
+
+    /**
+     * 获取 即时查看-readhub
+     * @param topicId 话题Id.
+     * @return [News]
+     */
+    @GET("https://api.readhub.me/topic/instantview/")
+    fun getReadhubInstantView(@Query("topicId") topicId: String): Flowable<InstantView>
 }

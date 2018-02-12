@@ -4,6 +4,7 @@ import com.github.deskid.focusreader.activity.MainActivity;
 import com.github.deskid.focusreader.activity.SplashActivity;
 import com.github.deskid.focusreader.screens.penti.tugua.WebViewActivity;
 import com.github.deskid.focusreader.screens.penti.yitu.ZenImageDetailAct;
+import com.github.deskid.focusreader.screens.readhub.InstantViewActivity;
 import com.github.deskid.focusreader.screens.zhihudaily.ZhihuWebViewActivity;
 
 import dagger.Module;
@@ -25,4 +26,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     abstract ZenImageDetailAct injectZenImageDetailAct();
+
+    @ContributesAndroidInjector
+    abstract InstantViewActivity injectInstantViewActivity();
 }

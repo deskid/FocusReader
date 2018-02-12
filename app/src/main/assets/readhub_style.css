@@ -1,0 +1,33 @@
+p, pre {
+    font-size: 17px;
+    color: #333;
+    line-height: 1.8em;
+    margin-bottom: 27px;
+ }
+
+strong {
+     font-size: 17px;
+     color: #1b1b1b;
+     line-height: 1.8em;
+     font-weight: 600;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    color: #4b6fcb;
+    font-size: 17px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:focus {
+  outline: thin dotted;
+
+}
+a:active,
+a:hover {
+  outline: 0;
+}

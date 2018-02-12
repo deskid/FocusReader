@@ -32,7 +32,6 @@ class MainActivity : BaseActivity() {
         val navigationAdapter = AHBottomNavigationAdapter(this, R.menu.navigation)
         navigationAdapter.setupWithBottomNavigation(bottom_navigation)
         bottom_navigation.isBehaviorTranslationEnabled = true
-        bottom_navigation.currentItem = 1
         bottom_navigation.titleState = AHBottomNavigation.TitleState.ALWAYS_HIDE
         bottom_navigation.accentColor = getColorCompat(R.color.colorPrimary)
     }

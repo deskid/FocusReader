@@ -55,7 +55,7 @@ data class Extra(val instantView: Boolean)
 
 data class InstantView(val url: String,
                        val title: String,
-                       val content: String,
+                       var content: String,
                        val siteName: String,
                        val siteSlug: String)
 

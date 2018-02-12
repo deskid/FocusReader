@@ -89,7 +89,6 @@ dependencies {
     //if you are not using support library, include this instead
     //compile "com.google.dagger:dagger-android:2.11"
 
-
     //picasso
     //implementation 'com.squareup.picasso:picasso:2.5.2'
 
@@ -110,13 +109,16 @@ dependencies {
 
     //PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
-    
+
     //Slidr
     implementation 'com.r0adkll:slidableactivity:2.0.5'
 
     //log Utils
     implementation 'com.github.deskid:logutils:1.0.3'
+
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
 }
+
 
 
 

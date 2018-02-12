@@ -8,6 +8,7 @@ import com.github.deskid.focusreader.screens.penti.tugua.TuGuaViewModel;
 import com.github.deskid.focusreader.screens.penti.tugua.TuGuaWebViewModel;
 import com.github.deskid.focusreader.screens.penti.yitu.ZenImageDetailViewModel;
 import com.github.deskid.focusreader.screens.penti.yitu.ZenImageViewModel;
+import com.github.deskid.focusreader.screens.readhub.InstantViewModel;
 import com.github.deskid.focusreader.screens.readhub.news.NewsViewModel;
 import com.github.deskid.focusreader.screens.readhub.technews.TechnewsViewModel;
 import com.github.deskid.focusreader.screens.readhub.topic.TopicViewModel;
@@ -53,5 +54,6 @@ public interface AppComponent extends AndroidInjector<App> {
 
     void inject(TuGuaWebViewModel viewModel);
 
+    void inject(InstantViewModel viewModel);
 
 }

@@ -11,15 +11,22 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/fullscreen_content"
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="@color/text_white"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/fullscreen_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:keepScreenOn="true"
+            android:text="@string/dummy_content"
+            android:textColor="@color/text_white"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </FrameLayout>

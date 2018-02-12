@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Topic
+import com.github.deskid.focusreader.screens.readhub.InstantViewActivity
 import com.github.deskid.focusreader.utils.fromNow
 import com.github.deskid.focusreader.utils.launchUrlWithCustomTabs
 import com.github.deskid.focusreader.utils.toDate
@@ -43,7 +44,11 @@ class TopicAdapter : RecyclerView.Adapter<TopicAdapter.ViewHolder> {
         holder.siteView.text = topics[index].newsArray[0].siteName
         val context = holder.itemView.context
         holder.itemView.setOnClickListener {
-            context.launchUrlWithCustomTabs(topics[index].newsArray[0].mobileUrl)
+            if (topics[index].extra.instantView) {
+                InstantViewActivity.start(context, topics[index].id)
+            } else {
+                context.launchUrlWithCustomTabs(topics[index].newsArray[0].mobileUrl)
+            }
         }
     }
 

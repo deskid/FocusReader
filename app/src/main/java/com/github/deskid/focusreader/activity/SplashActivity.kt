@@ -1,7 +1,7 @@
 package com.github.deskid.focusreader.activity
 
 import android.os.Bundle
-import android.view.View
+import android.os.Handler
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.widget.image.setImageUrl
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,19 +17,21 @@ class SplashActivity : BaseActivity() {
     lateinit var splashViewModel: SplashViewModel
 
     private val mCompositeDisposable: CompositeDisposable = CompositeDisposable()
+    private val mHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_splash)
         supportActionBar?.hide()
-        fullscreen_content.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LOW_PROFILE or
-                View.SYSTEM_UI_FLAG_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        shimmer_view_container.startShimmerAnimation()
+//        fullscreen_content.systemUiVisibility =
+//                View.SYSTEM_UI_FLAG_LOW_PROFILE or
+//                View.SYSTEM_UI_FLAG_FULLSCREEN or
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+//                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+//                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+//                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
         val disposable = splashViewModel.splashImage()
                 .subscribeOn(Schedulers.io())
@@ -43,7 +45,8 @@ class SplashActivity : BaseActivity() {
                     }, {
                         web_imageview.postDelayed({
                             startActivity<MainActivity>()
-                            finish()
+                            overridePendingTransition(0, 0)
+                            mHandler.postDelayed({ finish() }, 2000)
                         }, 2000)
                     })
                 }, {
