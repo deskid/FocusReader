@@ -12,7 +12,7 @@ constructor(private val appService: IAppService) : ViewModel() {
             if (it.photos.isEmpty()) {
                 return@map ""
             }
-            return@map it.photos[0].image_url
+            return@map it.photos[0].image_url[0]
         }
     }
 }

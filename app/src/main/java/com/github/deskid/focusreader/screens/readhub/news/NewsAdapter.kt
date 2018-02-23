@@ -11,8 +11,8 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.SimpleTopic
 import com.github.deskid.focusreader.utils.fromNow
 import com.github.deskid.focusreader.utils.launchUrlWithCustomTabs
+import com.github.deskid.focusreader.utils.sub
 import com.github.deskid.focusreader.utils.toDate
-import com.github.deskid.focusreader.utils.withoutSuffix
 import com.github.deskid.focusreader.widget.ReadMoreTextView
 
 class NewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
@@ -21,21 +21,7 @@ class NewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerView.A
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val index = holder.adapterPosition
-        holder.titleView.text = topics[index].title
-        if (topics[index].summary.isEmpty()) {
-            holder.contentView.text = "暂无摘要"
-        } else {
-            holder.contentView.text = topics[index].summary
-        }
-        holder.contentView.setExpanded((holder.contentView.tag as Boolean?) ?: true)
-        holder.publishDateView.text = "${topics[index].publishDate.withoutSuffix().toDate().fromNow()}前"
-
-        holder.siteView.text = topics[index].siteName
-
-        val context = holder.itemView.context
-        holder.itemView.setOnClickListener {
-            context.launchUrlWithCustomTabs(topics[index].url)
-        }
+        holder.bindData(topics[index])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -74,11 +60,34 @@ class NewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerView.A
         topics.addAll(data)
     }
 
-    inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
-        val titleView: TextView = mView.findViewById(R.id.title)
-        val publishDateView: TextView = mView.findViewById(R.id.publish_date)
-        val contentView: ReadMoreTextView = mView.findViewById(R.id.content)
-        val siteView: TextView = mView.findViewById(R.id.instant_read)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val titleView: TextView = view.findViewById(R.id.title)
+        private val publishDateView: TextView = view.findViewById(R.id.publish_date)
+        private val contentView: ReadMoreTextView = view.findViewById(R.id.content)
+        private val siteView: TextView = view.findViewById(R.id.instant_read)
+
+
+        @SuppressLint("SetTextI18n")
+        fun bindData(topic: SimpleTopic) {
+            val context = itemView.context
+
+            titleView.text = topic.title
+            if (topic.summary.isEmpty()) {
+                contentView.text = "暂无摘要"
+            } else {
+                contentView.text = topic.summary
+            }
+            contentView.setExpanded((contentView.tag as Boolean?) ?: true)
+            publishDateView.text = "${topic.publishDate.sub().toDate().fromNow()}前"
+
+            siteView.text = topic.siteName
+
+            itemView.setOnClickListener {
+                context.launchUrlWithCustomTabs(topic.url)
+            }
+
+
+        }
     }
 
 }

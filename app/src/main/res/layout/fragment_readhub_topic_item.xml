@@ -84,7 +84,7 @@
                 android:drawableLeft="@drawable/ic_favorite_border_black_24dp"
                 android:gravity="center_vertical"
                 android:padding="4dp"
-                android:text="收藏"
+                android:text="@string/favorite"
                 android:textColor="@color/colorGray" />
 
             <TextView
@@ -96,7 +96,7 @@
                 android:drawableLeft="@drawable/ic_share_black_24dp"
                 android:gravity="center_vertical"
                 android:padding="4dp"
-                android:text="分享"
+                android:text="@string/share"
                 android:textColor="@color/colorGray" />
         </RelativeLayout>
 

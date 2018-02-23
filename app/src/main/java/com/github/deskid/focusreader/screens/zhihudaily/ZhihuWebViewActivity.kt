@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
-import com.github.deskid.focusreader.api.data.ErrorState
+import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.ToolbarManager
 import com.github.deskid.focusreader.widget.image.setImageUrl
@@ -48,7 +48,7 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
 
         webViewModel.refreshState.observe(this, Observer {
             when (it) {
-                is ErrorState -> Toast.makeText(this, it.msg, Toast.LENGTH_SHORT).show()
+                is UIState.ErrorState -> Toast.makeText(this, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
 

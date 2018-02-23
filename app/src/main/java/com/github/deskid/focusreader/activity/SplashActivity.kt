@@ -44,16 +44,26 @@ class SplashActivity : BaseActivity() {
                         }
                     }, {
                         web_imageview.postDelayed({
-                            startActivity<MainActivity>()
-                            overridePendingTransition(0, 0)
-                            mHandler.postDelayed({ finish() }, 2000)
+                            jumpMainAct()
                         }, 2000)
                     })
                 }, {
                     toast(it.message ?: "something wrong")
+                    jumpMainAct()
                 })
 
         mCompositeDisposable.add(disposable)
+    }
+
+    private fun jumpMainAct() {
+        startActivity<MainActivity>()
+        overridePendingTransition(0, 0)
+        mHandler.postDelayed({ finish() }, 2000)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        jumpMainAct()
     }
 
     override fun onDestroy() {

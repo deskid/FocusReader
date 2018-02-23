@@ -9,7 +9,8 @@ import android.text.TextUtils
 import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
-import com.github.deskid.focusreader.api.data.ErrorState
+import com.github.deskid.focusreader.api.data.UIState
+import com.github.deskid.focusreader.utils.launchUrlWithCustomTabs
 import com.github.deskid.focusreader.utils.lazyFast
 import com.r0adkll.slidr.Slidr
 import kotlinx.android.synthetic.main.activity_zhihu_web_view.*
@@ -32,11 +33,11 @@ class InstantViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_instant_view)
 
-        val id: String = intent.getStringExtra("topicId")
+        var id: String? = intent.getStringExtra("topicId")
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                is ErrorState -> Toast.makeText(this, it.msg, Toast.LENGTH_SHORT).show()
+                is UIState.ErrorState -> Toast.makeText(this, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
 
@@ -48,7 +49,18 @@ class InstantViewActivity : BaseActivity() {
         })
 
         if (!TextUtils.isEmpty(id)) {
-            viewModel.getContent(id)
+            viewModel.getContent(id!!)
+        } else {
+            val cid = intent.data.getQueryParameter("topicId")
+            val instantview = intent.data.getQueryParameter("instantView")
+            val mobileUrl = intent.data.getQueryParameter("mobileUrl")
+
+            if (instantview == "true") {
+                viewModel.getContent(cid)
+            } else {
+                launchUrlWithCustomTabs(mobileUrl)
+                finish()
+            }
         }
 
         webview_container.isVerticalScrollBarEnabled = false

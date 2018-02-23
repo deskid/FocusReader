@@ -8,10 +8,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.deskid.focusreader.R
+import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.utils.dp2Px
 import com.github.deskid.focusreader.utils.getColorCompat
 import com.github.deskid.focusreader.widget.ScrollableRecyclerView
+import com.github.deskid.focusreader.widget.refreshing
 import dagger.android.support.DaggerFragment
 
 abstract class ContentListFragment : DaggerFragment() {
@@ -52,4 +55,9 @@ abstract class ContentListFragment : DaggerFragment() {
     abstract fun loadMore()
 
     protected open fun getItemOffset(): Int = context.dp2Px(8)
+
+    protected open fun handleError(error: UIState.ErrorState) {
+        swiper.refreshing = false
+        Toast.makeText(context, error.msg, Toast.LENGTH_SHORT).show()
+    }
 }

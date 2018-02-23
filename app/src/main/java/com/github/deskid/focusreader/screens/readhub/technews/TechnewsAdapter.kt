@@ -11,8 +11,8 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.SimpleTopic
 import com.github.deskid.focusreader.utils.fromNow
 import com.github.deskid.focusreader.utils.launchUrlWithCustomTabs
+import com.github.deskid.focusreader.utils.sub
 import com.github.deskid.focusreader.utils.toDate
-import com.github.deskid.focusreader.utils.withoutSuffix
 import com.github.deskid.focusreader.widget.ReadMoreTextView
 
 class TechnewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerView.Adapter<TechnewsAdapter.ViewHolder>() {
@@ -28,7 +28,7 @@ class TechnewsAdapter(private val topics: MutableList<SimpleTopic>) : RecyclerVi
             holder.contentView.text = topics[index].summary
         }
         holder.contentView.setExpanded((holder.contentView.tag as Boolean?) ?: true)
-        holder.publishDateView.text = "${topics[index].publishDate.withoutSuffix().toDate().fromNow()}前"
+        holder.publishDateView.text = "${topics[index].publishDate.sub().toDate().fromNow()}前"
         holder.siteView.text = topics[index].siteName
 
         val context = holder.itemView.context

@@ -38,7 +38,6 @@ class ZhihuAdapter(private val activity: Activity, private val mValues: ArrayLis
     }
 
     fun swipeData(data: MutableList<Story>) {
-//        val data = data.filter { !it.title.contentEquals("这里是广告") }
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return mValues[oldItemPosition].id == data[newItemPosition].id

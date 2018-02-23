@@ -11,7 +11,7 @@ fun String.toDate(format: DateFormat =
     return format.parse(this)
 }
 
-fun String.withoutSuffix(): String {
+fun String.sub(): String {
     return this.substring(0, this.lastIndex)
 }
 

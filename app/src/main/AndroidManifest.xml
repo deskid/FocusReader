@@ -38,7 +38,7 @@
         <activity
             android:name=".screens.readhub.InstantViewActivity"
             android:theme="@style/AppTheme.SlidrTheme" />
-
+        <activity android:name=".favorite.FavorityAct"></activity>
     </application>
 
 </manifest>

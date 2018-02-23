@@ -12,4 +12,6 @@
     <string name="zhihu">知乎日报</string>
     <string name="penti">喷嚏图卦</string>
     <string name="article">每日一文</string>
+    <string name="favorite">收藏</string>
+    <string name="share">分享</string>
 </resources>

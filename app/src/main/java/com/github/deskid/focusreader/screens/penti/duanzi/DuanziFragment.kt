@@ -4,12 +4,9 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.Duanzi
-import com.github.deskid.focusreader.api.data.ErrorState
-import com.github.deskid.focusreader.api.data.LoadedState
-import com.github.deskid.focusreader.api.data.LoadingState
+import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
@@ -33,9 +30,9 @@ class DuanziFragment : ContentListFragment() {
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                is LoadingState -> swiper.refreshing = true
-                is LoadedState -> swiper.refreshing = false
-                is ErrorState -> Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                is UIState.LoadingState -> swiper.refreshing = true
+                is UIState.LoadedState -> swiper.refreshing = false
+                is UIState.ErrorState -> handleError(it)
             }
         })
         viewModel.data.observe(this, Observer {

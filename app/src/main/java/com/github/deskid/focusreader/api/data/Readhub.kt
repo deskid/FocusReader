@@ -1,5 +1,7 @@
 package com.github.deskid.focusreader.api.data
 
+import com.google.gson.annotations.SerializedName
+
 data class Topics(val data: ArrayList<Topic>,
                   val pageSize: Int,
                   val totalItems: Int,
@@ -69,8 +71,12 @@ data class SimpleTopic(val id: String,
                        val authorName: String,
                        val url: String,
                        val publishDate: String,
-                       val summary: String,
-                       val title: String)
+                       @SerializedName("summary")
+                       private val _summary: String?,
+                       val title: String) {
+    val summary: String
+        get() = _summary ?: ""
+}
 
 data class News(val data: ArrayList<SimpleTopic>,
                 val pageSize: Int,

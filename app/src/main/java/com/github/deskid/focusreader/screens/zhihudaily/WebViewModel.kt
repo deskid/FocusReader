@@ -1,9 +1,7 @@
 package com.github.deskid.focusreader.screens.zhihudaily
 
 import android.app.Application
-import com.github.deskid.focusreader.api.data.ErrorState
-import com.github.deskid.focusreader.api.data.LoadedState
-import com.github.deskid.focusreader.api.data.LoadingState
+import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.api.data.ZhihuDetail
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
@@ -46,11 +44,11 @@ class WebViewModel(application: Application) : BaseViewModel<ZhihuDetail>(applic
             }
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe({ refreshState.value = LoadingState() })
+                .doOnSubscribe({ refreshState.value = UIState.LoadingState() })
                 .subscribe({
                     data.value = it
-                    refreshState.value = LoadedState()
-                }, { refreshState.value = ErrorState(it.message) }))
+                    refreshState.value = UIState.LoadedState()
+                }, { refreshState.value = UIState.ErrorState(it.message) }))
 
     }
 }

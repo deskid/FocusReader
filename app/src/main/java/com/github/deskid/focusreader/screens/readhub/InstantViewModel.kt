@@ -1,10 +1,8 @@
 package com.github.deskid.focusreader.screens.readhub
 
 import android.app.Application
-import com.github.deskid.focusreader.api.data.ErrorState
 import com.github.deskid.focusreader.api.data.InstantView
-import com.github.deskid.focusreader.api.data.LoadedState
-import com.github.deskid.focusreader.api.data.LoadingState
+import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -37,10 +35,10 @@ class InstantViewModel(application: Application) : BaseViewModel<InstantView>(ap
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe({ refreshState.value = LoadingState() })
+                .doOnSubscribe({ refreshState.value = UIState.LoadingState() })
                 .subscribe({
                     data.value = it
-                    refreshState.value = LoadedState()
-                }, { refreshState.value = ErrorState(it.message) }))
+                    refreshState.value = UIState.LoadedState()
+                }, { refreshState.value = UIState.ErrorState(it.message) }))
     }
 }

@@ -20,6 +20,12 @@ fun Context.launchUrlWithCustomTabs(uri: Uri) {
     builder.setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back))
     builder.setShowTitle(true)
 
+//    val menuIntent = Intent()
+//    menuIntent.setClass(applicationContext, MainActivity::class.java)
+//    val pi = PendingIntent.getActivity(applicationContext, 0, menuIntent, 0)
+//    builder.addMenuItem("Menu entry 1", pi)
+
+    builder.addDefaultShareMenuItem()
     val customTabsIntent = builder.build()
     var intent = customTabsIntent.intent
     intent.data = uri

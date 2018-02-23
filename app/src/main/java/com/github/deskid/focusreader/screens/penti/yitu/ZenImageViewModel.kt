@@ -1,9 +1,7 @@
 package com.github.deskid.focusreader.screens.penti.yitu
 
 import android.app.Application
-import com.github.deskid.focusreader.api.data.ErrorState
-import com.github.deskid.focusreader.api.data.LoadedState
-import com.github.deskid.focusreader.api.data.LoadingState
+import com.github.deskid.focusreader.api.data.UIState.*
 import com.github.deskid.focusreader.api.data.ZenImage
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
