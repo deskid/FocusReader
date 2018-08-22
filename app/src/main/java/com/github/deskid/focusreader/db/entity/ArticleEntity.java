@@ -8,11 +8,13 @@ import com.github.deskid.focusreader.api.data.Duanzi;
 import com.github.deskid.focusreader.api.data.TuGua;
 import com.github.deskid.focusreader.api.data.ZenImage;
 
-@Entity(tableName = "articles", indices = {@Index(value = {"title", "description"}, unique = true)})
+@Entity(tableName = "articles", indices = {@Index(value = {"type", "description"}, unique = true)})
 public class ArticleEntity {
     @PrimaryKey(autoGenerate = true)
     public int id;
-    public int type; //1:yitu 2:tugua 3:duanzi
+
+    // *1:yitu 2:tugua 3:duanzi
+    public int type;
     public String title;
     public String author;
     public String pubDate;

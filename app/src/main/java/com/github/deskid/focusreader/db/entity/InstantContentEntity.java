@@ -4,20 +4,23 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "yitus", indices = {@Index(value = {"url"}, unique = true)})
-public class YituEntity {
+@Entity(tableName = "instant", indices = {@Index(value = {"url"}, unique = true)})
+public class InstantContentEntity {
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public int _id;
+    public String id;
     public String content;
     public String url;
-    public String imgurl;
     public String title;
+    public String siteName;
+    public String siteSlug;
 
-    public YituEntity(int id, String content, String url, String imgurl, String title) {
+    public InstantContentEntity(String id, String content, String url, String title, String siteName, String siteSlug) {
         this.id = id;
         this.content = content;
         this.url = url;
-        this.imgurl = imgurl;
         this.title = title;
+        this.siteName = siteName;
+        this.siteSlug = siteSlug;
     }
 }

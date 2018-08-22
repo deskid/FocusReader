@@ -47,6 +47,8 @@ class SafeWebView : WebView {
             settings.mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
         }
 
+        setWebContentsDebuggingEnabled(true)
+
         webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)

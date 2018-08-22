@@ -1,6 +1,7 @@
 package com.github.deskid.focusreader.screens.readhub.topic
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import com.github.deskid.focusreader.api.data.Topics
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.app.App
@@ -19,7 +20,7 @@ class TopicViewModel(application: Application) : BaseViewModel<Topics>(applicati
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe({ refreshState.value = UIState.LoadingState() })
                 .subscribe({
-                    data.value = it
+                    (getLiveData() as MutableLiveData).value = it
                     refreshState.value = UIState.LoadedState()
                 }, { refreshState.value = UIState.ErrorState(it.message) }))
     }

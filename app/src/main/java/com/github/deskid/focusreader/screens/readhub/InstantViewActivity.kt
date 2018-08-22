@@ -41,15 +41,14 @@ class InstantViewActivity : BaseActivity() {
             }
         })
 
-        viewModel.data.observe(this, Observer {
-            it?.let {
-                webview_container.loadDataWithBaseURL("file:///android_asset/", it.content, "text/html", "UTF-8", null)
-                toolbar_title.text = it.title
-            }
-        })
-
         if (!TextUtils.isEmpty(id)) {
             viewModel.getContent(id!!)
+            viewModel.getLiveData().observe(this, Observer {
+                it?.let {
+                    webview_container.loadDataWithBaseURL("file:///android_asset/", it.content, "text/html", "UTF-8", null)
+                    toolbar_title.text = it.title
+                }
+            })
         } else {
             val cid = intent.data.getQueryParameter("topicId")
             val instantview = intent.data.getQueryParameter("instantView")
@@ -57,11 +56,18 @@ class InstantViewActivity : BaseActivity() {
 
             if (instantview == "true") {
                 viewModel.getContent(cid)
+                viewModel.getLiveData().observe(this, Observer {
+                    it?.let {
+                        webview_container.loadDataWithBaseURL("file:///android_asset/", it.content, "text/html", "UTF-8", null)
+                        toolbar_title.text = it.title
+                    }
+                })
             } else {
                 launchUrlWithCustomTabs(mobileUrl)
                 finish()
             }
         }
+
 
         webview_container.isVerticalScrollBarEnabled = false
         webview_container.isHorizontalScrollBarEnabled = false

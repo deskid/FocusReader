@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d743b5b38fa02eb8e61ce7ed06efae1c",
+    "identityHash": "6707e792ddd9012dae7ed198647bb4b3",
     "entities": [
       {
         "tableName": "articles",
@@ -65,13 +65,13 @@
         },
         "indices": [
           {
-            "name": "index_articles_title_description",
+            "name": "index_articles_type_description",
             "unique": true,
             "columnNames": [
-              "title",
+              "type",
               "description"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_articles_title_description` ON `${TABLE_NAME}` (`title`, `description`)"
+            "createSql": "CREATE UNIQUE INDEX `index_articles_type_description` ON `${TABLE_NAME}` (`type`, `description`)"
           }
         ],
         "foreignKeys": []
@@ -125,7 +125,7 @@
       },
       {
         "tableName": "yitus",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT, `url` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT, `url` TEXT, `imgurl` TEXT, `title` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -142,6 +142,18 @@
           {
             "fieldPath": "url",
             "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imgurl",
+            "columnName": "imgurl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -210,11 +222,136 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "dayilyArticles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `type` TEXT, `title` TEXT, `author` TEXT, `content` TEXT, `digest` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "digest",
+            "columnName": "digest",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_dayilyArticles_title_author",
+            "unique": true,
+            "columnNames": [
+              "title",
+              "author"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_dayilyArticles_title_author` ON `${TABLE_NAME}` (`title`, `author`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "instant",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT, `content` TEXT, `url` TEXT, `title` TEXT, `siteName` TEXT, `siteSlug` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "_id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "siteName",
+            "columnName": "siteName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "siteSlug",
+            "columnName": "siteSlug",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_instant_url",
+            "unique": true,
+            "columnNames": [
+              "url"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_instant_url` ON `${TABLE_NAME}` (`url`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d743b5b38fa02eb8e61ce7ed06efae1c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6707e792ddd9012dae7ed198647bb4b3\")"
     ]
   }
 }

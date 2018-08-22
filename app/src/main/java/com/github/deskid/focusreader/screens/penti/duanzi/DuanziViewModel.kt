@@ -1,6 +1,8 @@
 package com.github.deskid.focusreader.screens.penti.duanzi
 
 import android.app.Application
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import com.github.deskid.focusreader.api.data.Duanzi
 import com.github.deskid.focusreader.api.data.UIState.*
 import com.github.deskid.focusreader.app.App
@@ -16,7 +18,17 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
         app.appComponent().inject(this)
     }
 
+    private var mPage: Int = 1
+
+    override fun getLiveData(): LiveData<List<Duanzi>?> {
+        return Transformations.map(appDatabase.articleDao().findArticleByType(3, mPage)) {
+            it.map { Duanzi(it) }
+        }
+    }
+
     fun load(page: Int = 1) {
+        mPage = page
+
         disposable.add(appService.getJoke(page)
                 .map { response ->
                     when {
@@ -33,9 +45,9 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
                 .doOnNext { appDatabase.articleDao().insertAll(articlesEntityWrap(it)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe({ refreshState.value = LoadingState() })
+                .doOnSubscribe { refreshState.value = LoadingState() }
                 .subscribe({
-                    data.value = it
+                    //                    (data as MutableLiveData).value = it
                     refreshState.value = LoadedState()
                 }, { refreshState.value = ErrorState(it.message) }))
     }

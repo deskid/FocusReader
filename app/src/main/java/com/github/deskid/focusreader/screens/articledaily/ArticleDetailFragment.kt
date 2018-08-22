@@ -49,7 +49,7 @@ class ArticleDetailFragment : DaggerFragment() {
             }
         })
 
-        viewModel.data.observe(this, Observer {
+        viewModel.getLiveData().observe(this, Observer {
             it?.let {
                 author.text = it.data.author
                 title.text = it.data.title

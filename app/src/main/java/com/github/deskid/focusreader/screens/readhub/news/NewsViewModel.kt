@@ -1,6 +1,7 @@
 package com.github.deskid.focusreader.screens.readhub.news
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import com.github.deskid.focusreader.api.data.News
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.app.App
@@ -17,9 +18,9 @@ class NewsViewModel(application: Application) : BaseViewModel<News>(application)
         disposable.add(appService.getReadhubNews(lastCursor)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe({ refreshState.value = UIState.LoadingState() })
+                .doOnSubscribe { refreshState.value = UIState.LoadingState() }
                 .subscribe({
-                    data.value = it
+                    (getLiveData() as MutableLiveData).value  = it
                     refreshState.value = UIState.LoadedState()
                 }, { refreshState.value = UIState.ErrorState(it.message) }))
     }

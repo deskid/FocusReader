@@ -26,7 +26,7 @@ interface IAppService {
      * @param limitNum 每页offset.
      * @return [ZenImage]
      */
-    @GET("http://appb.dapenti.com/index.php?s=/Home/api/tugua")
+    @GET("https://appb.dapenti.com/index.php?s=/Home/api/tugua")
     fun getTuGua(@Query("p") pageNum: Int = 1,
                  @Query("limit") limitNum: Int = 10): Flowable<Data<List<TuGua>>>
 
@@ -36,9 +36,9 @@ interface IAppService {
      * @param limitNum 每页offset.
      * @return [ZenImage]
      */
-    @GET("http://appb.dapenti.com/index.php?s=/Home/api/yitu")
+    @GET("https://appb.dapenti.com/index.php?s=/Home/api/yitu")
     fun getZenImage(@Query("p") pageNum: Int = 1,
-                    @Query("limit") limitNum: Int = 5): Flowable<Data<List<ZenImage>>>
+                    @Query("limit") limitNum: Int = 10): Flowable<Data<List<ZenImage>>>
 
     /**
      * 获取 段子-喷嚏图卦
@@ -46,7 +46,7 @@ interface IAppService {
      * @param limitNum 每页offset.
      * @return [Duanzi]
      */
-    @GET("http://appb.dapenti.com/index.php?s=/Home/api/duanzi")
+    @GET("https://appb.dapenti.com/index.php?s=/Home/api/duanzi")
     fun getJoke(@Query("p") pageNum: Int = 1,
                 @Query("limit") limitNum: Int = 10): Flowable<Data<List<Duanzi>>>
 

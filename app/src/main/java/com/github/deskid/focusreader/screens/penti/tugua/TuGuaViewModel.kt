@@ -1,12 +1,12 @@
 package com.github.deskid.focusreader.screens.penti.tugua
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import com.github.deskid.focusreader.api.data.TuGua
 import com.github.deskid.focusreader.api.data.UIState.*
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.ArticleEntity
-import com.github.logutils.LogUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -16,6 +16,11 @@ class TuGuaViewModel(application: Application) : BaseViewModel<List<TuGua>>(appl
     }
 
     fun load(page: Int = 1) {
+
+//        data = appDatabase.articleDao().findArticleByType(2, page).map {
+//            it.map { TuGua(it) }
+//        }
+
         disposable.add(appService.getTuGua(page)
                 .map { response ->
                     when {
@@ -24,23 +29,24 @@ class TuGuaViewModel(application: Application) : BaseViewModel<List<TuGua>>(appl
                             emptyList()
                         }
                         else -> {
-                            response.data?.filter { !it.title.contentEquals("AD") }
+                            response.data = response.data?.filter {
+                                !it.title.contentEquals("AD")
+                            }
+                            response.data
                         }
                     }
-                }.doOnNext { appDatabase.articleDao().insertAll(articlesEntityWrap(it)) }
+                }.doOnNext {
+                    it?.map {
+                        appDatabase.articleDao().insert(ArticleEntity.tuguaWrap(it))
+                    }
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe({ refreshState.value = LoadingState() })
+                .doOnSubscribe { refreshState.value = LoadingState() }
                 .subscribe({
-                    data.value = it
+                    (getLiveData() as MutableLiveData).value = it
                     refreshState.value = LoadedState()
-                }, {
-                    LogUtils.logStackTrace(it)
-                    refreshState.value = ErrorState(it.message)
-                }))
-    }
+                }, { refreshState.value = ErrorState(it.message) }))
 
-    private fun articlesEntityWrap(tuguas: List<TuGua>?): List<ArticleEntity> {
-        return tuguas?.map { ArticleEntity.tuguaWrap(it) } ?: emptyList()
     }
 }

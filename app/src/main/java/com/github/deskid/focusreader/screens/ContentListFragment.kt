@@ -21,13 +21,19 @@ abstract class ContentListFragment : DaggerFragment() {
 
     abstract fun getLayoutId(): Int
 
+    private var mContentView: View? = null
+    private var mIsNeedInitData: Boolean = true
     protected lateinit var view: ScrollableRecyclerView
     protected lateinit var swiper: SwipeRefreshLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val content = inflater.inflate(getLayoutId(), container, false)
-        swiper = content.findViewById(R.id.swiper)
+        if (mContentView != null) {
+            mIsNeedInitData = false
+        }
+
+        mContentView = inflater.inflate(getLayoutId(), container, false)
+        swiper = mContentView!!.findViewById(R.id.swiper)
         swiper.setColorSchemeColors(context.getColorCompat(R.color.colorPrimaryLight))
         view = swiper.findViewById(R.id.list)
         view.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -42,12 +48,14 @@ abstract class ContentListFragment : DaggerFragment() {
         view.loadMoreListener = { loadMore() }
         swiper.setOnRefreshListener { load() }
 
-        return content
+        return mContentView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        load()
+        if (mIsNeedInitData) {
+            load()
+        }
     }
 
     abstract fun load()

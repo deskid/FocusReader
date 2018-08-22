@@ -2,6 +2,7 @@ package com.github.deskid.focusreader.base
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.api.service.IAppService
@@ -28,12 +29,15 @@ abstract class BaseViewModel<T>(application: Application) : AndroidViewModel(app
 
     val disposable: CompositeDisposable = CompositeDisposable()
 
-    val data: MutableLiveData<T> = MutableLiveData()
+    private var data: LiveData<T?> = MutableLiveData()
+
+    open fun getLiveData(): LiveData<T?> {
+        return data
+    }
 
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
     }
-
 
 }

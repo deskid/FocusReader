@@ -52,7 +52,7 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
             }
         })
 
-        webViewModel.data.observe(this, Observer {
+        webViewModel.getLiveData().observe(this, Observer {
             it?.let {
                 webview_container.loadDataWithBaseURL("file:///android_asset/", it.body, "text/html", "UTF-8", null)
                 toolbar_img.setImageUrl(it.image)

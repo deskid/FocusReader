@@ -34,7 +34,7 @@ class ZhihuFragment : ContentListFragment() {
             }
         })
 
-        viewModel.data.observe(this, Observer {
+        viewModel.getLiveData().observe(this, Observer {
             it?.let {
                 adapter.addData(it.stories)
                 date = it.date

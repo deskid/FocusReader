@@ -35,7 +35,7 @@ class DuanziFragment : ContentListFragment() {
                 is UIState.ErrorState -> handleError(it)
             }
         })
-        viewModel.data.observe(this, Observer {
+        viewModel.getLiveData().observe(this, Observer {
             it?.let {
                 adapter.addData(it)
             }

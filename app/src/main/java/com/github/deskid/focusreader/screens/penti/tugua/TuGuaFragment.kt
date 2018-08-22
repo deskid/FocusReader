@@ -36,7 +36,7 @@ class TuGuaFragment : ContentListFragment() {
                 is ErrorState -> handleError(it)
             }
         })
-        viewModel.data.observe(this, Observer {
+        viewModel.getLiveData().observe(this, Observer {
             it?.let {
                 adapter.addData(it)
             }

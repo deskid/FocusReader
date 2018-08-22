@@ -9,8 +9,8 @@ import com.github.deskid.focusreader.api.data.SimpleTopic
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
-import com.github.deskid.focusreader.utils.toDate
 import com.github.deskid.focusreader.utils.sub
+import com.github.deskid.focusreader.utils.toDate
 import com.github.deskid.focusreader.widget.refreshing
 
 class TechnewsFragment : ContentListFragment() {
@@ -38,7 +38,7 @@ class TechnewsFragment : ContentListFragment() {
             }
         })
 
-        viewModel.data.observe(this, Observer {
+        viewModel.getLiveData().observe(this, Observer {
             it?.let {
                 adapter.addData(it.data)
                 lastCursor = when {

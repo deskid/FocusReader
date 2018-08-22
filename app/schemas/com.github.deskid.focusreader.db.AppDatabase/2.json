@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "d743b5b38fa02eb8e61ce7ed06efae1c",
+    "identityHash": "781af6a21cef69e3688ea74791300cb5",
     "entities": [
       {
         "tableName": "articles",
@@ -125,7 +125,7 @@
       },
       {
         "tableName": "yitus",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT, `url` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT, `url` TEXT, `imgurl` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -142,6 +142,12 @@
           {
             "fieldPath": "url",
             "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "imgurl",
+            "columnName": "imgurl",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -210,11 +216,33 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "DailyArticleDao",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` ()",
+        "fields": [],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "InstantContentDao",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` ()",
+        "fields": [],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d743b5b38fa02eb8e61ce7ed06efae1c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"781af6a21cef69e3688ea74791300cb5\")"
     ]
   }
 }

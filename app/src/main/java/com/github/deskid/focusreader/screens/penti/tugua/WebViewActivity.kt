@@ -67,7 +67,7 @@ class WebViewActivity : BaseActivity(), ToolbarManager {
             }
         })
 
-        webViewModel.data.observe(this, Observer {
+        webViewModel.getLiveData().observe(this, Observer {
             webview_container.loadDataWithBaseURL("file:///android_asset/", it, "text/html", "UTF-8", null)
         })
 
