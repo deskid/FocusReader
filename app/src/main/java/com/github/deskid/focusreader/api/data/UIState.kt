@@ -6,4 +6,6 @@ sealed class UIState {
     open class LoadedState : UIState()
 
     data class ErrorState(val msg: String?) : UIState()
+
+    open class NetworkErrorState : UIState()
 }

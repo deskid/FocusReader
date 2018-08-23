@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6707e792ddd9012dae7ed198647bb4b3",
+    "identityHash": "cbbf8e90c495538dcb48c6e4a36dd802",
     "entities": [
       {
         "tableName": "articles",
@@ -125,7 +125,7 @@
       },
       {
         "tableName": "yitus",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT, `url` TEXT, `imgurl` TEXT, `title` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `content` TEXT, `url` TEXT, `imgurl` TEXT, `title` TEXT, `description` TEXT, `author` TEXT, `pubDate` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -154,6 +154,24 @@
           {
             "fieldPath": "title",
             "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pubDate",
+            "columnName": "pubDate",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -351,7 +369,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6707e792ddd9012dae7ed198647bb4b3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"cbbf8e90c495538dcb48c6e4a36dd802\")"
     ]
   }
 }

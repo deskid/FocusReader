@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
 import com.github.deskid.focusreader.api.data.UIState
@@ -33,11 +32,11 @@ class InstantViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_instant_view)
 
-        var id: String? = intent.getStringExtra("topicId")
+        val id: String? = intent.getStringExtra("topicId")
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                is UIState.ErrorState -> Toast.makeText(this, it.msg, Toast.LENGTH_SHORT).show()
+                is UIState.ErrorState, is UIState.NetworkErrorState -> handleError(it)
             }
         })
 

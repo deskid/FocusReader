@@ -14,4 +14,5 @@
     <string name="article">每日一文</string>
     <string name="favorite">收藏</string>
     <string name="share">分享</string>
+    <string name="network_error">网络有问题？</string>
 </resources>

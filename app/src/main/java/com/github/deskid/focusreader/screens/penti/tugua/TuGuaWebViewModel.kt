@@ -3,7 +3,6 @@ package com.github.deskid.focusreader.screens.penti.tugua
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
-import com.github.deskid.focusreader.api.data.UIState.*
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.WebContentEntity
@@ -33,10 +32,9 @@ class TuGuaWebViewModel(application: Application) : BaseViewModel<String>(applic
 
     override fun getLiveData(): LiveData<String?> {
         return Transformations.map(appDatabase.webContentDao().query(mUrl)) {
-            if (it.isNotEmpty()) {
-                it[0].content
-            } else {
-                null
+            when {
+                it.isNotEmpty() -> it[0].content
+                else -> null
             }
         }
     }
@@ -48,10 +46,8 @@ class TuGuaWebViewModel(application: Application) : BaseViewModel<String>(applic
                 .doOnNext { appDatabase.webContentDao().insert(WebContentEntity(0, 0, it, url)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = LoadingState() }
-                .subscribe({
-                    refreshState.value = LoadedState()
-                }, { refreshState.value = ErrorState(it.message) }))
+                .doOnSubscribe(onLoading)
+                .subscribe(onLoaded, onError))
 
     }
 

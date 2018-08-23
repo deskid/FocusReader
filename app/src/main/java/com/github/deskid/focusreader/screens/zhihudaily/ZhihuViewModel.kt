@@ -2,7 +2,6 @@ package com.github.deskid.focusreader.screens.zhihudaily
 
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
-import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.api.data.Zhihu
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
@@ -22,21 +21,21 @@ class ZhihuViewModel(application: Application) : BaseViewModel<Zhihu>(applicatio
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = UIState.LoadingState() }
+                .doOnSubscribe(onLoading)
                 .subscribe({
                     (getLiveData() as MutableLiveData).value = it
-                    refreshState.value = UIState.LoadedState()
-                }, { refreshState.value = UIState.ErrorState(it.message) }))
+                    onLoaded(it)
+                }, onError))
     }
 
     fun loadMore(date: String) {
         disposable.add(appService.getZhihuHistory(date)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = UIState.LoadingState() }
+                .doOnSubscribe(onLoading)
                 .subscribe({
                     (getLiveData() as MutableLiveData).value = it
-                    refreshState.value = UIState.LoadedState()
-                }, { refreshState.value = UIState.ErrorState(it.message) }))
+                    onLoaded(it)
+                }, onError))
     }
 }

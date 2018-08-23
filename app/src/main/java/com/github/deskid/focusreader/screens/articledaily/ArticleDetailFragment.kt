@@ -10,7 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.github.deskid.focusreader.R
-import com.github.deskid.focusreader.api.data.UIState.*
+import com.github.deskid.focusreader.api.data.UIState
+
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
 import dagger.android.support.DaggerFragment
@@ -40,11 +41,15 @@ class ArticleDetailFragment : DaggerFragment() {
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                is LoadingState -> swiper.refreshing = true
-                is LoadedState -> swiper.refreshing = false
-                is ErrorState -> {
+                is UIState.LoadingState -> swiper.refreshing = true
+                is UIState.LoadedState -> swiper.refreshing = false
+                is UIState.ErrorState -> {
                     swiper.refreshing = false
                     Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                }
+                is UIState.NetworkErrorState -> {
+                    swiper.refreshing = false
+                    Toast.makeText(context, getString(R.string.network_error), Toast.LENGTH_SHORT).show()
                 }
             }
         })

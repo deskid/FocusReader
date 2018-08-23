@@ -32,7 +32,7 @@ class TopicFragment : ContentListFragment() {
             when (it) {
                 is UIState.LoadingState -> swiper.refreshing = true
                 is UIState.LoadedState -> swiper.refreshing = false
-                is UIState.ErrorState -> handleError(it)
+                is UIState.ErrorState, is UIState.NetworkErrorState -> handleError(it)
             }
         })
 

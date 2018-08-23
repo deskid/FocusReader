@@ -2,12 +2,11 @@ package com.github.deskid.focusreader.screens.readhub
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
 import com.github.deskid.focusreader.api.data.InstantView
-import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
-import com.github.deskid.focusreader.db.entity.InstantContentEntity
+import com.github.deskid.focusreader.db.entity.InstantViewEntity
+import com.github.deskid.focusreader.utils.map
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -33,11 +32,10 @@ class InstantViewModel(application: Application) : BaseViewModel<InstantView>(ap
     </html>"""
 
     override fun getLiveData(): LiveData<InstantView?> {
-        return Transformations.map(appDatabase.instantContentDao().query(mId)) {
-            if (it.isNotEmpty()) {
-                InstantView(it[0].url, it[0].title, it[0].content, it[0].siteName, it[0].siteSlug)
-            } else {
-                null
+        return appDatabase.instantContentDao().query(mId).map {
+            when {
+                it.isNotEmpty() -> InstantView(it[0])
+                else -> null
             }
         }
     }
@@ -45,26 +43,13 @@ class InstantViewModel(application: Application) : BaseViewModel<InstantView>(ap
     fun getContent(id: String) {
         mId = id
         disposable.add(appService.getReadhubInstantView(id)
-                .map {
-                    it.content = header + it.content + tail
-                    it
-                }
+                .map { it.apply { content = header + content + tail } }
                 .doOnNext {
-                    appDatabase.instantContentDao().insert(
-                            InstantContentEntity(
-                                    id,
-                                    it.content,
-                                    it.url,
-                                    it.title,
-                                    it.siteName,
-                                    it.siteSlug
-                            ))
+                    appDatabase.instantContentDao().insert(InstantViewEntity(id, it))
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = UIState.LoadingState() }
-                .subscribe({
-                    refreshState.value = UIState.LoadedState()
-                }, { refreshState.value = UIState.ErrorState(it.message) }))
+                .doOnSubscribe(onLoading)
+                .subscribe(onLoaded, onError))
     }
 }

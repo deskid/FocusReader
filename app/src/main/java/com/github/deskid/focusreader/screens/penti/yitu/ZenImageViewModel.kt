@@ -2,13 +2,11 @@ package com.github.deskid.focusreader.screens.penti.yitu
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
-import com.github.deskid.focusreader.api.data.UIState
-import com.github.deskid.focusreader.api.data.UIState.ErrorState
 import com.github.deskid.focusreader.api.data.ZenImage
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.YituEntity
+import com.github.deskid.focusreader.utils.map
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
@@ -22,9 +20,7 @@ class ZenImageViewModel(application: Application) : BaseViewModel<List<ZenImage>
     private var mPage = 1
 
     override fun getLiveData(): LiveData<List<ZenImage>?> {
-        return Transformations.map(appDatabase.yituDao().queryZenImage(mPage)) {
-            it.map { ZenImage(it.title, it.content, it.imgurl, "", "", it.url) }
-        }
+        return appDatabase.yituDao().queryZenImage(mPage).map { it.map { ZenImage(it) } }
     }
 
     fun load(page: Int = 1) {
@@ -39,26 +35,19 @@ class ZenImageViewModel(application: Application) : BaseViewModel<List<ZenImage>
                             response.data
                         }
                     }
-                }.doOnNext { insertArticlesEntity(it) }
+                }.doOnNext { insertEntities(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = UIState.LoadingState() }
-                .subscribe({
-                    //                    data.value = it
-                    refreshState.value = UIState.LoadedState()
-                }, { refreshState.value = ErrorState(it.message) }))
+                .doOnSubscribe(onLoading)
+                .subscribe(onLoaded, onError))
 
     }
 
-    private fun insertArticlesEntity(zenImages: List<ZenImage>?) {
+    private fun insertEntities(zenImages: List<ZenImage>?) {
         zenImages?.map { zenImage ->
             appService.getContent(zenImage.url!!)
-                    .map { res ->
-                        makeYituEntity(zenImage, res.string())
-                    }
-                    .doOnNext {
-                        appDatabase.yituDao().insert(it)
-                    }
+                    .map { makeYituEntity(zenImage, it.string()) }
+                    .doOnNext { appDatabase.yituDao().insert(it) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {}
@@ -76,6 +65,6 @@ class ZenImageViewModel(application: Application) : BaseViewModel<List<ZenImage>
         content = Jsoup.clean(content, Whitelist.none())
         content = Jsoup.parse(content).text()
 
-        return YituEntity(0, content, url, imageUrl, title)
+        return YituEntity(0, content, url, imageUrl, title, zenImage.description, zenImage.author, zenImage.pubDate)
     }
 }

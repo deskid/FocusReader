@@ -16,7 +16,7 @@ class ZenImagePhotoViewDlg(context: Context?, var bitmap: Bitmap?) : Dialog(cont
     var photoView: PhotoView
 
     init {
-        var view = View.inflate(context, R.layout.dialog_zenimage_detail, null)
+        val view = View.inflate(context, R.layout.dialog_zenimage_detail, null)
         photoView = view.findViewById(R.id.photo_view)
     }
 
@@ -24,7 +24,7 @@ class ZenImagePhotoViewDlg(context: Context?, var bitmap: Bitmap?) : Dialog(cont
         super.onCreate(savedInstanceState)
         setContentView(photoView)
 
-        var wl = window.attributes
+        val wl = window.attributes
         wl.x = 0
         wl.y = 0
         wl.height = context.screenHeight

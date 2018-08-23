@@ -2,12 +2,12 @@ package com.github.deskid.focusreader.screens.penti.duanzi
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
 import com.github.deskid.focusreader.api.data.Duanzi
-import com.github.deskid.focusreader.api.data.UIState.*
+import com.github.deskid.focusreader.api.data.UIState.ErrorState
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.ArticleEntity
+import com.github.deskid.focusreader.utils.map
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
@@ -21,7 +21,7 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
     private var mPage: Int = 1
 
     override fun getLiveData(): LiveData<List<Duanzi>?> {
-        return Transformations.map(appDatabase.articleDao().findArticleByType(3, mPage)) {
+        return appDatabase.articleDao().findArticleByType(3, mPage).map {
             it.map { Duanzi(it) }
         }
     }
@@ -37,7 +37,10 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
                             emptyList()
                         }
                         else -> {
-                            response.data?.forEach { duanzi -> duanzi.description = clean(duanzi.description) }
+                            response.data?.forEach { duanzi ->
+                                duanzi.description = clean(duanzi.description)
+                                duanzi.title = duanzi.title.replace(Regex("【.+?】"), "")
+                            }
                             response.data
                         }
                     }
@@ -45,11 +48,8 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
                 .doOnNext { appDatabase.articleDao().insertAll(articlesEntityWrap(it)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = LoadingState() }
-                .subscribe({
-                    //                    (data as MutableLiveData).value = it
-                    refreshState.value = LoadedState()
-                }, { refreshState.value = ErrorState(it.message) }))
+                .doOnSubscribe(onLoading)
+                .subscribe(onLoaded, onError))
     }
 
     private fun articlesEntityWrap(duanzis: List<Duanzi>?): List<ArticleEntity> {

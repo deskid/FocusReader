@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.TuGua
-import com.github.deskid.focusreader.api.data.UIState.*
+import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.refreshing
@@ -17,7 +17,7 @@ class TuGuaFragment : ContentListFragment() {
         return R.layout.fragment_tuguaitem_list
     }
 
-    var currentPage: Int = 1
+    private var currentPage: Int = 1
 
     private val viewModel: TuGuaViewModel by lazyFast {
         ViewModelProviders.of(this).get(TuGuaViewModel::class.java)
@@ -31,16 +31,13 @@ class TuGuaFragment : ContentListFragment() {
 
         viewModel.refreshState.observe(this, Observer {
             when (it) {
-                is LoadingState -> swiper.refreshing = true
-                is LoadedState -> swiper.refreshing = false
-                is ErrorState -> handleError(it)
+                is UIState.LoadingState -> swiper.refreshing = true
+                is UIState.LoadedState -> swiper.refreshing = false
+                is UIState.ErrorState, is UIState.NetworkErrorState -> handleError(it)
             }
         })
-        viewModel.getLiveData().observe(this, Observer {
-            it?.let {
-                adapter.addData(it)
-            }
-        })
+
+        viewModel.getLiveData().observe(this, Observer { it?.let(adapter::addData) })
 
     }
 

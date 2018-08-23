@@ -9,6 +9,8 @@ import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.db.AppDatabase
 import io.reactivex.disposables.CompositeDisposable
+import org.reactivestreams.Subscription
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 abstract class BaseViewModel<T>(application: Application) : AndroidViewModel(application) {
@@ -39,5 +41,18 @@ abstract class BaseViewModel<T>(application: Application) : AndroidViewModel(app
         super.onCleared()
         disposable.clear()
     }
+
+    val onError: (it: Throwable) -> Unit =  {
+        when (it) {
+            is UnknownHostException -> refreshState.value = UIState.NetworkErrorState()
+            else -> refreshState.value = UIState.ErrorState(it.message)
+        }
+    }
+
+    val onLoading: (Subscription) -> Unit = {
+        refreshState.value = UIState.LoadingState()
+    }
+
+    val onLoaded: (T?) -> Unit = { refreshState.value = UIState.LoadedState() }
 
 }

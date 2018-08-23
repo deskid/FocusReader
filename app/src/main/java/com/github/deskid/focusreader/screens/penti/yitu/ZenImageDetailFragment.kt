@@ -55,10 +55,7 @@ class ZenImageDetailFragment : DaggerFragment() {
                 }
             }) { bitmap ->
                 activity?.startPostponedEnterTransition()
-                image.setOnClickListener {
-                    var dialog = ZenImagePhotoViewDlg(context, bitmap)
-                    dialog.show()
-                }
+                image.setOnClickListener { ZenImagePhotoViewDlg(context, bitmap).show() }
             }
         }
     }

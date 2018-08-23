@@ -1,5 +1,6 @@
 package com.github.deskid.focusreader.api.data
 
+import com.github.deskid.focusreader.db.entity.InstantViewEntity
 import com.google.gson.annotations.SerializedName
 
 data class Topics(val data: ArrayList<Topic>,
@@ -59,7 +60,15 @@ data class InstantView(val url: String,
                        val title: String,
                        var content: String,
                        val siteName: String,
-                       val siteSlug: String)
+                       val siteSlug: String) {
+    constructor(entity: InstantViewEntity) : this(
+            entity.url,
+            entity.title,
+            entity.content,
+            entity.siteName,
+            entity.siteSlug
+    )
+}
 
 data class Technews(val data: ArrayList<SimpleTopic>,
                     val pageSize: Int,

@@ -64,8 +64,11 @@ abstract class ContentListFragment : DaggerFragment() {
 
     protected open fun getItemOffset(): Int = context.dp2Px(8)
 
-    protected open fun handleError(error: UIState.ErrorState) {
+    protected open fun handleError(error: UIState) {
+        when (error) {
+            is UIState.ErrorState -> Toast.makeText(context, error.msg, Toast.LENGTH_SHORT).show()
+            is UIState.NetworkErrorState -> Toast.makeText(context, getString(R.string.network_error), Toast.LENGTH_SHORT).show()
+        }
         swiper.refreshing = false
-        Toast.makeText(context, error.msg, Toast.LENGTH_SHORT).show()
     }
 }

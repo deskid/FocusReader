@@ -25,7 +25,7 @@ class ZenImageDetailAct : AppCompatActivity() {
         }
     }
 
-    fun setTransition() {
+    private fun setTransition() {
         postponeEnterTransition()
     }
 

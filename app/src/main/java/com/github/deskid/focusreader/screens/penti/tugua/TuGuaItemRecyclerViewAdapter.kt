@@ -55,7 +55,7 @@ class TuGuaItemRecyclerViewAdapter(private val mValues: MutableList<TuGua>) : Re
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val width = holder.itemView.context.screenWidth
 
-        holder.mTitleView.text = mValues[position].title.replace(Regex("【.+?】"), "")
+        holder.mTitleView.text = mValues[position].title
         holder.mWebImageView.setImageUrl(mValues[position].imgurl)
         holder.mWebImageView.setWidth(width)
         holder.itemView.setOnClickListener {

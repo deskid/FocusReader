@@ -1,12 +1,13 @@
 package com.github.deskid.focusreader.screens.penti.tugua
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.LiveData
 import com.github.deskid.focusreader.api.data.TuGua
-import com.github.deskid.focusreader.api.data.UIState.*
+import com.github.deskid.focusreader.api.data.UIState.ErrorState
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.ArticleEntity
+import com.github.deskid.focusreader.utils.map
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -15,25 +16,29 @@ class TuGuaViewModel(application: Application) : BaseViewModel<List<TuGua>>(appl
         app.appComponent().inject(this)
     }
 
+    private var mPage = 1
+
+    override fun getLiveData(): LiveData<List<TuGua>?> {
+        return appDatabase.articleDao().findArticleByType(2, mPage).map { tuguaList ->
+            tuguaList.map { TuGua(it) }
+        }
+    }
+
     fun load(page: Int = 1) {
-
-//        data = appDatabase.articleDao().findArticleByType(2, page).map {
-//            it.map { TuGua(it) }
-//        }
-
+        mPage = page
         disposable.add(appService.getTuGua(page)
                 .map { response ->
-                    when {
-                        response.error > 0 -> {
-                            refreshState.value = ErrorState(response.msg)
-                            emptyList()
+                    if (response.error > 0) {
+                        refreshState.value = ErrorState(response.msg)
+                        emptyList()
+                    } else {
+                        response.data = response.data?.filter {
+                            !it.title.contentEquals("AD")
                         }
-                        else -> {
-                            response.data = response.data?.filter {
-                                !it.title.contentEquals("AD")
-                            }
-                            response.data
+                        response.data?.forEach {
+                            it.title.replace(Regex("【.+?】"), "")
                         }
+                        response.data
                     }
                 }.doOnNext {
                     it?.map {
@@ -42,11 +47,8 @@ class TuGuaViewModel(application: Application) : BaseViewModel<List<TuGua>>(appl
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = LoadingState() }
-                .subscribe({
-                    (getLiveData() as MutableLiveData).value = it
-                    refreshState.value = LoadedState()
-                }, { refreshState.value = ErrorState(it.message) }))
+                .doOnSubscribe(onLoading)
+                .subscribe(onLoaded, onError))
 
     }
 }

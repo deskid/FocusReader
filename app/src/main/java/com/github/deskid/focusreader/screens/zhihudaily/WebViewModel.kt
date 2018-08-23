@@ -1,14 +1,12 @@
 package com.github.deskid.focusreader.screens.zhihudaily
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
-import com.github.deskid.focusreader.api.data.UIState
+import android.arch.lifecycle.LiveData
 import com.github.deskid.focusreader.api.data.ZhihuDetail
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.entity.ZhihuEntity
-import com.github.deskid.focusreader.utils.transaction
-import io.reactivex.Flowable
+import com.github.deskid.focusreader.utils.map
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -30,26 +28,24 @@ class WebViewModel(application: Application) : BaseViewModel<ZhihuDetail>(applic
     </body>
     </html>"""
 
-    fun getContent(id: String) {
-        disposable.add(appDatabase.zhihuDao().query(id).flatMap {
-            when {
-                it.isEmpty() -> appService.getZhihuDetail(id).map {
-                    it.body = header + it.body + tail
-                    it
-                }.doOnNext {
-                    appDatabase.transaction {
-                        appDatabase.zhihuDao().insert(ZhihuEntity(id, it.title, it.body, it.image))
-                    }
-                }
-                else -> Flowable.just(ZhihuDetail(it[0].body, it[0].title, it[0].image))
-            }
-        }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { refreshState.value = UIState.LoadingState() }
-                .subscribe({
-                    (getLiveData() as MutableLiveData).value = it
-                    refreshState.value = UIState.LoadedState()
-                }, { refreshState.value = UIState.ErrorState(it.message) }))
+    private var mId = ""
 
+    override fun getLiveData(): LiveData<ZhihuDetail?> {
+        return appDatabase.zhihuDao().query(mId).map {
+            when {
+                it.isNotEmpty() -> return@map ZhihuDetail(it.first())
+                else -> return@map null
+            }
+        }
+    }
+
+    fun getContent(id: String) {
+        mId = id
+        disposable.add(appService.getZhihuDetail(id).map { it.apply { body = header + body + tail } }
+                .doOnNext { appDatabase.zhihuDao().insert(ZhihuEntity(id, it)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(onLoading)
+                .subscribe(onLoaded, onError))
     }
 }

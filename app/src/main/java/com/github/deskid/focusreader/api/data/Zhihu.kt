@@ -1,5 +1,6 @@
 package com.github.deskid.focusreader.api.data
 
+import com.github.deskid.focusreader.db.entity.ZhihuEntity
 import com.google.gson.annotations.SerializedName
 
 data class Zhihu(val date: String,
@@ -24,4 +25,9 @@ data class TopStory(val image: String,
 
 data class ZhihuDetail(var body: String,
                        val title: String,
-                       val image: String)
+                       val image: String) {
+    constructor(entity: ZhihuEntity)
+            : this(entity.body,
+            entity.title,
+            entity.image)
+}

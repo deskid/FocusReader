@@ -3,6 +3,7 @@ package com.github.deskid.focusreader.api.data
 import android.os.Parcel
 import android.os.Parcelable
 import com.github.deskid.focusreader.db.entity.ArticleEntity
+import com.github.deskid.focusreader.db.entity.YituEntity
 
 data class ZenImage(
         val title: String,
@@ -21,6 +22,14 @@ data class ZenImage(
             parcel.readString())
 
     constructor(entity: ArticleEntity) :
+            this(entity.title,
+                    entity.description,
+                    entity.imgurl,
+                    entity.author,
+                    entity.pubDate,
+                    entity.url)
+
+    constructor(entity: YituEntity) :
             this(entity.title,
                     entity.description,
                     entity.imgurl,

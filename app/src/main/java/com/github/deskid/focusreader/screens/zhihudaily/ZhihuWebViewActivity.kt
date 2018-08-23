@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.ViewGroup
-import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
 import com.github.deskid.focusreader.api.data.UIState
@@ -46,9 +45,13 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
 
         val id: String = intent.getStringExtra("ID")
 
+        if (!TextUtils.isEmpty(id)) {
+            webViewModel.getContent(id)
+        }
+
         webViewModel.refreshState.observe(this, Observer {
             when (it) {
-                is UIState.ErrorState -> Toast.makeText(this, it.msg, Toast.LENGTH_SHORT).show()
+                is UIState.ErrorState, is UIState.NetworkErrorState -> handleError(it)
             }
         })
 
@@ -60,9 +63,7 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
             }
         })
 
-        if (!TextUtils.isEmpty(id)) {
-            webViewModel.getContent(id)
-        }
+
 
         webview_container.isVerticalScrollBarEnabled = false
         webview_container.isHorizontalScrollBarEnabled = false
