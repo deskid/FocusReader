@@ -55,15 +55,13 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
             }
         })
 
-        webViewModel.getLiveData().observe(this, Observer {
+        webViewModel.getData().observe(this, Observer {
             it?.let {
                 webview_container.loadDataWithBaseURL("file:///android_asset/", it.body, "text/html", "UTF-8", null)
                 toolbar_img.setImageUrl(it.image)
                 toolbar_title.text = it.title
             }
         })
-
-
 
         webview_container.isVerticalScrollBarEnabled = false
         webview_container.isHorizontalScrollBarEnabled = false

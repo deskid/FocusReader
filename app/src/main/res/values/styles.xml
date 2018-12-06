@@ -10,6 +10,7 @@
     </style>
 
     <style name="FullscreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/text_dark_fg_overlay</item>
         <!--<item name="android:windowFullscreen">true</item>-->
         <!--<item name="android:windowContentOverlay">@null</item>-->
     </style>

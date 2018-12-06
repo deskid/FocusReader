@@ -28,7 +28,7 @@ interface IAppService {
      */
     @GET("https://appb.dapenti.com/index.php?s=/Home/api/tugua")
     fun getTuGua(@Query("p") pageNum: Int = 1,
-                 @Query("limit") limitNum: Int = 10): Flowable<Data<List<TuGua>>>
+                 @Query("limit") limitNum: Int = 30): Flowable<Data<List<TuGua>>>
 
     /**
      * 获取 意图-喷嚏图卦
@@ -38,7 +38,7 @@ interface IAppService {
      */
     @GET("https://appb.dapenti.com/index.php?s=/Home/api/yitu")
     fun getZenImage(@Query("p") pageNum: Int = 1,
-                    @Query("limit") limitNum: Int = 10): Flowable<Data<List<ZenImage>>>
+                    @Query("limit") limitNum: Int = 30): Flowable<Data<List<ZenImage>>>
 
     /**
      * 获取 段子-喷嚏图卦
@@ -48,7 +48,7 @@ interface IAppService {
      */
     @GET("https://appb.dapenti.com/index.php?s=/Home/api/duanzi")
     fun getJoke(@Query("p") pageNum: Int = 1,
-                @Query("limit") limitNum: Int = 10): Flowable<Data<List<Duanzi>>>
+                @Query("limit") limitNum: Int = 30): Flowable<Data<List<Duanzi>>>
 
     /**
      * 获取 知乎日报 当日日报

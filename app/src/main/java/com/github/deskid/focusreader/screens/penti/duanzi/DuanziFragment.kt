@@ -9,6 +9,7 @@ import com.github.deskid.focusreader.api.data.Duanzi
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
+import com.github.deskid.focusreader.utils.switchMap
 import com.github.deskid.focusreader.widget.refreshing
 
 class DuanziFragment : ContentListFragment() {
@@ -35,7 +36,10 @@ class DuanziFragment : ContentListFragment() {
                 is UIState.ErrorState, is UIState.NetworkErrorState -> handleError(it)
             }
         })
-        viewModel.getLiveData().observe(this, Observer {
+
+        viewModel.getCurrentPage().switchMap {
+            return@switchMap viewModel.getData(it)
+        }.observe(this, Observer {
             it?.let {
                 adapter.addData(it)
             }
@@ -53,7 +57,7 @@ class DuanziFragment : ContentListFragment() {
     }
 
     override fun loadMore() {
-        viewModel.load(++currentPage + 1)
+        viewModel.load(++currentPage)
     }
 
 }

@@ -36,7 +36,7 @@ class TopicFragment : ContentListFragment() {
             }
         })
 
-        viewModel.getLiveData().observe(this, Observer {
+        viewModel.getData().observe(this, Observer {
             it?.let {
                 adapter.addData(it.data)
                 lastCursor = when {

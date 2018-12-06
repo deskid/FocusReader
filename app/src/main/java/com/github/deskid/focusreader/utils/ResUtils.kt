@@ -19,6 +19,7 @@ val Context.screenHeight: Int
 val Context.screenWidth: Int
     get() = Resources.getSystem().displayMetrics.widthPixels
 
+@Suppress("DEPRECATION")
 fun Context?.getColorCompat(id: Int): Int {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         this!!.getColor(id)

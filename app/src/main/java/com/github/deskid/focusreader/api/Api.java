@@ -1,5 +1,7 @@
 package com.github.deskid.focusreader.api;
 
+import android.os.Trace;
+
 import retrofit2.Retrofit;
 
 public class Api {
@@ -12,7 +14,11 @@ public class Api {
     }
 
     public <T> T getService(Class<T> clazz) {
-        return mRetrofit.create(clazz);
+        Trace.beginSection("mRetrofit");
+        T clzz = mRetrofit.create(clazz);
+        Trace.endSection();
+        return clzz;
+
     }
 
 }

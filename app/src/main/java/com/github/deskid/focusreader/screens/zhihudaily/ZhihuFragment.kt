@@ -32,7 +32,7 @@ class ZhihuFragment : ContentListFragment() {
             }
         })
 
-        viewModel.getLiveData().observe(this, Observer {
+        viewModel.getData().observe(this, Observer {
             it?.let {
                 adapter.submitList(it)
             }

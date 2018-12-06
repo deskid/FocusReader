@@ -38,10 +38,10 @@ public class ArticleEntity {
     }
 
     public static ArticleEntity tuguaWrap(TuGua tuGua) {
-        return new ArticleEntity(0, 2, tuGua.getTitle(), tuGua.getAuthor(), tuGua.getPubDate(), tuGua.getDescription(), tuGua.getImgurl(), "");
+        return new ArticleEntity(tuGua.getId(), 2, tuGua.getTitle(), tuGua.getAuthor(), tuGua.getPubDate(), tuGua.getDescription(), tuGua.getImgurl(), "");
     }
 
     public static ArticleEntity duanziWrap(Duanzi duanzi) {
-        return new ArticleEntity(0, 3, duanzi.getTitle(), "", duanzi.getPubDate(), duanzi.getDescription(), "", "");
+        return new ArticleEntity(duanzi.getId(), 3, duanzi.getTitle(), "", duanzi.getPubDate(), duanzi.getDescription(), "", duanzi.getLink());
     }
 }

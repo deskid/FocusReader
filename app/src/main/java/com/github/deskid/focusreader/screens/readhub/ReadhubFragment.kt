@@ -17,6 +17,7 @@ class ReadhubFragment : Fragment() {
 
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
         setUpViewPager()
+        @Suppress("DEPRECATION")
         toolbar.title = Html.fromHtml(getString(R.string.readhub_title))
     }
 

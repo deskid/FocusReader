@@ -42,7 +42,7 @@ class InstantViewActivity : BaseActivity() {
 
         if (!TextUtils.isEmpty(id)) {
             viewModel.getContent(id!!)
-            viewModel.getLiveData().observe(this, Observer {
+            viewModel.getData().observe(this, Observer {
                 it?.let {
                     webview_container.loadDataWithBaseURL("file:///android_asset/", it.content, "text/html", "UTF-8", null)
                     toolbar_title.text = it.title
@@ -55,7 +55,7 @@ class InstantViewActivity : BaseActivity() {
 
             if (instantview == "true") {
                 viewModel.getContent(cid)
-                viewModel.getLiveData().observe(this, Observer {
+                viewModel.getData().observe(this, Observer {
                     it?.let {
                         webview_container.loadDataWithBaseURL("file:///android_asset/", it.content, "text/html", "UTF-8", null)
                         toolbar_title.text = it.title

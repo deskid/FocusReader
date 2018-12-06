@@ -57,6 +57,7 @@ class DuanziItemRecyclerViewAdapter(private var mValues: MutableList<Duanzi>) : 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             holder.mContentView.text = Html.fromHtml(mValues[position].description, 0)
         } else {
+            @Suppress("DEPRECATION")
             holder.mContentView.text = Html.fromHtml(mValues[position].description)
         }
 

@@ -54,10 +54,11 @@ class ArticleDetailFragment : DaggerFragment() {
             }
         })
 
-        viewModel.getLiveData().observe(this, Observer {
+        viewModel.getData().observe(this, Observer {
             it?.let {
                 author.text = it.data.author
                 title.text = it.data.title
+                @Suppress("DEPRECATION")
                 content.text = Html.fromHtml(it.data.content)
             }
         })

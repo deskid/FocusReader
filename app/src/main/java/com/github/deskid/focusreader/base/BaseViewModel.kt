@@ -3,6 +3,7 @@ package com.github.deskid.focusreader.base
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.api.service.IAppService
@@ -14,10 +15,6 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 
 abstract class BaseViewModel<T>(application: Application) : AndroidViewModel(application) {
-
-    init {
-        this.inject(this.getApplication())
-    }
 
     abstract fun inject(app: App)
 
@@ -31,9 +28,24 @@ abstract class BaseViewModel<T>(application: Application) : AndroidViewModel(app
 
     val disposable: CompositeDisposable = CompositeDisposable()
 
-    private var data: LiveData<T?> = MutableLiveData()
+    protected var currentPage: MutableLiveData<Int> = MutableLiveData()
 
-    open fun getLiveData(): LiveData<T?> {
+    protected var data: MutableLiveData<T?> = MediatorLiveData()
+
+    init {
+        this.inject(this.getApplication())
+        currentPage.value = 1
+    }
+
+    open fun getCurrentPage(): LiveData<Int> {
+        return currentPage
+    }
+
+    open fun getData(page: Int): LiveData<T?> {
+        return data
+    }
+
+    open fun getData(): LiveData<T?> {
         return data
     }
 

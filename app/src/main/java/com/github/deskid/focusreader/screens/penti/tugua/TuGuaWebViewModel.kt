@@ -30,7 +30,7 @@ class TuGuaWebViewModel(application: Application) : BaseViewModel<String>(applic
     </body>
     </html>"""
 
-    override fun getLiveData(): LiveData<String?> {
+    override fun getData(): LiveData<String?> {
         return Transformations.map(appDatabase.webContentDao().query(mUrl)) {
             when {
                 it.isNotEmpty() -> it[0].content

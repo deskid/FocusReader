@@ -13,12 +13,13 @@ import com.github.deskid.focusreader.R
 /**
  * 自带 progress 的 webview
  */
-class SafeWebView : WebView {
 
+class SafeWebView : WebView {
+    @Suppress("DEPRECATION")
     var progressBar: ProgressDialog
 
+    @Suppress("DEPRECATION")
     @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
-
         progressBar = ProgressDialog(context, R.style.ProgressbarStyle)
         progressBar.isIndeterminate = true
         progressBar.setIndeterminateDrawable(resources.getDrawable(R.drawable.progressbar))

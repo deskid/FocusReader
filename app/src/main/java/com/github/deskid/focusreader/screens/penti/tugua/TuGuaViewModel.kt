@@ -2,6 +2,7 @@ package com.github.deskid.focusreader.screens.penti.tugua
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import com.github.deskid.focusreader.api.data.TuGua
 import com.github.deskid.focusreader.api.data.UIState.ErrorState
 import com.github.deskid.focusreader.app.App
@@ -16,30 +17,36 @@ class TuGuaViewModel(application: Application) : BaseViewModel<List<TuGua>>(appl
         app.appComponent().inject(this)
     }
 
-    private var mPage = 1
-
-    override fun getLiveData(): LiveData<List<TuGua>?> {
-        return appDatabase.articleDao().findArticleByType(2, mPage).map { tuguaList ->
-            tuguaList.map { TuGua(it) }
+    override fun getData(page: Int): LiveData<List<TuGua>?> {
+        val result = MediatorLiveData<List<TuGua>>()
+        result.addSource(appDatabase.articleDao().findArticleByType(2, page).map { tuguaList -> tuguaList.map { TuGua(it) } }) {
+            result.value = it
         }
+        data = result
+        return data
     }
 
     fun load(page: Int = 1) {
-        mPage = page
         disposable.add(appService.getTuGua(page)
-                .map { response ->
-                    if (response.error > 0) {
-                        refreshState.value = ErrorState(response.msg)
-                        emptyList()
-                    } else {
-                        response.data = response.data?.filter {
-                            !it.title.contentEquals("AD")
-                        }
-                        response.data?.forEach {
-                            it.title.replace(Regex("【.+?】"), "")
-                        }
-                        response.data
+                .doOnNext {
+                    if (it.error > 0) {
+                        refreshState.value = ErrorState(it.msg)
                     }
+                }
+                .filter {
+                    return@filter it.error == 0
+                }
+                .map { response ->
+                    response.data = response.data?.filter {
+                        !it.title.contentEquals("AD")
+                    }
+                    response.data?.forEach {
+                        val regex = Regex("&id=(.*)")
+                        if (regex.containsMatchIn(it.description)) {
+                            it.id = regex.find(it.description)!!.groupValues.last().toInt()
+                        }
+                    }
+                    response.data
                 }.doOnNext {
                     it?.map {
                         appDatabase.articleDao().insert(ArticleEntity.tuguaWrap(it))
@@ -47,8 +54,8 @@ class TuGuaViewModel(application: Application) : BaseViewModel<List<TuGua>>(appl
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete { currentPage.value = page }
                 .doOnSubscribe(onLoading)
                 .subscribe(onLoaded, onError))
-
     }
 }

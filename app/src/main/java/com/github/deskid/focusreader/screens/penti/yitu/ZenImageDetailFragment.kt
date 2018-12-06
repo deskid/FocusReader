@@ -32,7 +32,7 @@ class ZenImageDetailFragment : DaggerFragment() {
             viewModel.loadZenImageDetail(pageUrl)
         }
 
-        viewModel.getLiveData().observe(this, Observer {
+        viewModel.getData().observe(this, Observer {
             description.text = it?.content
         })
 

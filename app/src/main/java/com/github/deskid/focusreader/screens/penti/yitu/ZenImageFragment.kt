@@ -11,6 +11,7 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
+import com.github.deskid.focusreader.utils.switchMap
 import com.github.deskid.focusreader.widget.refreshing
 
 class ZenImageFragment : ContentListFragment() {
@@ -42,7 +43,9 @@ class ZenImageFragment : ContentListFragment() {
             }
         })
 
-        viewModel.getLiveData().observe(this, Observer { it?.let(adapter::addData) })
+        viewModel.getCurrentPage().switchMap {
+            return@switchMap viewModel.getData(it)
+        }.observe(this, Observer { it?.let(adapter::addData) })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

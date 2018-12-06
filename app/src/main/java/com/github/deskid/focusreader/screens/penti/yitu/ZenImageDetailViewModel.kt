@@ -14,7 +14,7 @@ class ZenImageDetailViewModel(application: Application) : BaseViewModel<YituEnti
 
     private var mUrl: String = ""
 
-    override fun getLiveData(): LiveData<YituEntity?> {
+    override fun getData(): LiveData<YituEntity?> {
         return Transformations.map(appDatabase.yituDao().findContentByUrl(mUrl)) {
             it[0]
         }

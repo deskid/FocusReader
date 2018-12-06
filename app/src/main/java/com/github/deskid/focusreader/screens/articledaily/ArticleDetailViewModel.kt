@@ -17,7 +17,7 @@ class ArticleDetailViewModel(application: Application) : BaseViewModel<Article>(
 
     private var mType: String = ""
 
-    override fun getLiveData(): LiveData<Article?> {
+    override fun getData(): LiveData<Article?> {
         return appDatabase.dailyArticleDao().findArticleByType(mType, 1).map {
             when {
                 it.isNotEmpty() -> return@map Article(it.first())

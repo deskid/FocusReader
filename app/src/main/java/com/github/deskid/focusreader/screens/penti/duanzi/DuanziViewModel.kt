@@ -2,6 +2,7 @@ package com.github.deskid.focusreader.screens.penti.duanzi
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import com.github.deskid.focusreader.api.data.Duanzi
 import com.github.deskid.focusreader.api.data.UIState.ErrorState
 import com.github.deskid.focusreader.app.App
@@ -18,17 +19,20 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
         app.appComponent().inject(this)
     }
 
-    private var mPage: Int = 1
+    override fun getData(page: Int): LiveData<List<Duanzi>?> {
+        val result = MediatorLiveData<List<Duanzi>>()
 
-    override fun getLiveData(): LiveData<List<Duanzi>?> {
-        return appDatabase.articleDao().findArticleByType(3, mPage).map {
+        result.addSource(appDatabase.articleDao().findArticleByType(3, page).map {
             it.map { Duanzi(it) }
+        }) {
+            result.value = it
         }
+        data = result
+        return data
+
     }
 
     fun load(page: Int = 1) {
-        mPage = page
-
         disposable.add(appService.getJoke(page)
                 .map { response ->
                     when {
@@ -40,6 +44,10 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
                             response.data?.forEach { duanzi ->
                                 duanzi.description = clean(duanzi.description)
                                 duanzi.title = duanzi.title.replace(Regex("【.+?】"), "")
+                                val regex = Regex("&id=(.*)")
+                                if (regex.containsMatchIn(duanzi.link)) {
+                                    duanzi.id = regex.find(duanzi.link)!!.groupValues.last().toInt()
+                                }
                             }
                             response.data
                         }
@@ -49,6 +57,7 @@ class DuanziViewModel(application: Application) : BaseViewModel<List<Duanzi>>(ap
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(onLoading)
+                .doOnComplete { currentPage.value = page }
                 .subscribe(onLoaded, onError))
     }
 

@@ -19,7 +19,7 @@ class TechnewsViewModel(application: Application) : BaseViewModel<Technews>(appl
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(onLoading)
                 .subscribe({
-                    (getLiveData() as MutableLiveData).value = it
+                    (getData() as MutableLiveData).value = it
                     onLoaded(it)
                 }, onError))
     }

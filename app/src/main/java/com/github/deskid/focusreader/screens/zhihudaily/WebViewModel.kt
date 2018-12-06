@@ -30,7 +30,7 @@ class WebViewModel(application: Application) : BaseViewModel<ZhihuDetail>(applic
 
     private var mId = ""
 
-    override fun getLiveData(): LiveData<ZhihuDetail?> {
+    override fun getData(): LiveData<ZhihuDetail?> {
         return appDatabase.zhihuDao().query(mId).map {
             when {
                 it.isNotEmpty() -> return@map ZhihuDetail(it.first())

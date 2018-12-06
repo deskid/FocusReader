@@ -9,6 +9,7 @@ import com.github.deskid.focusreader.api.data.TuGua
 import com.github.deskid.focusreader.api.data.UIState
 import com.github.deskid.focusreader.screens.ContentListFragment
 import com.github.deskid.focusreader.utils.lazyFast
+import com.github.deskid.focusreader.utils.switchMap
 import com.github.deskid.focusreader.widget.refreshing
 
 class TuGuaFragment : ContentListFragment() {
@@ -37,8 +38,9 @@ class TuGuaFragment : ContentListFragment() {
             }
         })
 
-        viewModel.getLiveData().observe(this, Observer { it?.let(adapter::addData) })
-
+        viewModel.getCurrentPage().switchMap {
+            return@switchMap viewModel.getData(it)
+        }.observe(this, Observer { it?.let(adapter::addData) })
     }
 
     companion object {

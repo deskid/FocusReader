@@ -60,7 +60,7 @@ data class InstantView(val url: String,
                        val title: String,
                        var content: String,
                        val siteName: String,
-                       val siteSlug: String) {
+                       val siteSlug: String?) {
     constructor(entity: InstantViewEntity) : this(
             entity.url,
             entity.title,

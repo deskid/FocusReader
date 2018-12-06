@@ -31,7 +31,7 @@ class InstantViewModel(application: Application) : BaseViewModel<InstantView>(ap
     </body>
     </html>"""
 
-    override fun getLiveData(): LiveData<InstantView?> {
+    override fun getData(): LiveData<InstantView?> {
         return appDatabase.instantContentDao().query(mId).map {
             when {
                 it.isNotEmpty() -> InstantView(it[0])
