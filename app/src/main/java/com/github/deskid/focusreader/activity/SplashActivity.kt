@@ -29,7 +29,7 @@ class SplashActivity : BaseActivity() {
             startActivity<MainActivity>()
             overridePendingTransition(0, 0)
             mHandler.postDelayed({ finish() }, 2000)
-        }, 2000)
+        }, 200)
     }
 
     override fun onDestroy() {

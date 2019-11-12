@@ -14,6 +14,7 @@ import com.github.deskid.focusreader.db.entity.DailyArticleEntity;
 import com.github.deskid.focusreader.db.entity.InstantViewEntity;
 import com.github.deskid.focusreader.db.entity.WebContentEntity;
 import com.github.deskid.focusreader.db.entity.YituEntity;
+import com.github.deskid.focusreader.db.entity.ZhihuDailyPostEntity;
 import com.github.deskid.focusreader.db.entity.ZhihuEntity;
 
 @Database(entities = {
@@ -21,11 +22,13 @@ import com.github.deskid.focusreader.db.entity.ZhihuEntity;
         WebContentEntity.class,
         YituEntity.class,
         ZhihuEntity.class,
+        ZhihuDailyPostEntity.class,
         DailyArticleEntity.class,
-        InstantViewEntity.class}, version = 1)
+        InstantViewEntity.class}, version = 1,
+        exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
-    public static final String DATABASE_NAME = "read_main_db";
+    public static final String DATABASE_NAME = "read_main_db.db";
 
     public abstract ArticleDao articleDao();
 

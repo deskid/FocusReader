@@ -14,8 +14,6 @@ class ZhihuFragment : ContentListFragment() {
 
     private lateinit var adapter: ZhihuAdapter
 
-    private lateinit var date: String
-
     private val viewModel: ZhihuViewModel by lazyFast {
         ViewModelProviders.of(this).get(ZhihuViewModel::class.java)
     }
@@ -23,7 +21,7 @@ class ZhihuFragment : ContentListFragment() {
     override fun getLayoutId(): Int = R.layout.fragment_zhihu_list
 
     override fun onViewCreated(root: View, savedInstanceState: Bundle?) {
-        adapter = ZhihuAdapter(activity!!, ArrayList())
+        adapter = ZhihuAdapter(activity!!)
         view.adapter = adapter
 
         viewModel.refreshState.observe(this, Observer {
@@ -36,8 +34,7 @@ class ZhihuFragment : ContentListFragment() {
 
         viewModel.getLiveData().observe(this, Observer {
             it?.let {
-                adapter.addData(it.stories)
-                date = it.date
+                adapter.submitList(it)
             }
         })
     }
@@ -53,6 +50,5 @@ class ZhihuFragment : ContentListFragment() {
     }
 
     override fun loadMore() {
-        viewModel.loadMore(date)
     }
 }

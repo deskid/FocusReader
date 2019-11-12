@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class Zhihu(val date: String,
                  var stories: ArrayList<Story>,
                  @SerializedName("top_stories")
-                 val topStories: List<TopStory>)
+                 val topStories: ArrayList<TopStory>)
 
 data class Story(val images: List<String>,
                  val type: Int,
