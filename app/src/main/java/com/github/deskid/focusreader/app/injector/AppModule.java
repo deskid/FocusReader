@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.github.deskid.focusreader.db.AppDatabase;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -23,6 +25,7 @@ public class AppModule {
     }
 
     @AppScope
+    @Singleton
     @Provides
     public AppDatabase provideAppDatabase() {
         return Room.databaseBuilder(context.getApplicationContext(),

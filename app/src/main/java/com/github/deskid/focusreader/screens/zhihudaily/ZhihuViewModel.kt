@@ -10,6 +10,7 @@ import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.AppDatabase
 import com.github.deskid.focusreader.db.entity.ZhihuDailyPostEntity
 import com.github.deskid.focusreader.utils.PagingRequestHelper
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.Executors
 
@@ -58,9 +59,10 @@ class ZhihuViewModel(application: Application) : BaseViewModel<PagedList<ZhihuDa
                             it
                         }
                         .subscribeOn(Schedulers.io())
+                        .doOnNext { db.zhihuDao().insert(ZhihuDailyPostEntity.zhihuWrap(it)) }
+                        .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(onLoading)
                         .subscribe({
-                            db.zhihuDao().insert(ZhihuDailyPostEntity.zhihuWrap(it))
                             onLoaded(null)
                             helperCallback.recordSuccess()
                         }, {
@@ -75,9 +77,10 @@ class ZhihuViewModel(application: Application) : BaseViewModel<PagedList<ZhihuDa
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { helperCallback ->
                 api.getZhihuHistory(date = itemAtEnd.date)
                         .subscribeOn(Schedulers.io())
+                        .doOnNext { db.zhihuDao().insert(ZhihuDailyPostEntity.zhihuWrap(it)) }
+                        .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(onLoading)
                         .subscribe({
-                            db.zhihuDao().insert(ZhihuDailyPostEntity.zhihuWrap(it))
                             onLoaded(null)
                             helperCallback.recordSuccess()
                         }, {

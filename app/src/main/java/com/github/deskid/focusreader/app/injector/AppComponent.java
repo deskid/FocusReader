@@ -16,11 +16,14 @@ import com.github.deskid.focusreader.screens.zhihudaily.WebViewModel;
 import com.github.deskid.focusreader.screens.zhihudaily.ZhihuViewModel;
 import com.github.deskid.focusreader.widget.image.glide.MyGlideModule;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 @AppScope
+@Singleton
 @Component(modules = {
         AppModule.class,
         ApiModule.class,
