@@ -6,9 +6,9 @@ import com.github.deskid.focusreader.db.entity.ArticleEntity
 import com.github.deskid.focusreader.db.entity.YituEntity
 
 data class ZenImage(
-        val title: String,
-        var description: String,
-        var imgurl: String,
+        val title: String?,
+        var description: String?,
+        var imgurl: String?,
         val author: String?,
         val pubDate: String?,
         var url: String?) : Parcelable {

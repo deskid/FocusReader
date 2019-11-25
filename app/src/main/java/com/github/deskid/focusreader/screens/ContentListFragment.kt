@@ -37,9 +37,9 @@ abstract class ContentListFragment : DaggerFragment() {
         swiper.setColorSchemeColors(context.getColorCompat(R.color.colorPrimaryLight))
         view = swiper.findViewById(R.id.list)
         view.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 super.getItemOffsets(outRect, view, parent, state)
-                outRect?.set(0, 0, 0, getItemOffset())
+                outRect.set(0, 0, 0, getItemOffset())
             }
         })
 

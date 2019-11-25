@@ -16,7 +16,7 @@ fun WebImageView.setImageUrl(url: String?) {
         return
     }
 
-    if (url!!.endsWith(".gif")) {
+    if (url.endsWith(".gif")) {
         GlideApp.with(context)
                 .asGif()
                 .load(url)
@@ -44,7 +44,7 @@ fun WebImageView.setImageUrl(url: String?, onPaletteLoaded: OnPaletteLoaded? = n
         setImageBitmap(null)
         return
     }
-    if (url!!.endsWith(".gif")) {
+    if (url.endsWith(".gif")) {
         GlideApp.with(context)
                 .asGif()
                 .load(url)

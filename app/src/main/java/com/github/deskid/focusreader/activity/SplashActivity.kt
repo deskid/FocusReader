@@ -20,7 +20,7 @@ class SplashActivity : BaseActivity() {
 
         setContentView(R.layout.activity_splash)
         supportActionBar?.hide()
-        shimmer_view_container.startShimmerAnimation()
+        shimmer_view_container.startShimmer()
         jumpMainAct()
     }
 

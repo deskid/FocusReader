@@ -66,7 +66,7 @@ class ZenItemRecyclerViewAdapter(private val mValues: ArrayList<ZenImage>) : Rec
         holder.mTitleView.transitionName = mValues[position].url + "title"
         holder.mWebImageView.transitionName = mValues[position].url + "image"
 
-        val imgurl = mValues[position].imgurl.replace("square", "medium")
+        val imgurl = mValues[position].imgurl!!.replace("square", "medium")
         holder.mWebImageView.setImageUrl(imgurl, {
             val textSwatch = it?.mutedSwatch
             textSwatch?.let { swatch ->

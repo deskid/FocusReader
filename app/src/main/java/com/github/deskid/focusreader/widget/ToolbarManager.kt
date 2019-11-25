@@ -14,11 +14,12 @@ interface ToolbarManager {
             toolbar.title = value
         }
 
-    fun initToolbar() {
+    fun initToolbar(share: () -> Unit) {
         toolbar.inflateMenu(R.menu.menu_main)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.action_settings -> {
+                R.id.action_share -> {
+                    share()
                 }
                 else -> {
                 }
@@ -38,7 +39,7 @@ interface ToolbarManager {
 
     fun attachToScroll(recyclerView: RecyclerView) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(view: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(view: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) toolbar.slideExit() else toolbar.slideEnter()
             }
         })

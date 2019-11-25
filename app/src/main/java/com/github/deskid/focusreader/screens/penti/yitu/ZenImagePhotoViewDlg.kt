@@ -11,7 +11,7 @@ import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.utils.screenHeight
 import com.github.deskid.focusreader.utils.screenWidth
 
-class ZenImagePhotoViewDlg(context: Context?, var bitmap: Bitmap?) : Dialog(context, R.style.transparentBgDialog) {
+class ZenImagePhotoViewDlg(context: Context, var bitmap: Bitmap?) : Dialog(context, R.style.transparentBgDialog) {
 
     var photoView: PhotoView
 
@@ -24,13 +24,16 @@ class ZenImagePhotoViewDlg(context: Context?, var bitmap: Bitmap?) : Dialog(cont
         super.onCreate(savedInstanceState)
         setContentView(photoView)
 
-        val wl = window.attributes
-        wl.x = 0
-        wl.y = 0
-        wl.height = context.screenHeight
-        wl.width = context.screenWidth
-        wl.gravity = Gravity.CENTER
-        window.attributes = wl
+        window?.let {
+            val wl = it.attributes
+            wl.x = 0
+            wl.y = 0
+            wl.height = context.screenHeight
+            wl.width = context.screenWidth
+            wl.gravity = Gravity.CENTER
+            it.attributes = wl
+        }
+
 
         photoView.setOnPhotoTapListener { _, _, _ -> dismiss() }
         photoView.setImageBitmap(bitmap)

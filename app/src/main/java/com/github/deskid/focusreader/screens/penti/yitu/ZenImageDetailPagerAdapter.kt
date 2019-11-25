@@ -12,7 +12,7 @@ class ZenImageDetailPagerAdapter(private val images: List<ZenImage>, fm: Fragmen
     override fun getItem(position: Int): Fragment {
         val zenImage = images[position]
         if (fragments.get(position) == null) {
-            fragments.put(position, ZenImageDetailFragment.newInstance(zenImage.url, zenImage.imgurl))
+            fragments.put(position, ZenImageDetailFragment.newInstance(zenImage.url, zenImage.imgurl!!))
         }
         return fragments.get(position)!!
     }

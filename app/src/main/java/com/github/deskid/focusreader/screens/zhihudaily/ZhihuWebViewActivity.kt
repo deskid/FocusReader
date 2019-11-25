@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
 import com.github.deskid.focusreader.api.data.UIState
+import com.github.deskid.focusreader.utils.Utils
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.ToolbarManager
 import com.github.deskid.focusreader.widget.image.setImageUrl
@@ -40,7 +41,7 @@ class ZhihuWebViewActivity : BaseActivity(), ToolbarManager {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zhihu_web_view)
 
-        initToolbar()
+        initToolbar { Utils.showCaptureBitmap(webview_container) }
         enableHomeAsUp { onBackPressed() }
 
         val id: String = intent.getStringExtra("ID")

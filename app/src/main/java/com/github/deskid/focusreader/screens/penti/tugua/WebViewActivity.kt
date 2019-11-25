@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
 import com.github.deskid.focusreader.api.data.UIState.ErrorState
+import com.github.deskid.focusreader.utils.Utils
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.ToolbarManager
 import com.github.deskid.focusreader.widget.image.setImageUrl
@@ -47,7 +48,7 @@ class WebViewActivity : BaseActivity(), ToolbarManager {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web_view)
 
-        initToolbar()
+        initToolbar { Utils.showCaptureBitmap(webview_container) }
         enableHomeAsUp { onBackPressed() }
 
         val pageUrl: String = intent.getStringExtra("pageUrl")

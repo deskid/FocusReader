@@ -49,21 +49,26 @@ class InstantViewActivity : BaseActivity() {
                 }
             })
         } else {
-            val cid = intent.data.getQueryParameter("topicId")
-            val instantview = intent.data.getQueryParameter("instantView")
-            val mobileUrl = intent.data.getQueryParameter("mobileUrl")
-
-            if (instantview == "true") {
-                viewModel.getContent(cid)
-                viewModel.getData().observe(this, Observer {
-                    it?.let {
-                        webview_container.loadDataWithBaseURL("file:///android_asset/", it.content, "text/html", "UTF-8", null)
-                        toolbar_title.text = it.title
-                    }
-                })
-            } else {
-                launchUrlWithCustomTabs(mobileUrl)
+            if (intent==null){
                 finish()
+            }
+            intent?.let {
+                val cid = it.data?.getQueryParameter("topicId")?:""
+                val instantview = it.data?.getQueryParameter("instantView")?:""
+                val mobileUrl = it.data?.getQueryParameter("mobileUrl")?:""
+
+                if (instantview == "true") {
+                    viewModel.getContent(cid)
+                    viewModel.getData().observe(this, Observer { instantView ->
+                        instantView?.let { view ->
+                            webview_container.loadDataWithBaseURL("file:///android_asset/", view.content, "text/html", "UTF-8", null)
+                            toolbar_title.text = view.title
+                        }
+                    })
+                } else {
+                    launchUrlWithCustomTabs(mobileUrl)
+                    finish()
+                }
             }
         }
 
