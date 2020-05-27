@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screens.penti.tugua.WebViewActivity"
+            android:name=".screens.WebViewActivity"
             android:theme="@style/AppTheme.SlidrTheme" />
         <activity
             android:name=".screens.zhihudaily.ZhihuWebViewActivity"

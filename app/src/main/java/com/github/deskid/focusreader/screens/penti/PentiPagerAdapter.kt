@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.util.SparseArray
 import com.github.deskid.focusreader.screens.penti.duanzi.DuanziFragment
 import com.github.deskid.focusreader.screens.penti.tugua.TuGuaFragment
-import com.github.deskid.focusreader.screens.penti.yitu.ZenImageFragment
 
 class PentiPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
@@ -15,28 +14,18 @@ class PentiPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                if (fragments.get(0) == null) fragments.put(0, ZenImageFragment.newInstance())
+                if (fragments.get(0) == null) fragments.put(0, TuGuaFragment.newInstance())
                 fragments[0]!!
-            }
-            1 -> {
-                if (fragments.get(1) == null) fragments.put(1, TuGuaFragment.newInstance())
-                fragments[1]!!
-            }
-            2 -> {
-                if (fragments.get(2) == null) fragments.put(2, DuanziFragment.newInstance())
-                fragments[2]!!
             }
             else -> throw IllegalArgumentException("illegal index {$position}")
         }
     }
 
-    override fun getCount(): Int = 3
+    override fun getCount(): Int = 2
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            0 -> "意图"
-            1 -> "图卦"
-            2 -> "段子"
+            0 -> "图卦"
             else -> throw IllegalArgumentException("illegal index {$position}")
         }
     }

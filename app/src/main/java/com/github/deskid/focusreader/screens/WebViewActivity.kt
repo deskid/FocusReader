@@ -1,4 +1,4 @@
-package com.github.deskid.focusreader.screens.penti.tugua
+package com.github.deskid.focusreader.screens
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.activity.BaseActivity
 import com.github.deskid.focusreader.api.data.UIState.ErrorState
+import com.github.deskid.focusreader.screens.penti.tugua.TuGuaWebViewModel
 import com.github.deskid.focusreader.utils.Utils
 import com.github.deskid.focusreader.utils.lazyFast
 import com.github.deskid.focusreader.widget.ToolbarManager

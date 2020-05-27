@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.api.data.TuGua
+import com.github.deskid.focusreader.screens.WebViewActivity
 import com.github.deskid.focusreader.utils.screenWidth
 import com.github.deskid.focusreader.widget.image.WebImageView
 import com.github.deskid.focusreader.widget.image.setImageUrl

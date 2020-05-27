@@ -57,30 +57,33 @@ class ZenImageViewModel(application: Application) : BaseViewModel<List<ZenImage>
                             .doOnNext { appDatabase.yituDao().insert(it) }
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe {}
+                            .subscribe({}, {})
                 }
             }
             appDatabase.yituDao().findContentByUrl(zenImage.url).observeForever(observer)
         }
     }
 
-    private fun makeYituEntity(zenImage: ZenImage, string: String?): YituEntity {
+    private fun makeYituEntity(zenImage: ZenImage, string: String?): YituEntity? {
         var content = string ?: ""
-        val doc = Jsoup.parse(string)
-        val imageUrl = doc.select("[src]").first().attr("abs:src")
-        val title = Jsoup.clean(zenImage.title, Whitelist.none())
-        val url = zenImage.url
+        try {
+            val doc = Jsoup.parse(string)
+            val imageUrl = doc.select("[src]").first().attr("abs:src")
+            val title = Jsoup.clean(zenImage.title, Whitelist.none())
+            val url = zenImage.url
 
-        var id = 0
-        val regex = Regex("&id=(.*)")
-        if (regex.containsMatchIn(zenImage.url!!)) {
-            id = regex.find(zenImage.url!!)!!.groupValues.last().toInt()
+            var id = 0
+            val regex = Regex("&id=(.*)")
+            if (regex.containsMatchIn(zenImage.url!!)) {
+                id = regex.find(zenImage.url!!)!!.groupValues.last().toInt()
+            }
+
+            content = content.replace(Regex("<title>.+?</title>"), "")
+            content = Jsoup.clean(content, Whitelist.none())
+            content = Jsoup.parse(content).text()
+            return YituEntity(id, content, url, imageUrl, title, zenImage.description, zenImage.author, zenImage.pubDate)
+        } catch (e: Exception) {
+            return null
         }
-
-        content = content.replace(Regex("<title>.+?</title>"), "")
-        content = Jsoup.clean(content, Whitelist.none())
-        content = Jsoup.parse(content).text()
-
-        return YituEntity(id, content, url, imageUrl, title, zenImage.description, zenImage.author, zenImage.pubDate)
     }
 }

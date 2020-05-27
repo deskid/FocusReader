@@ -1,15 +1,14 @@
 package com.github.deskid.focusreader.app.injector;
 
 import com.github.deskid.focusreader.screens.articledaily.ArticleDetailFragment;
+import com.github.deskid.focusreader.screens.infoq.InfoQAndroidFragment;
 import com.github.deskid.focusreader.screens.penti.duanzi.DuanziFragment;
 import com.github.deskid.focusreader.screens.penti.tugua.TuGuaFragment;
 import com.github.deskid.focusreader.screens.penti.yitu.ZenImageDetailFragment;
-import com.github.deskid.focusreader.screens.penti.yitu.ZenImageFragment;
 import com.github.deskid.focusreader.screens.readhub.news.NewsFragment;
 import com.github.deskid.focusreader.screens.readhub.technews.TechnewsFragment;
 import com.github.deskid.focusreader.screens.readhub.topic.TopicFragment;
 import com.github.deskid.focusreader.screens.zhihudaily.ZhihuFragment;
-
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
@@ -20,7 +19,7 @@ public abstract class FragmentBuilder {
     abstract TuGuaFragment injectTuGuaFragment();
 
     @ContributesAndroidInjector
-    abstract ZenImageFragment injectZenImageFragment();
+    abstract InfoQAndroidFragment injectInfoQFragment();
 
     @ContributesAndroidInjector
     abstract DuanziFragment injectDuanziFragment();

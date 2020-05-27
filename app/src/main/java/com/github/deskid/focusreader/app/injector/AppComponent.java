@@ -3,6 +3,7 @@ package com.github.deskid.focusreader.app.injector;
 import com.github.deskid.focusreader.api.Api;
 import com.github.deskid.focusreader.app.App;
 import com.github.deskid.focusreader.screens.articledaily.ArticleDetailViewModel;
+import com.github.deskid.focusreader.screens.infoq.InfoQViewModel;
 import com.github.deskid.focusreader.screens.penti.duanzi.DuanziViewModel;
 import com.github.deskid.focusreader.screens.penti.tugua.TuGuaViewModel;
 import com.github.deskid.focusreader.screens.penti.tugua.TuGuaWebViewModel;
@@ -15,12 +16,11 @@ import com.github.deskid.focusreader.screens.readhub.topic.TopicViewModel;
 import com.github.deskid.focusreader.screens.zhihudaily.WebViewModel;
 import com.github.deskid.focusreader.screens.zhihudaily.ZhihuViewModel;
 import com.github.deskid.focusreader.widget.image.glide.MyGlideModule;
-
-import javax.inject.Singleton;
-
 import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
+
+import javax.inject.Singleton;
 
 @AppScope
 @Singleton
@@ -58,5 +58,7 @@ public interface AppComponent extends AndroidInjector<App> {
     void inject(TuGuaWebViewModel viewModel);
 
     void inject(InstantViewModel viewModel);
+
+    void inject(InfoQViewModel viewModel);
 
 }

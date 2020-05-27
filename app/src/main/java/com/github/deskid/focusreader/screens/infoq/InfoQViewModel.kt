@@ -1,20 +1,21 @@
-package com.github.deskid.focusreader.screens.zhihudaily
+package com.github.deskid.focusreader.screens.infoq
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
+import com.github.deskid.focusreader.api.data.InfoRequest
 import com.github.deskid.focusreader.api.service.IAppService
 import com.github.deskid.focusreader.app.App
 import com.github.deskid.focusreader.base.BaseViewModel
 import com.github.deskid.focusreader.db.AppDatabase
-import com.github.deskid.focusreader.db.entity.ZhihuDailyPostEntity
+import com.github.deskid.focusreader.db.entity.InfoqArticleEntity
 import com.github.deskid.focusreader.utils.PagingRequestHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.Executors
 
-class ZhihuViewModel(application: Application) : BaseViewModel<PagedList<ZhihuDailyPostEntity>>(application) {
+class InfoQViewModel(application: Application) : BaseViewModel<PagedList<InfoqArticleEntity>>(application) {
     override fun inject(app: App) {
         app.appComponent().inject(this)
     }
@@ -24,18 +25,19 @@ class ZhihuViewModel(application: Application) : BaseViewModel<PagedList<ZhihuDa
             .setEnablePlaceholders(false)
             .build()
 
-    override fun getData(): LiveData<PagedList<ZhihuDailyPostEntity>?> {
+
+    override fun getData(): LiveData<PagedList<InfoqArticleEntity>?> {
         return initializedPagedListBuilder(config).build()
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
-            LivePagedListBuilder<Int, ZhihuDailyPostEntity> {
+            LivePagedListBuilder<Int, InfoqArticleEntity> {
 
         val database = appDatabase
-        val livePageListBuilder = LivePagedListBuilder<Int, ZhihuDailyPostEntity>(
-                database.zhihuDao().posts(),
+        val livePageListBuilder = LivePagedListBuilder<Int, InfoqArticleEntity>(
+                database.infoqArticleDao().posts(),
                 config)
-        livePageListBuilder.setBoundaryCallback(ZhihuBoundaryCallback(database, appService))
+        livePageListBuilder.setBoundaryCallback(InfoqBoundaryCallback(database, appService))
         return livePageListBuilder
     }
 
@@ -43,9 +45,9 @@ class ZhihuViewModel(application: Application) : BaseViewModel<PagedList<ZhihuDa
         onLoaded(null)
     }
 
-    inner class ZhihuBoundaryCallback(private val db: AppDatabase,
+    inner class InfoqBoundaryCallback(private val db: AppDatabase,
                                       private val api: IAppService) :
-            PagedList.BoundaryCallback<ZhihuDailyPostEntity>() {
+            PagedList.BoundaryCallback<InfoqArticleEntity>() {
 
         private val executor = Executors.newSingleThreadExecutor()
         private val helper = PagingRequestHelper(executor)
@@ -53,13 +55,9 @@ class ZhihuViewModel(application: Application) : BaseViewModel<PagedList<ZhihuDa
         override fun onZeroItemsLoaded() {
             super.onZeroItemsLoaded()
             helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) { helperCallback ->
-                api.getZhihuLatest()
-                        .map {
-                            it.stories = ArrayList(it.stories.filter { !it.title.contentEquals("这里是广告") })
-                            it
-                        }
+                api.getInfoQ(InfoRequest(null))
                         .subscribeOn(Schedulers.io())
-                        .doOnNext { db.zhihuDao().insert(ZhihuDailyPostEntity.zhihuWrap(it)) }
+                        .doOnNext { db.infoqArticleDao().insertAll(InfoqArticleEntity.wrap(it)) }
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(onLoading)
                         .subscribe({
@@ -72,12 +70,12 @@ class ZhihuViewModel(application: Application) : BaseViewModel<PagedList<ZhihuDa
             }
         }
 
-        override fun onItemAtEndLoaded(itemAtEnd: ZhihuDailyPostEntity) {
+        override fun onItemAtEndLoaded(itemAtEnd: InfoqArticleEntity) {
             super.onItemAtEndLoaded(itemAtEnd)
             helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { helperCallback ->
-                api.getZhihuHistory(date = itemAtEnd.date)
+                api.getInfoQ(InfoRequest(itemAtEnd.score))
                         .subscribeOn(Schedulers.io())
-                        .doOnNext { db.zhihuDao().insert(ZhihuDailyPostEntity.zhihuWrap(it)) }
+                        .doOnNext { db.infoqArticleDao().insertAll(InfoqArticleEntity.wrap(it)) }
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe(onLoading)
                         .subscribe({

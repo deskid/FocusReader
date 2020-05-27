@@ -39,13 +39,13 @@ class ZhihuAdapter(private val activity: Activity) :
     }
 
     class ZhihuPostDiffUtilCallback : ItemCallback<ZhihuDailyPostEntity>() {
-        override fun areItemsTheSame(oldItem: ZhihuDailyPostEntity?, newItem: ZhihuDailyPostEntity?): Boolean {
-            return oldItem?.id == newItem?.id
+        override fun areItemsTheSame(oldItem: ZhihuDailyPostEntity, newItem: ZhihuDailyPostEntity): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ZhihuDailyPostEntity?, newItem: ZhihuDailyPostEntity?): Boolean {
-            return oldItem?.date == newItem?.date
-                    && oldItem?.title == newItem?.title
+        override fun areContentsTheSame(oldItem: ZhihuDailyPostEntity, newItem: ZhihuDailyPostEntity): Boolean {
+            return oldItem.date == newItem.date
+                    && oldItem.title == newItem.title
         }
     }
 }

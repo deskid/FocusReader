@@ -134,6 +134,15 @@ interface IAppService {
     @GET("https://api.readhub.me/topic/instantview/")
     fun getReadhubInstantView(@Query("topicId") topicId: String): Flowable<InstantView>
 
-    
+    /**
+     * 获取 infoq Android
+     * @param pageSize
+     * @param pageNum
+     * @return [Article]
+     */
+    @Headers("Referer: https://www.infoq.cn/topic/android")
+    @POST("https://www.infoq.cn/public/v1/article/getList")
+    fun getInfoQ(@Body request: InfoRequest): Flowable<InfoqArticle>
+
 
 }

@@ -29,7 +29,9 @@ public class AppModule {
     @Provides
     public AppDatabase provideAppDatabase() {
         return Room.databaseBuilder(context.getApplicationContext(),
-                AppDatabase.class, AppDatabase.DATABASE_NAME).build();
+                AppDatabase.class, AppDatabase.DATABASE_NAME)
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
 }
