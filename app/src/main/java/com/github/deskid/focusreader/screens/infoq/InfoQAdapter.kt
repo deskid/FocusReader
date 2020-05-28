@@ -11,8 +11,6 @@ import android.widget.TextView
 import com.github.deskid.focusreader.R
 import com.github.deskid.focusreader.db.entity.InfoqArticleEntity
 import com.github.deskid.focusreader.utils.launchUrlWithCustomTabs
-import com.github.deskid.focusreader.widget.image.WebImageView
-import com.github.deskid.focusreader.widget.image.setImageUrl
 
 class InfoQAdapter(private val activity: Activity) :
         PagedListAdapter<InfoqArticleEntity, InfoQAdapter.ViewHolder>(InfoqDiffUtilCallback()) {
@@ -21,9 +19,8 @@ class InfoQAdapter(private val activity: Activity) :
         val item = getItem(position)
         item?.let { article ->
             holder.mTitleView.text = article.title
-            val imgurl = article.articleCover
+            holder.mSummary.text = article.summary
 
-            holder.mWebImageView.setImageUrl(imgurl)
             holder.itemView.setOnClickListener {
                 activity.launchUrlWithCustomTabs(article.link)
             }
@@ -38,7 +35,7 @@ class InfoQAdapter(private val activity: Activity) :
 
     inner class ViewHolder(mView: View) : RecyclerView.ViewHolder(mView) {
         val mTitleView: TextView = mView.findViewById(R.id.title)
-        val mWebImageView: WebImageView = mView.findViewById(R.id.web_imageview)
+        val mSummary: TextView = mView.findViewById(R.id.summary)
     }
 
     class InfoqDiffUtilCallback : ItemCallback<InfoqArticleEntity>() {

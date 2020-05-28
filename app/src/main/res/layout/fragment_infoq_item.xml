@@ -14,13 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="horizontal">
-
-        <com.github.deskid.focusreader.widget.image.WebImageView
-            android:id="@+id/web_imageview"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop" />
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
@@ -30,6 +24,15 @@
             android:lineSpacingMultiplier="1.3"
             android:textColor="@color/text_title"
             android:textSize="15sp"
+            tools:text="ssssssss" />
+
+        <TextView
+            android:id="@+id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:textColor="@color/text_sub"
+            android:textSize="12sp"
             tools:text="ssssssss" />
 
     </LinearLayout>

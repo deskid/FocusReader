@@ -2,6 +2,7 @@ package com.github.deskid.focusreader.screens.infoq
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
+import android.arch.paging.DataSource
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.github.deskid.focusreader.api.data.InfoRequest
@@ -25,24 +26,37 @@ class InfoQViewModel(application: Application) : BaseViewModel<PagedList<InfoqAr
             .setEnablePlaceholders(false)
             .build()
 
+    private lateinit var sourceFactory: DataSource.Factory<Int, InfoqArticleEntity>
+    private lateinit var dataSource: DataSource<Int, InfoqArticleEntity>
 
     override fun getData(): LiveData<PagedList<InfoqArticleEntity>?> {
+        sourceFactory = appDatabase.infoqArticleDao().posts()
+        dataSource = sourceFactory.create()
         return initializedPagedListBuilder(config).build()
     }
 
     private fun initializedPagedListBuilder(config: PagedList.Config):
             LivePagedListBuilder<Int, InfoqArticleEntity> {
 
-        val database = appDatabase
         val livePageListBuilder = LivePagedListBuilder<Int, InfoqArticleEntity>(
-                database.infoqArticleDao().posts(),
+                sourceFactory,
                 config)
-        livePageListBuilder.setBoundaryCallback(InfoqBoundaryCallback(database, appService))
+        livePageListBuilder.setBoundaryCallback(InfoqBoundaryCallback(appDatabase, appService))
         return livePageListBuilder
     }
 
     fun load() {
-        onLoaded(null)
+        appService.getInfoQ(InfoRequest(null))
+                .subscribeOn(Schedulers.io())
+                .doOnNext { appDatabase.infoqArticleDao().insertAll(InfoqArticleEntity.wrap(it)) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(onLoading)
+                .subscribe({
+                    onLoaded(null)
+                    dataSource.invalidate()
+                }, {
+                    onError(it)
+                })
     }
 
     inner class InfoqBoundaryCallback(private val db: AppDatabase,
